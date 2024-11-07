@@ -14,7 +14,7 @@ class Post extends Model {
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO posts (user_id, post_id, positive) VALUES (?, ?, ?)';
+        $sql = 'INSERT INTO posts (user_id, text, image, tag_id, ) VALUES (?, ?, ?)';
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
