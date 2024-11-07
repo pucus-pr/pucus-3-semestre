@@ -2,24 +2,23 @@
 
 namespace App\Models;
 
-class User extends Model {
+class Comment extends Model {
     public static function all() {
-        $sql = 'SELECT * FROM users';
+        $sql = 'SELECT * FROM comments';
         return self::query($sql, []);
     }
     
     public static function find($id) {
-        $sql = 'SELECT * FROM users WHERE id = ?';
+        $sql = 'SELECT * FROM comments WHERE id = ?';
         return self::query($sql, [$id]);
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO users (name, email, password, identifier, access_level) VALUES (?, ?, ?, ?, ?)';
-        $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
+        $sql = 'INSERT INTO comments (user_id, post_id, message) VALUES (?, ?, ?)';
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
-            'message' => 'Usuário criado com sucesso!',
+            'message' => 'Comentário criado com sucesso!',
             'data' => [
                 'id' => $id
             ]
@@ -27,12 +26,12 @@ class User extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE users SET name = ?, email = ?, password = ?, identifier = ?, access_level = ? WHERE id = ?';
+        $sql = 'UPDATE users SET user_id = ?, post_id = ?, message = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
-            'message' => 'Usuário atualizado com sucesso!',
+            'message' => 'Comentário atualizado com sucesso!',
             'data' => null
         ];
     }
@@ -42,13 +41,8 @@ class User extends Model {
         self::query($sql, [$id]);
         return [
             'status' => 'success',
-            'message' => 'Usuário deletado com sucesso!',
+            'message' => 'Comentário deletado com sucesso!',
             'data' => null
         ];
-    }
-
-    public static function where($column, $operator, $value) {
-        $sql = "SELECT * FROM USERS WHERE $column $operator ?";
-        return self::query($sql, [$value]);
     }
 }

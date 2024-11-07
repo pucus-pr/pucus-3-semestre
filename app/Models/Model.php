@@ -10,14 +10,18 @@ class Model {
 
         $sql = $conn->prepare($sql);
         $sql->execute(array_values($params));
+        
         $results = $sql->get_result();
+
         if (is_object($results)) {
             $results = $results->fetch_all(MYSQLI_ASSOC);
+        } elseif (is_bool($results)) {
+            $results = $conn->insert_id;
         }
 
         $sql->close();
         $conn->close();
-        
+
         return $results;
     }
 }

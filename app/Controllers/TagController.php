@@ -2,29 +2,29 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
+use App\Models\Tag;
 
-class UserController {
+class TagController {
     public function index() {
-        return User::all();
+        return Tag::all();
     }
     
     public function show($id) {
-        return User::find($id);
+        return Tag::find($id);
     }
 
     public function create() {
-        return User::create($_POST);
+        return Tag::create($_POST);
     }
 
     public function update($id) {
         $data = file_get_contents("php://input");
         parse_str($data, $parsedData);
 
-        return User::update($parsedData, $id);
+        return Tag::update($parsedData, $id);
     }
 
     public function destroy($id) {
-        return User::delete($id);
+        return Tag::delete($id);
     }
 }

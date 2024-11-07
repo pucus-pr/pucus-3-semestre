@@ -2,29 +2,29 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
+use App\Models\Reaction;
 
-class UserController {
+class ReactionController {
     public function index() {
-        return User::all();
+        return Reaction::all();
     }
     
     public function show($id) {
-        return User::find($id);
+        return Reaction::find($id);
     }
 
     public function create() {
-        return User::create($_POST);
+        return Reaction::create($_POST);
     }
 
     public function update($id) {
         $data = file_get_contents("php://input");
         parse_str($data, $parsedData);
 
-        return User::update($parsedData, $id);
+        return Reaction::update($parsedData, $id);
     }
 
     public function destroy($id) {
-        return User::delete($id);
+        return Reaction::delete($id);
     }
 }

@@ -2,24 +2,23 @@
 
 namespace App\Models;
 
-class User extends Model {
+class Reaction extends Model {
     public static function all() {
-        $sql = 'SELECT * FROM users';
+        $sql = 'SELECT * FROM reactions';
         return self::query($sql, []);
     }
     
     public static function find($id) {
-        $sql = 'SELECT * FROM users WHERE id = ?';
+        $sql = 'SELECT * FROM reactions WHERE id = ?';
         return self::query($sql, [$id]);
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO users (name, email, password, identifier, access_level) VALUES (?, ?, ?, ?, ?)';
-        $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
+        $sql = 'INSERT INTO reactions (user_id, post_id, positive) VALUES (?, ?, ?)';
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
-            'message' => 'Usuário criado com sucesso!',
+            'message' => 'Reação criada com sucesso!',
             'data' => [
                 'id' => $id
             ]
@@ -27,7 +26,7 @@ class User extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE users SET name = ?, email = ?, password = ?, identifier = ?, access_level = ? WHERE id = ?';
+        $sql = 'UPDATE reactions SET user_id = ?, post_id = ?, positive = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
         return [
@@ -38,17 +37,12 @@ class User extends Model {
     }
 
     public static function delete($id) {
-        $sql = 'DELETE FROM users WHERE id = ?';
+        $sql = 'DELETE FROM reactions WHERE id = ?';
         self::query($sql, [$id]);
         return [
             'status' => 'success',
             'message' => 'Usuário deletado com sucesso!',
             'data' => null
         ];
-    }
-
-    public static function where($column, $operator, $value) {
-        $sql = "SELECT * FROM USERS WHERE $column $operator ?";
-        return self::query($sql, [$value]);
     }
 }
