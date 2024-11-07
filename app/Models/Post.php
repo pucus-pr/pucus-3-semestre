@@ -14,7 +14,7 @@ class Post extends Model {
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO posts (user_id, text, image, tag_id, ) VALUES (?, ?, ?)';
+        $sql = 'INSERT INTO posts (user_id, text, image, tag_id) VALUES (?, ?, ?, ?)';
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
@@ -26,7 +26,7 @@ class Post extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE posts SET name = ?, email = ?, password = ?, identifier = ?, access_level = ? WHERE id = ?';
+        $sql = 'UPDATE posts SET user_id = ?, text = ?, image = ?, tag_id = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
         return [
