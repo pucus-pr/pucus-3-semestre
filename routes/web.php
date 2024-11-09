@@ -27,7 +27,7 @@ if ($_SESSION['user']) {
     // Rotas de tags
     route('/tags', [TagController::class, 'create'], 'POST');
     route('/tags', [TagController::class, 'index'], 'GET');
-    routex('/tags/{id}', [TagController::class, 'show'], 'GET');
+    route('/tags/{id}', [TagController::class, 'show'], 'GET');
     route('/tags/{id}', [TagController::class, 'update'], 'PUT');
     route('/tags/{id}', [TagController::class, 'destroy'], 'DELETE');
 
