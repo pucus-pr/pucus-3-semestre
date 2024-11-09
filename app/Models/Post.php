@@ -38,9 +38,12 @@ class Post extends Model {
     }
 
     public static function update($request, $id) {
+        array_unshift($request, $_SESSION['user']);
+
         $sql = 'UPDATE posts SET user_id = ?, text = ?, image = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
+
         return [
             'status' => 'success',
             'message' => 'Postagem atualizada com sucesso!',
