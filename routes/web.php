@@ -13,49 +13,49 @@ function route($uri, $controllerMethod, $method) {
     $routes[$method][$uri] = $controllerMethod;
 }
 
-route('/login', [AuthController::class, 'login'], 'POST');
-route('/register', [UserController::class, 'create'], 'POST');
+route('/api/login', [AuthController::class, 'login'], 'POST');
+route('/api/register', [UserController::class, 'create'], 'POST');
 
-if ($_SESSION['user']) {
+if (isset($_SESSION['user'])) {
     // Rotas de usuários
-    route('/logout', [AuthController::class, 'logout'], 'POST');
-    route('/users', [UserController::class, 'index'], 'GET');
-    route('/users/{id}', [UserController::class, 'show'], 'GET');
-    route('/users/{id}', [UserController::class, 'update'], 'PUT');
-    route('/users/{id}', [UserController::class, 'destroy'], 'DELETE');
+    route('/api/logout', [AuthController::class, 'logout'], 'POST');
+    route('/api/users', [UserController::class, 'index'], 'GET');
+    route('/api/users/{id}', [UserController::class, 'show'], 'GET');
+    route('/api/users/{id}', [UserController::class, 'update'], 'PUT');
+    route('/api/users/{id}', [UserController::class, 'destroy'], 'DELETE');
 
     // Rotas de tags
-    route('/tags', [TagController::class, 'create'], 'POST');
-    route('/tags', [TagController::class, 'index'], 'GET');
-    route('/tags/{id}', [TagController::class, 'show'], 'GET');
-    route('/tags/{id}', [TagController::class, 'update'], 'PUT');
-    route('/tags/{id}', [TagController::class, 'destroy'], 'DELETE');
+    route('/api/tags', [TagController::class, 'create'], 'POST');
+    route('/api/tags', [TagController::class, 'index'], 'GET');
+    route('/api/tags/{id}', [TagController::class, 'show'], 'GET');
+    route('/api/tags/{id}', [TagController::class, 'update'], 'PUT');
+    route('/api/tags/{id}', [TagController::class, 'destroy'], 'DELETE');
 
     // Rotas de posts
-    route('/posts', [PostController::class, 'create'], 'POST');
-    route('/posts', [PostController::class, 'index'], 'GET');
-    route('/posts/{id}', [PostController::class, 'show'], 'GET');
-    route('/posts/{id}', [PostController::class, 'update'], 'PUT');
-    route('/posts/{id}', [PostController::class, 'destroy'], 'DELETE');
+    route('/api/posts', [PostController::class, 'create'], 'POST');
+    route('/api/posts', [PostController::class, 'index'], 'GET');
+    route('/api/posts/{id}', [PostController::class, 'show'], 'GET');
+    route('/api/posts/{id}', [PostController::class, 'update'], 'PUT');
+    route('/api/posts/{id}', [PostController::class, 'destroy'], 'DELETE');
 
     // Rotas de tags-posts
-    route('/tags-posts', [TagPostController::class, 'create'], 'POST');
-    route('/tags-posts', [TagPostController::class, 'index'], 'GET');
-    route('/tags-posts/{id}', [TagPostController::class, 'show'], 'GET');
-    route('/tags-posts/{id}', [TagPostController::class, 'update'], 'PUT');
-    route('/tags-posts/{id}', [TagPostController::class, 'destroy'], 'DELETE');
+    route('/api/tags-posts', [TagPostController::class, 'create'], 'POST');
+    route('/api/tags-posts', [TagPostController::class, 'index'], 'GET');
+    route('/api/tags-posts/{id}', [TagPostController::class, 'show'], 'GET');
+    route('/api/tags-posts/{id}', [TagPostController::class, 'update'], 'PUT');
+    route('/api/tags-posts/{id}', [TagPostController::class, 'destroy'], 'DELETE');
 
     // Rotas de reações
-    route('/reactions', [ReactionController::class, 'create'], 'POST');
-    route('/reactions', [ReactionController::class, 'index'], 'GET');
-    route('/reactions/{id}', [ReactionController::class, 'show'], 'GET');
-    route('/reactions/{id}', [ReactionController::class, 'update'], 'PUT');
-    route('/reactions/{id}', [ReactionController::class, 'destroy'], 'DELETE');
+    route('/api/reactions', [ReactionController::class, 'create'], 'POST');
+    route('/api/reactions', [ReactionController::class, 'index'], 'GET');
+    route('/api/reactions/{id}', [ReactionController::class, 'show'], 'GET');
+    route('/api/reactions/{id}', [ReactionController::class, 'update'], 'PUT');
+    route('/api/reactions/{id}', [ReactionController::class, 'destroy'], 'DELETE');
 
     // Rotas de comentários
-    route('/comments', [CommentController::class, 'create'], 'POST');
-    route('/comments', [CommentController::class, 'index'], 'GET');
-    route('/comments/{id}', [CommentController::class, 'show'], 'GET');
-    route('/comments/{id}', [CommentController::class, 'update'], 'PUT');
-    route('/comments/{id}', [CommentController::class, 'destroy'], 'DELETE');
+    route('/api/comments', [CommentController::class, 'create'], 'POST');
+    route('/api/comments', [CommentController::class, 'index'], 'GET');
+    route('/api/comments/{id}', [CommentController::class, 'show'], 'GET');
+    route('/api/comments/{id}', [CommentController::class, 'update'], 'PUT');
+    route('/api/comments/{id}', [CommentController::class, 'destroy'], 'DELETE');
 }
