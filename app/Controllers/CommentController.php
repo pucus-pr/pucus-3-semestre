@@ -2,29 +2,29 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
+use App\Models\Comment;
 
-class UserController {
+class CommentController {
     public function index() {
-        return User::all();
+        return Comment::all();
     }
     
     public function show($id) {
-        return User::find($id);
+        return Comment::find($id);
     }
 
     public function create() {
-        return User::create($_POST);
+        return Comment::create($_POST);
     }
 
     public function update($id) {
         $data = file_get_contents("php://input");
         parse_str($data, $parsedData);
 
-        return User::update($parsedData, $id);
+        return Comment::update($parsedData, $id);
     }
 
     public function destroy($id) {
-        return User::delete($id);
+        return Comment::delete($id);
     }
 }

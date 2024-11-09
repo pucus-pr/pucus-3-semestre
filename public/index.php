@@ -15,33 +15,33 @@ require_once __DIR__ . '/../routes/web.php';
 
 $uri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
+$matched = false;
 
-// foreach ($routes[$method] as $routeUri => $controllerMethod) {
-//     $pattern = preg_replace('/\{(\w+)\}/', '(\d+)', $routeUri);
-//     $pattern = str_replace('/', '\/', $pattern); // Escapa barras para a regex
-//     $pattern = '/^' . $pattern . '$/';
+foreach ($routes[$method] as $routeUri => $controllerMethod) {
+    $pattern = preg_replace('/\{(\w+)\}/', '(\d+)', $routeUri);
+    $pattern = str_replace('/', '\/', $pattern); // Escapa barras para a regex
+    $pattern = '/^' . $pattern . '$/';
 
-//     if (preg_match($pattern, $uri, $matches)) {
-//         // Remove o primeiro elemento, que é a correspondência completa da regex
-//         array_shift($matches);
+    if (preg_match($pattern, $uri, $matches)) {
+        array_shift($matches);
 
-//         // Extrai o controlador e o método
-//         list($controller, $method) = $controllerMethod;
+        list($controller, $method) = $controllerMethod;
+        $controllerInstance = new $controller();
+        $response = $controllerInstance->$method(...$matches);
+        if(isset($response)) {
+            header('Content-Type: application/json');
+            echo json_encode($response);
+        }
+        $matched = true;
+        exit;
+    }
+}
 
-//         // Instancia o controlador e chama o método, passando os parâmetros capturados
-//         print_r((new $controller())->$method(...$matches));
-//         exit;
-//     }
-// }
-
-$controller = $routes[$method][$uri][0];
-$method = $routes[$method][$uri][1];
-
-$controllerInstance = new $controller();
-
-$response = $controllerInstance->$method();
-
-if(isset($response)) {
+if(!$matched) {
     header('Content-Type: application/json');
-    echo json_encode($response);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Rota não encontrada',
+        'data' => null
+    ]);
 }

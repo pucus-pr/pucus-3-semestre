@@ -2,29 +2,29 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
+use App\Models\Post;
 
-class UserController {
+class PostController {
     public function index() {
-        return User::all();
+        return Post::all();
     }
     
     public function show($id) {
-        return User::find($id);
+        return Post::find($id);
     }
 
     public function create() {
-        return User::create($_POST);
+        return Post::create($_POST);
     }
 
     public function update($id) {
         $data = file_get_contents("php://input");
         parse_str($data, $parsedData);
 
-        return User::update($parsedData, $id);
+        return Post::update($parsedData, $id);
     }
 
     public function destroy($id) {
-        return User::delete($id);
+        return Post::delete($id);
     }
 }
