@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Controllers\TagController;
+
 class Post extends Model {
     public static function all() {
         $sql = 'SELECT * FROM posts';
@@ -14,8 +16,18 @@ class Post extends Model {
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO posts (user_id, text, image, tag_id) VALUES (?, ?, ?, ?)';
+        array_unshift($request, $_SESSION['user']);
+
+        $tags = $request['tags'];
+        unset($request['tags']);
+
+        $sql = 'INSERT INTO posts (user_id, text, image) VALUES (?, ?, ?)';
         $id = self::query($sql, $request);
+
+        foreach($tags as $tag) {
+            TagPost::create([$id, $tag]);
+        }
+
         return [
             'status' => 'success',
             'message' => 'Postagem criada com sucesso!',
@@ -26,7 +38,7 @@ class Post extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE posts SET user_id = ?, text = ?, image = ?, tag_id = ? WHERE id = ?';
+        $sql = 'UPDATE posts SET user_id = ?, text = ?, image = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
         return [

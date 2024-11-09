@@ -15,12 +15,7 @@ require_once __DIR__ . '/../routes/web.php';
 
 $uri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
-
-if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'];
-} else {
-    $user = null;
-}
+$matched = false;
 
 foreach ($routes[$method] as $routeUri => $controllerMethod) {
     $pattern = preg_replace('/\{(\w+)\}/', '(\d+)', $routeUri);
@@ -37,6 +32,16 @@ foreach ($routes[$method] as $routeUri => $controllerMethod) {
             header('Content-Type: application/json');
             echo json_encode($response);
         }
+        $matched = true;
         exit;
     }
+}
+
+if(!$matched) {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Rota não encontrada',
+        'data' => null
+    ]);
 }

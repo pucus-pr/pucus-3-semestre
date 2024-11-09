@@ -25,6 +25,19 @@ class AuthController {
     }
 
     public function logout() {
-        $_SESSION['user'] = null;
+        if (isset($_SESSION['user'])) {
+            $_SESSION['user'] = null;
+            return [
+                'status' => 'success',
+                'message' => 'Usuário deslogado com sucesso!',
+                'data' => null
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Usuário inexistente!',
+                'data' => null
+            ];
+        }
     }
 }
