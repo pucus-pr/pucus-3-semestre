@@ -13,9 +13,12 @@ class Comment extends Model {
         return self::query($sql, [$id]);
     }
 
-    public static function create($request) {
-        $sql = 'INSERT INTO comments (user_id, post_id, message) VALUES (?, ?, ?)';
+    public static function create($request) { 
+        array_unshift($request, $_SESSION['user']);
+        
+        $sql = 'INSERT INTO comments (user_id, commentable_type, commentable_id, message) VALUES (?, ?, ?, ?)';
         $id = self::query($sql, $request);
+        
         return [
             'status' => 'success',
             'message' => 'Comentário criado com sucesso!',
@@ -26,9 +29,12 @@ class Comment extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE users SET user_id = ?, post_id = ?, message = ? WHERE id = ?';
+        array_unshift($request, $_SESSION['user']);
+
+        $sql = 'UPDATE users SET user_id = ?, commentable_type = ?, commentable_id = ?, message WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
+        
         return [
             'status' => 'success',
             'message' => 'Comentário atualizado com sucesso!',

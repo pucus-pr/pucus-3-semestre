@@ -14,7 +14,9 @@ class Reaction extends Model {
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO reactions (user_id, post_id, positive) VALUES (?, ?, ?)';
+        array_unshift($request, $_SESSION['user']);
+
+        $sql = 'INSERT INTO reactions (user_id, reactable_type, reactable_id, positive) VALUES (?, ?, ?, ?)';
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
@@ -26,12 +28,15 @@ class Reaction extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE reactions SET user_id = ?, post_id = ?, positive = ? WHERE id = ?';
+        array_unshift($request, $_SESSION['user']);
+
+        $sql = 'UPDATE reactions SET user_id = ?, reactable_type = ?, reactable_id = ?, positive = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
+            
         return [
             'status' => 'success',
-            'message' => 'Usuário atualizado com sucesso!',
+            'message' => 'Reação atualizada com sucesso!',
             'data' => null
         ];
     }
@@ -41,7 +46,7 @@ class Reaction extends Model {
         self::query($sql, [$id]);
         return [
             'status' => 'success',
-            'message' => 'Usuário deletado com sucesso!',
+            'message' => 'Reação deletada com sucesso!',
             'data' => null
         ];
     }
