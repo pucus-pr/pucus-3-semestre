@@ -5,7 +5,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    identifier VARCHAR(255),
+    identifier VARCHAR(255) NOT NULL,
     access_level TINYINT UNSIGNED NOT NULL DEFAULT 1,
     image VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

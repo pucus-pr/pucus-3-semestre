@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LOGIN</title>
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+
+  <body>
+    <header class="containerheader">
+      <div class="logo">
+        <img
+          src="img/WhatsApp_Image_2024-10-16_at_19.19.22-removebg-preview.png"
+          alt="Logo da PUCUS"
+        />
+      </div>
+    </header>
+
+    <main class="containerlog">
+      <h1>LOGIN</h1>
+
+      <div class="container">
+        <form id="loginForm" method="post" onsubmit="return validate_form();">
+          <div class="inputs">
+            <label class="email" for="email">E-mail</label><br />
+            <input type="email" id="email" name="email"/>
+          </div>
+
+          <div class="inputs">
+            <label class="password" for="password">Senha</label><br />
+            <input type="password" id="password" name="password"/>
+          </div>
+
+          <button class="button" type="submit">Entrar</button>
+        </form>
+
+        <div class="links container">
+          <a target="_blank" href="#">Esqueci minha senha</a>
+          <span class="ponto"></span>
+          <a target="_blank" href="#">Cadastrar-se no PUCUS</a>
+        </div>
+      </div>
+      <script type="text/javascript" language="javascript">
+        async function validate_form() {
+          const form = new FormData(document.getElementById("loginForm"));
+          const formData = new URLSearchParams(form);
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await response.json();
+
+          if (data.status == 'success') {
+            window.location.href = '/home';
+          }
+
+          return false;
+        }
+      </script>
+    </main>
+  </body>
+</html>
