@@ -2,11 +2,13 @@
 
 use App\Controllers\AuthController;
 use App\Controllers\CommentController;
+use App\Controllers\EstablishmentController;
 use App\Controllers\PostController;
 use App\Controllers\ReactionController;
 use App\Controllers\TagController;
 use App\Controllers\TagPostController;
 use App\Controllers\UserController;
+use App\Models\User;
 
 function route($uri, $controllerMethod, $method) {
     global $routes;
@@ -25,11 +27,8 @@ if (isset($_SESSION['user'])) {
     route('/api/users/{id}', [UserController::class, 'destroy'], 'DELETE');
 
     // Rotas de tags
-    route('/api/tags', [TagController::class, 'create'], 'POST');
     route('/api/tags', [TagController::class, 'index'], 'GET');
     route('/api/tags/{id}', [TagController::class, 'show'], 'GET');
-    route('/api/tags/{id}', [TagController::class, 'update'], 'PUT');
-    route('/api/tags/{id}', [TagController::class, 'destroy'], 'DELETE');
 
     // Rotas de posts
     route('/api/posts', [PostController::class, 'create'], 'POST');
@@ -58,4 +57,20 @@ if (isset($_SESSION['user'])) {
     route('/api/comments/{id}', [CommentController::class, 'show'], 'GET');
     route('/api/comments/{id}', [CommentController::class, 'update'], 'PUT');
     route('/api/comments/{id}', [CommentController::class, 'destroy'], 'DELETE');
+
+    // Rotas de estabelecimentos
+    route('/api/establishments', [EstablishmentController::class, 'index'], 'GET');
+    route('/api/establishments/{id}', [EstablishmentController::class, 'show'], 'GET');
+
+    if (User::find($_SESSION['user'])[0]['access_level'] == 4) {
+        // Rotas de tags apenas para admins
+        route('/api/tags', [TagController::class, 'create'], 'POST');
+        route('/api/tags/{id}', [TagController::class, 'update'], 'PUT');
+        route('/api/tags/{id}', [TagController::class, 'destroy'], 'DELETE');
+
+        // Rotas de estabelecimentos apenas para admins
+        route('/api/establishments', [EstablishmentController::class, 'create'], 'POST');
+        route('/api/establishments/{id}', [EstablishmentController::class, 'update'], 'PUT');
+        route('/api/establishments/{id}', [EstablishmentController::class, 'destroy'], 'DELETE');
+    }
 }
