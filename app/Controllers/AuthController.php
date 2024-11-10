@@ -7,7 +7,27 @@ use App\Models\User;
 class AuthController {
     public function login() {
         $request = $_POST;
-        $user = User::where('email', '=', $request['email'])[0];
+
+        if(!isset($request['email']) or !isset($request['password'])) {
+            return [
+                'status' => 'error',
+                'message' => 'Usuário inválido',
+                'data' => null
+            ];
+        }
+
+        $user = User::where('email', '=', $request['email']);
+
+        if(isset($user[0])) {
+            $user = $user[0];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Usuário inválido!',
+                'data' => null
+            ];
+        }
+        
         if (password_verify($request['password'], $user['password'])) {
             $_SESSION['user'] = $user['id'];
             return [
@@ -35,7 +55,7 @@ class AuthController {
         } else {
             return [
                 'status' => 'error',
-                'message' => 'Usuário inexistente!',
+                'message' => 'Usuário não logado!',
                 'data' => null
             ];
         }

@@ -107,7 +107,8 @@ main form .inputs label {
 
 
 main form .inputs input[type="text"],
-main form .inputs input[type="password"] {
+main form .inputs input[type="password"],
+main form .inputs input[type="email"] {
   width: 100%;
   padding: 8px;
   height: 30px;
