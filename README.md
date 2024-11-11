@@ -13,7 +13,7 @@ Este é o projeto **Pucus**, uma aplicação desenvolvida para melhorar a comuni
 Se ainda não tiver o repositório, clone-o para sua máquina local dentro da pasta htdocs do seu XAMPP:
 
 ```bash
-   git clone https://github.com/pucus-pr/pucus.git>
+   git clone https://github.com/pucus-pr/pucus.git
    cd pucus
 ```
 
