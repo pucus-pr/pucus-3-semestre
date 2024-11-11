@@ -38,11 +38,26 @@
         <div class="links container">
           <a target="_blank" href="#">Esqueci minha senha</a>
           <span class="ponto"></span>
-          <a target="_blank" href="#">Cadastrar-se no PUCUS</a>
+          <a href="/registers">Cadastrar-se no PUCUS</a>
         </div>
       </div>
       <script type="text/javascript" language="javascript">
         async function validate_form() {
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value.trim();
+
+          if (email === "") {
+            alert('Por favor, preencha o campo e-mail');
+            document.getElementById("email").focus();
+            return false;
+          }
+
+          if (password === "") {
+            alert('Por favor, preencha o campo senha.');
+            document.getElementById("password").focus();
+            return false;
+          }
+
           const form = new FormData(document.getElementById("loginForm"));
           const formData = new URLSearchParams(form);
           const response = await fetch('/api/login', {
@@ -54,6 +69,8 @@
 
           if (data.status == 'success') {
             window.location.href = '/home';
+          } else {
+            alert(data.message);
           }
 
           return false;
