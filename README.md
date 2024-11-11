@@ -19,7 +19,7 @@ Se ainda não tiver o repositório, clone-o para sua máquina local dentro da pa
 
 2. **Crie a database**
 
-Antes de rodar a aplicação, é necessário criar o banco de dados. Crie uma database chamada pucus no banco de dados do XAMPP (Ou outro da sua preferência)
+Antes de rodar a aplicação, é necessário criar o banco de dados. Crie uma database chamada pucus no banco de dados do XAMPP (ou outro da sua preferência)
 
 3. **Configure a conexão com o banco de dados**
 
