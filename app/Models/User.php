@@ -14,16 +14,24 @@ class User extends Model {
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO users (name, email, password, identifier, access_level) VALUES (?, ?, ?, ?, ?)';
-        $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
-        $id = self::query($sql, $request);
-        return [
-            'status' => 'success',
-            'message' => 'Usuário criado com sucesso!',
-            'data' => [
-                'id' => $id
-            ]
-        ];
+        try {
+            $sql = 'INSERT INTO users (name, identifier, email, password, access_level) VALUES (?, ?, ?, ?, ?)';
+            $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
+            $id = self::query($sql, $request);
+            return [
+                'status' => 'success',
+                'message' => 'Usuário criado com sucesso!',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => 'Erro ao criar o usuário!',
+                'data' => $e->getMessage()
+            ];
+        }
     }
 
     public static function update($request, $id) {
