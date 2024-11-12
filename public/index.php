@@ -11,7 +11,6 @@ spl_autoload_register('myAutoloader');
 
 $uri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
-$matched = false;
 
 $routes = [];
 require_once __DIR__ . '/../routes/web.php';
@@ -33,21 +32,33 @@ if (strpos($uri, '/api') === 0) {
                     header('Content-Type: application/json');
                     echo json_encode($response);
                 }
-                $matched = true;
                 exit;
             }
         }
     }
 
-    if(!$matched) {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Rota não encontrada',
-            'data' => null
-        ]);
-    }
+    header('Content-Type: application/json');
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Rota não encontrada',
+        'data' => null
+    ]);
 } else {
+    if (!isset($_SESSION['user']) AND !in_array($uri, $routes['PUBLICACCESS'])) {
+        header('Location: /login');
+        exit;
+    }
+
+    if($uri == '/') {
+        if (isset($_SESSION['user'])) {
+            header('Location: /home');
+            exit;
+        } else {
+            header('Location: /login');
+            exit;
+        }
+    }
+
     $uriParts = explode('/', trim($uri, '/'));
     $viewName = ucfirst($uriParts[0]) . '.html'; // Usando a primeira parte para a view
     require_once __DIR__ . "/../app/Views/$viewName";

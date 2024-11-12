@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Funcionário</title>
+  <title>Cadastro de Coordenador</title>
   <link rel="stylesheet" href="css/cadastro.css">
 </head>
 
@@ -12,7 +12,7 @@
 <script type="text/javascript">
   async function validate_form() {
     const nome = document.getElementById("nome").value.trim();
-    const cargo = document.getElementById("curso").value.trim();
+    const departamento = document.getElementById("departamento").value.trim();
     const email = document.getElementById("email").value.trim();
     const senha = document.getElementById("senha").value.trim();
     const confirmaSenha = document.getElementById("confirma-senha").value.trim();
@@ -22,9 +22,9 @@
       document.getElementById("nome").focus();
       return false;
     }
-    if (cargo === "") {
-      alert('Por favor, preencha o campo cargo.');
-      document.getElementById("curso").focus();
+    if (departamento === "") {
+      alert('Por favor, preencha o campo departamento.');
+      document.getElementById("departamento").focus();
       return false;
     }
     if (email === "") {
@@ -49,8 +49,7 @@
     }
 
     const form = new FormData(document.getElementById("registerForm"));
-    form.append("access_level", "2");
-    form.append("image", "img/defaultPerfilPicture.jpg");
+    form.append("access_level", "3");
     
     const formData = new URLSearchParams(form);
     const response = await fetch('/api/register', {
@@ -66,9 +65,10 @@
       alert(data.message);
     }
 
-    return false; 
+    return false;
   }
 </script>
+
 
 
 <body>
@@ -80,18 +80,18 @@
   </header>
 
   <main class="container-cadastro">
-    <h1>CADASTRO FUNCIONARIO</h1>
+    <h1>CADASTRO COORDENADOR</h1>
 
     <div class="container">
-      <form method="post" id="registerForm" onsubmit="return validate_form();">
+      <form id="registerForm" method="post" onsubmit="return validate_form();">
         <div class="inputs">
           <label for="nome">Nome</label>
           <input type="text" id="nome" name="name">
         </div>
 
         <div class="inputs">
-          <label for="curso">Cargo</label>
-          <input type="text" id="curso" name="identifier">
+          <label for="departamento">Departamento</label>
+          <input type="text" id="departamento" name="identifier">
         </div>
 
         <div class="inputs">

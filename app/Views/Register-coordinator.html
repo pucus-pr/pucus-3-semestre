@@ -50,6 +50,7 @@
 
     const form = new FormData(document.getElementById("registerForm"));
     form.append("access_level", "3");
+    form.append("image", "img/defaultPerfilPicture.jpg");
     
     const formData = new URLSearchParams(form);
     const response = await fetch('/api/register', {
