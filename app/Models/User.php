@@ -15,7 +15,7 @@ class User extends Model {
 
     public static function create($request) {
         try {
-            $sql = 'INSERT INTO users (name, identifier, email, password, access_level) VALUES (?, ?, ?, ?, ?)';
+            $sql = 'INSERT INTO users (name, identifier, email, password, access_level, image) VALUES (?, ?, ?, ?, ?, ?)';
             $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
             $id = self::query($sql, $request);
             return [
@@ -35,7 +35,7 @@ class User extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE users SET name = ?, email = ?, password = ?, identifier = ?, access_level = ? WHERE id = ?';
+        $sql = 'UPDATE users SET name = ?, email = ?, password = ?, identifier = ?, access_level = ?, image = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
         return [

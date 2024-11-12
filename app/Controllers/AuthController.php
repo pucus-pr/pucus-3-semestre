@@ -54,7 +54,8 @@ class AuthController {
 
     public function logout() {
         if (isset($_SESSION['user'])) {
-            $_SESSION['user'] = null;
+            session_unset();
+            session_destroy();
             return [
                 'status' => 'success',
                 'message' => 'Usuário deslogado com sucesso!',

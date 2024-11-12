@@ -3,6 +3,7 @@
 use App\Controllers\AuthController;
 use App\Controllers\CommentController;
 use App\Controllers\EstablishmentController;
+use App\Controllers\PhotoController;
 use App\Controllers\PostController;
 use App\Controllers\ReactionController;
 use App\Controllers\TagController;
@@ -12,8 +13,22 @@ use App\Models\User;
 
 function route($uri, $controllerMethod, $method) {
     global $routes;
-    $routes[$method][$uri] = $controllerMethod;
+
+    if (isset($controllerMethod)) {
+        $routes[$method][$uri] = $controllerMethod;
+    } else {
+        if (!isset($routes[$method])) {
+            $routes[$method] = [];
+        }
+        array_push($routes[$method], $uri); 
+    }
 }
+
+route('/login', null, 'PUBLICACCESS');
+route('/registers', null, 'PUBLICACCESS');
+route('/register-student', null, 'PUBLICACCESS');
+route('/register-employee', null, 'PUBLICACCESS');
+route('/register-coordinator', null, 'PUBLICACCESS');
 
 route('/api/login', [AuthController::class, 'login'], 'POST');
 route('/api/register', [UserController::class, 'create'], 'POST');
@@ -62,7 +77,9 @@ if (isset($_SESSION['user'])) {
     route('/api/establishments', [EstablishmentController::class, 'index'], 'GET');
     route('/api/establishments/{id}', [EstablishmentController::class, 'show'], 'GET');
 
-    if (User::find($_SESSION['user'])[0]['access_level'] == 4) {
+    route('/api/photos', [PhotoController::class, 'create'], 'POST');
+    
+    if (User::find($_SESSION['user'])[0]['access_level'] >= 3) {
         // Rotas de tags apenas para admins
         route('/api/tags', [TagController::class, 'create'], 'POST');
         route('/api/tags/{id}', [TagController::class, 'update'], 'PUT');
