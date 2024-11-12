@@ -60,4 +60,9 @@ class Post extends Model {
             'data' => null
         ];
     }
+
+    public static function where($column, $operator, $value) {
+        $sql = "SELECT * FROM posts WHERE $column $operator ?";
+        return self::query($sql, [$value]);
+    }
 }

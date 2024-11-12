@@ -27,4 +27,18 @@ class UserController {
     public function destroy($id) {
         return User::delete($id);
     }
+
+    public function getUser() {
+        $user = User::find($_SESSION['user'])[0];
+        return [
+            'status' => 'success',
+            'message' => 'Usuário retornado com sucesso',
+            'data' => [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'identifier' => $user['identifier'],
+                'profilePicture' => $user['image']
+            ]
+        ];
+    }
 }

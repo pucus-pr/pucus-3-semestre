@@ -1,120 +1,119 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil</title>
+    <link rel="stylesheet" href="css/perfil.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Coordenador</title>
-  <link rel="stylesheet" href="css/cadastro.css">
-</head>
+  <body>
+    <header class="containerheader">
+      <div class="logo">
+        <img
+          src="img/WhatsApp_Image_2024-10-16_at_19.19.22-removebg-preview.png"
+          alt="Logo do Twitter"
+        />
+      </div>
+    </header>
 
-
-<script type="text/javascript">
-  async function validate_form() {
-    const nome = document.getElementById("nome").value.trim();
-    const departamento = document.getElementById("departamento").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const senha = document.getElementById("senha").value.trim();
-    const confirmaSenha = document.getElementById("confirma-senha").value.trim();
-
-    if (nome === "") {
-      alert('Por favor, preencha o campo nome.');
-      document.getElementById("nome").focus();
-      return false;
-    }
-    if (departamento === "") {
-      alert('Por favor, preencha o campo departamento.');
-      document.getElementById("departamento").focus();
-      return false;
-    }
-    if (email === "") {
-      alert('Por favor, preencha o campo e-mail.');
-      document.getElementById("email").focus();
-      return false;
-    }
-    if (senha === "") {
-      alert('Por favor, preencha o campo senha.');
-      document.getElementById("senha").focus();
-      return false;
-    }
-    if (confirmaSenha === "") {
-      alert('Por favor, confirme sua senha.');
-      document.getElementById("confirma-senha").focus();
-      return false;
-    }
-    if (senha !== confirmaSenha) {
-      alert('As senhas não coincidem. Por favor, verifique.');
-      document.getElementById("confirma-senha").focus();
-      return false;
-    }
-
-    const form = new FormData(document.getElementById("registerForm"));
-    form.append("access_level", "3");
-    
-    const formData = new URLSearchParams(form);
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      body: formData
-    });
-
-    const data = await response.json();
-
-    if (data.status == 'success') {
-      window.location.href = '/login';
-    } else {
-      alert(data.message);
-    }
-
-    return false;
-  }
-</script>
-
-
-
-<body>
-
-  <header class="containerheader">
-    <div class="logo">
-      <img src="img/WhatsApp_Image_2024-10-16_at_19.19.22-removebg-preview.png" alt="Logo do PUCUS">
-    </div>
-  </header>
-
-  <main class="container-cadastro">
-    <h1>CADASTRO COORDENADOR</h1>
-
-    <div class="container">
-      <form id="registerForm" method="post" onsubmit="return validate_form();">
-        <div class="inputs">
-          <label for="nome">Nome</label>
-          <input type="text" id="nome" name="name">
+    <main id="postsContainer" class="containerprof">
+      <div class="perfildados">
+        <a href="/home" class="botao-voltar">Voltar</a>
+        <a href="/editarPerfil" class="buttoneditar">Editar perfil</a>
+        <div class="foto-perfil">
+          <img
+            id="profilePicture"
+            src="img/defaultProfilePicture.jpg"
+            alt="Foto de perfil"
+          />
         </div>
+        <h2 id="nome">Priscila Bueno</h2>
+      </div>
 
-        <div class="inputs">
-          <label for="departamento">Departamento</label>
-          <input type="text" id="departamento" name="identifier">
-        </div>
+      <hr />
+      <p class="separador">POSTAGENS</p>
+      <hr />
+    </main>
 
-        <div class="inputs">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" name="email">
-        </div>
+    <script>
+      async function getUser() {
+        response = await fetch("/api/user");
+        user = await response.json();
 
-        <div class="inputs">
-          <label for="senha">Senha</label>
-          <input type="password" id="senha" name="password">
-        </div>
+        document.getElementById("nome").textContent = user["data"]["name"];
+        document.getElementById("profilePicture").src = user["data"]["profilePicture"];
 
-        <div class="inputs">
-          <label for="confirma-senha">Confirme sua senha</label>
-          <input type="password" id="confirma-senha">
-        </div>
+        renderPosts();
+      }
 
-        <button class="button" type="submit">Confirmar Cadastro</button>
-      </form>
-    </div>
+      getUser();
 
-  </main>
+      function createPost(post) {
+        const postElement = document.createElement('div');
+        postElement.classList.add('post');
+        
+        postElement.innerHTML = `
+          <div class="head_post">
+            <div class="icon_post">
+              <img src="${user["data"]["profilePicture"]}" alt=" " />
+            </div>
+            <div class="txt_post">
+              <h3>${user["data"]["name"]}</h3>
+              <p>${post.created_at}</p>
+            </div>
+          </div>
+          <div class="body_post">
+            <div class="txtBody">
+              <h1>${post.text}</h1>
+            </div>
 
-</body>
+            ${post.image}
 
+            <div class="footer_post">
+              <div class="likes_post">
+                <i class="bi bi-hand-thumbs-up-fill"></i>
+                <i class="bi bi-hand-thumbs-down-fill"></i>
+              </div>
+              <div class="coment_post">
+                <i class="bi bi-chat-dots-fill"></i>
+              </div>
+              <div class="tags_post">
+                <i class="bi bi-shield-fill-exclamation"></i>
+                <i class="bi bi-exclamation-diamond-fill"></i>
+                <i class="bi bi-backpack"></i>
+                <i class="bi bi-bank2"></i>
+              </div>
+            </div>
+          </div>
+        `;
+          
+        return postElement;
+      }
+
+      async function renderPosts() {
+        response = await fetch("/api/get-posts-by-user-id");
+        posts = await response.json();
+
+        console.log(posts); 
+
+        postsContainer = document.getElementById('postsContainer');
+
+        posts['data'].forEach(post => {
+          if (post.image == 'null') {
+            post.image = ''
+          } else {
+            post.image = `
+            <div class="imgBody">
+              <img src="${post.image}" />
+            </div>
+            `
+          }
+
+          postElement = createPost(post);
+          postsContainer.appendChild(postElement);
+        });
+      }
+    </script>
+  </body>
 </html>
