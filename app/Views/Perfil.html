@@ -28,7 +28,9 @@
             alt="Foto de perfil"
           />
         </div>
-        <h2 id="nome">Priscila Bueno</h2>
+        <h2 id="nome"></h2>
+        <p id="biografia" class="biografia"></p>
+
       </div>
 
       <hr />
@@ -43,6 +45,7 @@
 
         document.getElementById("nome").textContent = user["data"]["name"];
         document.getElementById("profilePicture").src = user["data"]["profilePicture"];
+        document.getElementById('biografia').textContent = user["data"]['identifier'];
 
         renderPosts();
       }

@@ -6,9 +6,26 @@
     font-family: "Roboto", sans-serif;
 }
 
+
+  
+  /* Modo Daltonismo */
+  html.daltonismo, body.daltonismo {
+    filter: contrast(100%) saturate(0.5) sepia(1) hue-rotate(120deg);
+  }
+  
+  /* Modo Protanopia (dificuldade com vermelho e verde) */
+  html.protanopia, body.protanopia {
+    filter: contrast(100%) saturate(0.5) sepia(1) hue-rotate(-60deg);
+  }
+
 body{
     background-color: #F25555;
+    a{
+        font-style: none;
+        color:black;
+    }
 }
+
 
 nav{
     margin-top: 10px;
@@ -343,6 +360,8 @@ nav{
         justify-content: center;
         width: 700px;
     }
+
+
     .video video{
         display: flex;
         justify-content: center;
@@ -357,7 +376,7 @@ nav{
         justify-content: space-around;
         margin-top: 20px;
         flex: wrap; 
-            
+
     
     } button{
         background-color:#F25555;
@@ -406,7 +425,7 @@ nav{
     z-index: 999;
 
     width: 600px;
-    height: 440px;
+    height: 200px;
     border-radius: 25px;
 
     box-shadow: rgb(58, 28, 29) 15px 20px 30px 0.5px;
@@ -474,7 +493,25 @@ nav{
     justify-content: space-between;
     width: 540px;
     margin-left: 55px;
+    likes_post{
+        width: 60px;
+        
+    }
 }
+
+.suicidio{
+    border: none; background: none;
+}
+
+.icone {
+    cursor: pointer;
+  }
+
+  .selecionado {
+    color: red;
+  }
+
+
 .footer_post i:hover{
     cursor: pointer;
     color:#F25555;
@@ -543,6 +580,28 @@ nav{
     background-color: rgba(0, 0, 0, 0.5); /* Cor e opacidade do fundo */
     z-index: 998; /* Certifique-se que esteja abaixo do pop-up */
     display: none; /* Inicialmente oculto */
+    input{
+        margin-left: 150px;
+        width: 300px;
+        margin-top: 30px;
+    }
+    .butt7{
+        display: flex;
+        margin-top: 30px;
+        justify-content: center;
+        font-size: 40px;
+
+        button{
+            border:none;
+            font-size: 20px;
+            background-color: #F25555;
+            color: white;
+            border-radius: 25px;
+            padding: 10px;
+            width: 110px;
+            cursor: pointer;
+        }
+    }
   }
 
 
@@ -663,3 +722,4 @@ nav ul li.abas a{
     padding: 5px;
     padding-left: 0px;
 }
+

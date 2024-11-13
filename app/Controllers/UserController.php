@@ -41,4 +41,11 @@ class UserController {
             ]
         ];
     }
+
+    public function updateProfile($id) {
+        $data = file_get_contents("php://input");
+        parse_str($data, $parsedData);
+
+        return User::updateProfile($parsedData, $id);
+    }
 }
