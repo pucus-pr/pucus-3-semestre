@@ -23,7 +23,7 @@ Antes de rodar a aplicação, é necessário criar o banco de dados. Crie uma da
 
 3. **Configure a conexão com o banco de dados**
 
-Verifique se o arquivo de configuração de banco de dados está corretamente configurado (config/config.php)
+Verifique se o arquivo de configuração de banco de dados está configurado corretamente (config/config.php)
 
 4. **Execute as migrações**
 
