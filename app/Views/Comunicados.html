@@ -124,10 +124,20 @@
         </container>
         <container class="Right">
             <div class="pinto">
-                <a href="perfil"><img src="./img/adan.png" alt=""></a>| <a href="config"><i class="bi bi-gear-fill"></i></a>
+                <a href="perfil"><img id="fotoDePerfilInsana" src="./img/adan.png" alt=""></a>| <a href="config"><i class="bi bi-gear-fill"></i></a>
             </div>
         </container>
         <script src="./scripts/scriptF.js"></script>
 
+        <script>
+            async function atualizarFotoPerfil() {
+              response = await fetch("/api/user");
+              user = await response.json();
+
+              document.getElementById("fotoDePerfilInsana").src = user["data"]["profilePicture"];
+            }
+
+            atualizarFotoPerfil();
+        </script>
 </body>
 </html>

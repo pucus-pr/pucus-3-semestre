@@ -23,6 +23,12 @@
           body: form,
         });
 
+        data = await response.json();
+
+        imagePath = data.replace(/^.*\/public\//, '');
+
+        alert(imagePath);
+
         return false;
       }
     </script>
