@@ -169,10 +169,23 @@
     </container>
     <div class="overlay">
       <!--trocar a divpop por <form>-->
-      <form id="pop" class="pop" method="post" onsubmit="return validate_form();">
+      <form id="pop" class="pop" method="post" onsubmit="return createTag();">
         <!--method="post"
         onsubmit="return validate_form();"-->
-
+        <div class="inputs">
+              <label for="createNome">Texto</label>
+              <input type="text" id="createNome" name="text" required>
+            </div>
+            <div class="inputs">
+                <label for="createNome">Tipo</label>
+                <input type="text" id="createNome" name="type" required>
+              </div>
+              <div class="inputs">
+                <label for="createNome">Imagem</label>
+                <input type="text" id="createNome" name="image" required>
+              </div>
+      <button class="button" type="submit">Confirmar Edição</button>
+  </form>
         <container class="up">
           <h1>Fazer postagem</h1>
         </container>
@@ -318,10 +331,20 @@
             renderPosts();
 
             function validate_form() {
-              form = document.getElementById('pop');
-
-
               return false;
+            }
+
+            async function createTag() {
+                const form = new FormData(document.getElementById("pop"));
+                form.append('tags[0]', '1');
+
+                const response = await fetch('/api/posts', {
+                    method: 'POST',
+                    body: form
+                });
+    
+                const data = await response.json();
+                return false;
             }
           </script>
         </div>

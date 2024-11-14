@@ -63,7 +63,7 @@
         <script>
             async function createTag() {
                 const form = new FormData(document.getElementById("createTagForm"));
-                form.append('tags[0]', '2');
+                form.append('tags[0]', '1');
 
                 const response = await fetch('/api/posts', {
                     method: 'POST',
