@@ -14,7 +14,7 @@ class Establishment extends Model {
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO establishments (name, description) VALUES (?, ?)';
+        $sql = 'INSERT INTO establishments (name, description1, description2) VALUES (?, ?, ?)';
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
@@ -26,7 +26,7 @@ class Establishment extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE establishments SET name = ?, description = ? WHERE id = ?';
+        $sql = 'UPDATE establishments SET name = ?, description1 = ?, description2 = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
         return [
