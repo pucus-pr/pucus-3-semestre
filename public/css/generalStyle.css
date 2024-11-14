@@ -6,9 +6,26 @@
     font-family: "Roboto", sans-serif;
 }
 
+
+  
+  /* Modo Daltonismo */
+  html.daltonismo, body.daltonismo {
+    filter: contrast(100%) saturate(0.5) sepia(1) hue-rotate(120deg);
+  }
+  
+  /* Modo Protanopia (dificuldade com vermelho e verde) */
+  html.protanopia, body.protanopia {
+    filter: contrast(100%) saturate(0.5) sepia(1) hue-rotate(-60deg);
+  }
+
 body{
     background-color: #F25555;
+    a{
+        font-style: none;
+        color:black;
+    }
 }
+
 
 nav{
     margin-top: 10px;
@@ -153,6 +170,8 @@ nav{
 
     p{
         width: 100%;
+        text-align: center;
+        margin-top: 20px;
     }
     input{
         margin-top: 10px;
@@ -209,6 +228,7 @@ nav{
     margin: 10px;
     padding: 15px;
     border-radius: 25px;
+    font-size: 10px;
 
     flex-grow: 1;
 }
@@ -240,18 +260,49 @@ nav{
     }
 }
 
+.g55{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    p{
+        width: 100%;
+        align-items: center;
+        align-content: center;
+        text-align: center;
+    }
+    input{
+        width: 300px;
+    }
+}
+
 .pinto{
     background-color: white;
     color: black;
-    width: 200px;
-    height: 20px;
+    width: 180px;
+    height: 100%;
+    font-size: 30px;
     padding: 10px;
     border-radius: 25px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     margin-bottom: 20px;
+    align-items: center;
     top: 0;
+    a img{
+        align-items: center;
+        border-radius: 25px;
+        width: 40px;
+        height: 40px;
+    }
 }
+.butti{
+    border: none;
+    background: none;
+    margin-left: 2px;
+    cursor: pointer;
+    margin-top: 2px;
+}
+
 .ggg button{
     font-size: 10px;
 }
@@ -287,6 +338,58 @@ nav{
         width: 700px;
     }
 }
+.pop2 {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 999;
+
+    width: 700px;
+    height: 550px;
+    border-radius: 25px;
+
+    box-shadow: rgb(58, 28, 29) 15px 20px 30px 0.5px;
+
+    .up{
+        display: flex;
+        justify-content: center;
+        width: 700px;
+    }
+
+
+    .video video{
+        display: flex;
+        justify-content: center;
+        margin-left: 90px;
+        width: 500px;
+        margin-top: 20px;
+        border-radius: 25px;
+        border: grey 4px solid;
+    }
+    .butt{
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+        flex: wrap; 
+
+    
+    } button{
+        background-color:#F25555;
+        border: none;
+        color: white;
+        padding: 10px;
+        border-radius: 20px;
+        font-size: 22px;
+        cursor: pointer;
+        width: 200px;
+
+    }
+}
 .pop1 {
     display: none;
     position: fixed;
@@ -300,6 +403,52 @@ nav{
 
     width: 600px;
     height: 440px;
+    border-radius: 25px;
+
+    box-shadow: rgb(58, 28, 29) 15px 20px 30px 0.5px;
+
+    .up{
+        display: flex;
+        justify-content: center;
+        width: 600px;
+    }
+}
+.pop3 {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 999;
+
+    width: 600px;
+    height: 200px;
+    border-radius: 25px;
+
+    box-shadow: rgb(58, 28, 29) 15px 20px 30px 0.5px;
+
+    .up{
+        display: flex;
+        justify-content: center;
+        width: 600px;
+    }
+}
+.pop4 {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 999;
+
+    width: 600px;
+    height: 200px;
     border-radius: 25px;
 
     box-shadow: rgb(58, 28, 29) 15px 20px 30px 0.5px;
@@ -367,6 +516,32 @@ nav{
     justify-content: space-between;
     width: 540px;
     margin-left: 55px;
+    likes_post{
+        width: 60px;
+        
+    }
+}
+
+.suicidio{
+    border: none; background: none;
+}
+
+.icone {
+    cursor: pointer;
+  }
+
+  .selecionado {
+    color: red;
+  }
+
+
+.footer_post i:hover{
+    cursor: pointer;
+    color:#F25555;
+}
+
+.footer_post i .dinart{
+    color:#F25555;
 }
 
 .pop p{
@@ -409,11 +584,55 @@ nav{
     z-index: 998; /* Certifique-se que esteja abaixo do pop-up */
     display: none; /* Inicialmente oculto */
   }
+  .overlay2{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Cor e opacidade do fundo */
+    z-index: 998; /* Certifique-se que esteja abaixo do pop-up */
+    display: none; /* Inicialmente oculto */
+  }
+  .overlay3{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Cor e opacidade do fundo */
+    z-index: 998; /* Certifique-se que esteja abaixo do pop-up */
+    display: none; /* Inicialmente oculto */
+    input{
+        margin-left: 150px;
+        width: 300px;
+        margin-top: 30px;
+    }
+    
+    .butt7{
+        display: flex;
+        margin-top: 30px;
+        justify-content: center;
+        font-size: 40px;
+
+        button{
+            border:none;
+            font-size: 20px;
+            background-color: #F25555;
+            color: white;
+            border-radius: 25px;
+            padding: 10px;
+            width: 110px;
+            cursor: pointer;
+        }
+    }
+  }
 
 
 
-
-
+.post{
+    margin-top: 20px;
+}
 
 
 
@@ -526,4 +745,20 @@ nav ul li.abas a{
     line-height: 40px;
     padding: 5px;
     padding-left: 0px;
+}
+
+.goo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.palito{
+    display: grid;
+    flex-wrap: wrap;
+    max-width: 400px;
+    justify-content: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 25px;
 }

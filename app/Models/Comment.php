@@ -31,7 +31,7 @@ class Comment extends Model {
     public static function update($request, $id) {
         array_unshift($request, $_SESSION['user']);
 
-        $sql = 'UPDATE users SET user_id = ?, commentable_type = ?, commentable_id = ?, message WHERE id = ?';
+        $sql = 'UPDATE comments SET user_id = ?, commentable_type = ?, commentable_id = ?, message = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
         
@@ -43,7 +43,7 @@ class Comment extends Model {
     }
 
     public static function delete($id) {
-        $sql = 'DELETE FROM users WHERE id = ?';
+        $sql = 'DELETE FROM comments WHERE id = ?';
         self::query($sql, [$id]);
         return [
             'status' => 'success',

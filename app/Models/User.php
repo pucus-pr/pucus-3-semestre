@@ -41,7 +41,7 @@ class User extends Model {
         return [
             'status' => 'success',
             'message' => 'Usuário atualizado com sucesso!',
-            'data' => null
+            'data' => $id
         ];
     }
 
@@ -58,5 +58,16 @@ class User extends Model {
     public static function where($column, $operator, $value) {
         $sql = "SELECT * FROM USERS WHERE $column $operator ?";
         return self::query($sql, [$value]);
+    }
+
+    public static function updateProfile($request, $id) {
+        $sql = "UPDATE users SET name = ?, identifier = ?, image = ? WHERE id = ?";
+        $request['id'] = $id;
+        $id = self::query($sql, $request);
+        return [
+            'status' => 'success',
+            'message' => 'Usuário atualizado com sucesso!',
+            'data' => $id
+        ];
     }
 }

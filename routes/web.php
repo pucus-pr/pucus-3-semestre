@@ -78,7 +78,11 @@ if (isset($_SESSION['user'])) {
     route('/api/establishments/{id}', [EstablishmentController::class, 'show'], 'GET');
 
     route('/api/photos', [PhotoController::class, 'create'], 'POST');
-    
+    route('/api/user', [UserController::class, 'getUser'], 'GET');
+    route('/api/get-posts-by-user-id', [PostController::class, 'getPostsByUserID'], 'GET');
+    route('/api/updateProfile/{id}', [UserController::class, 'updateProfile'], 'PUT');
+    route('/api/deletarAtual', [UserController::class, 'deletarAtual'], method: 'DELETE');
+
     if (User::find($_SESSION['user'])[0]['access_level'] >= 3) {
         // Rotas de tags apenas para admins
         route('/api/tags', [TagController::class, 'create'], 'POST');

@@ -27,4 +27,14 @@ class PostController {
     public function destroy($id) {
         return Post::delete($id);
     }
+
+    public function getPostsByUserID() {
+        $posts = Post::where('user_id', '=', $_SESSION['user']);
+
+        return [
+            'status' => 'success',
+            'message' => 'Posts retornados com sucesso',
+            'data' => $posts
+        ];
+    }
 }

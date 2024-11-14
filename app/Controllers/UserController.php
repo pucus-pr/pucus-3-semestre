@@ -10,7 +10,17 @@ class UserController {
     }
     
     public function show($id) {
-        return User::find($id);
+        $user = User::find($id)[0];
+        return [
+            'status' => 'success',
+            'message' => 'Usuário retornado com sucesso',
+            'data' => [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'identifier' => $user['identifier'],
+                'profilePicture' => $user['image']
+            ]
+        ];
     }
 
     public function create() {
@@ -26,5 +36,30 @@ class UserController {
 
     public function destroy($id) {
         return User::delete($id);
+    }
+
+    public function getUser() {
+        $user = User::find($_SESSION['user'])[0];
+        return [
+            'status' => 'success',
+            'message' => 'Usuário retornado com sucesso',
+            'data' => [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'identifier' => $user['identifier'],
+                'profilePicture' => $user['image']
+            ]
+        ];
+    }
+
+    public function updateProfile($id) {
+        $data = file_get_contents("php://input");
+        parse_str($data, $parsedData);
+
+        return User::updateProfile($parsedData, $id);
+    }
+
+    public function deletarAtual() {
+        User::delete($_SESSION['user']);
     }
 }

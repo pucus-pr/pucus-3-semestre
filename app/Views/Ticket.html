@@ -26,15 +26,9 @@
                             </a>
                         </li>
                         <li class="abas">
-                            <a href="./feed">
+                            <a href="./index">
                             <span class="icon"><i class="bi bi-backpack3"></i></span>
                             <span class="text">Feed</span>
-                            </a>
-                        </li>
-                        <li class="abas">
-                            <a href="./forum">
-                            <span class="icon"><i class="bi bi-book"></i></span>
-                            <span class="text">Forúm</span>
                             </a>
                         </li>
                         <li class="abas">
@@ -64,9 +58,13 @@
                 <img src="img/logo.png" alt="">
             </div>
                 <div class="WM">
-                    <div class="up">
-                        <p>Código do ticket</p>
+                    <div class="g55">
+                        <p>Digite sua matricula</p>
                         <input type="text" name="" id="">
+                    </div>
+                    <div class="doMeio">
+                        <p>Escolha o valor em R$</p>
+                        <input type="number">
                     </div>
                     <div class="doMeio">
                         <p>Escolha um método de pagamento</p>
@@ -80,19 +78,36 @@
                           
                         
                           
-                            <input type="radio" id="louie" name="drone" value="louie" />
+                            <input type="radio" id="pix" name="drone" value="louie" />
                             <label for="louie">Pix</label>
                     </div>
                     <div class="doMeio">
-                        <button>Pagar</button>
+                        <button onclick="validar()">Pagar</button>
                     </div>
                   </div>
+                  <Script>
+                    const validCard = true
+                    const pix = document.getElementById('pix')
+
+                    function validar(){
+                        if(validCard==false){
+                        alert("Número da matricula invalido")
+                    }
+                    else{
+                        pix.checked?qrcode():alert('nenhum cartão cadastrado')
+                    }
+                    }
+                  </Script>
+
+
+
+
 
             </div>
         </container>
         <container class="Right">
             <div class="pinto">
-                user@12345 | <i class="bi bi-gear-fill"></i>
+                <a href="perfil"><img src="./img/adan.png" alt=""></a>| <a href="config"><i class="bi bi-gear-fill"></i></a>
             </div>
             <h1>Comunicados</h1>
             <div class="comunic">
@@ -109,6 +124,8 @@
                     <button onclick=showPopup()>Criar discussão</button>
                 </div>
             </div>
-        </container>        
+        </container>
+        <script src="./scripts/scriptF.js"></script>
+        
 </body>
 </html>

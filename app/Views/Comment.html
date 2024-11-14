@@ -63,8 +63,8 @@
       <div class="logo">
         <img src="img/logo.png" alt="" />
       </div>
-      <div id="posts-c" class="WM">
-        <!-- <div class="post">
+      <div id="posts-c2" class="WM">
+        <div class="post">
           <div class="head_post">
             <div class="icon_post">
               <img src="img/adan.png" alt="taldo adan" />
@@ -85,7 +85,7 @@
           </script>
               <div id="edit"class="edit">
                 <button class="butti">
-                     <i class="bi bi-trash"></i>
+                    Deletar <i class="bi bi-trash"></i>
                 </button>
               </div>
             </div>
@@ -102,45 +102,11 @@
             <div class="likes_post">
               <i id="like" class="bi bi-hand-thumbs-up-fill jose"></i>
               <i id="deslike" class="bi bi-hand-thumbs-down-fill jose"></i>
-              <script>
-                const iconsmec = document.querySelectorAll('.jose');
               
-                iconsmec.forEach(iconr => {
-                  iconr.addEventListener('click', () => {
-                    iconr.addEventListener('click', () => {
-                    // Remove a classe "selecionado" de todos os ícones
-                    iconsmec.forEach(otherIcon => {
-                        otherIcon.classList.remove('selecionado');
-                    });
-
-                        // Adiciona ou remove a classe "selecionado" do ícone clicado
-                        if (!iconr.classList.contains('selecionado')) {
-                            iconr.classList.add('selecionado');
-                        } else {
-                            iconr.classList.remove('selecionado');
-                            }
-                            });
-                        });
-                    });
-              </script>
-            </div>
-            <div class="coment_post">
-              <a href="comment.html"><i id="cool" class="bi bi-chat-dots-fill"></i></a>
-            </div>
-            <div class="tags_post">
-              <i id="cool" class="bi bi-shield-fill-exclamation"></i>
-              <i id="cool" class="bi bi-exclamation-diamond-fill"></i>
-              <i id="cool" class="bi bi-backpack"></i>
-              <i id="cool" class="bi bi-bank2"></i>
-            </div>
-          </div>
-          
-        </div> -->
-      </div>
     </container>
     <container class="Right">
         <div class="pinto">
-            <a href="perfil"><img id="fotoDePerfilCuzinhoArthurMajorCorreiaPintoMexicano" src="./img/defaultProfilePicture.jpg" alt=""></a>| <a href="config"><i class="bi bi-gear-fill"></i></a>
+            <a href="/perfil"><img src="./img/adan.png" alt=""></a>| <i class="bi bi-gear-fill"></i>
         </div>
       <h1>Comunicados</h1>
       <div class="comunic">
@@ -153,23 +119,10 @@
       <div class="comunic">
         <img src="./img/images.png" alt=""><h1 class="meno">teste</h1>
       </div>
-      <div class="pucar">
-        <div class="1">
-          <button onclick="showPopup(popup2,overlay2)">
-            <i class="bi bi-image"></i>
-          </button>
-        </div>
-        <h1>|</h1>
-        <div class="2">
-          <button onclick="showPopup(popup,overlay)">
-            <i class="bi bi-pen"></i>
-          </button>
-        </div>
-      </div>
     </container>
     <div class="overlay">
       <!--trocar a divpop por <form>-->
-      <form id="pop" class="pop" method="post" onsubmit="return validate_form();">
+      <div id="pop" class="pop">
         <!--method="post"
         onsubmit="return validate_form();"-->
 
@@ -206,11 +159,11 @@
           </button>
         </div>
         <script src="./scripts/scripts.js"></script>
-      </form>
+      </div>
       <!--trocar por </form>-->
     </div>
     <div class="overlay2">
-      <form id="pop2" class="pop2" method="post">
+      <container id="pop2" class="pop2">
         <div class="up">
           <h1>Tire uma foto e faça um post instantanêo</h1>
           <br />
@@ -232,101 +185,111 @@
           <button onclick="closePopup(popup2,overlay2)">
             Fechar
           </button>
-          <script>
-            async function atualizarFotoPerfil() {
-              response = await fetch("/api/user");
-              user = await response.json();
-
-              document.getElementById("fotoDePerfilCuzinhoArthurMajorCorreiaPintoMexicano").src = user["data"]["profilePicture"];
-            }
-
-            atualizarFotoPerfil();
-
-            function showPopup(front, back) {
-              front.style.display = "block";
-              back.style.display = "block";
-              if (front == popup2) {
-                video = document.querySelector("video");
-                navigator.mediaDevices
-                  .getUserMedia({ video: true })
-                  .then((stream) => {
-                    video.srcObject = stream;
-                    video.play;
-                  })
-                  //alert("Não foi possível acessar a camera")
-                  .catch();
-              }
-            }
-
-            function createPost(post, user) {
-              const newinstPost = document.createElement("div");
-              newinstPost.classList.add("post");
-
-              newinstPost.innerHTML = `
-                <div class="head_post">
-                <div class="icon_post">
-                  <img src="${user['data']['profilePicture']}" />
-                </div>
-                <div class="txt_post">
-                  <h1>${user['data']['name']}</h1>
-                  <p>${post['created_at']}</p>
-                </div>
-              </div>
-              <div class="body_post">
-                <div class="txtBody">
-              <h1>${post['text']}</h1>
-            </div>
-            <div class="imgBody">
-               <img src="${post['image']}">
-            </div>
-              </div>
-              <div class="footer_post">
-                <div class="likes_post">
-                  <i id="cool" class="bi bi-hand-thumbs-up-fill"></i>
-                  <i id="cool" class="bi bi-hand-thumbs-down-fill"></i>
-                </div>
-                <div class="coment_post">
-                    <a href="/comment"><i id="cool" class="bi bi-chat-dots-fill"></i></a>
-                  </div>
-                <div class="tags_post">
-                    </div>
-              </div>
-                `;
-                return newinstPost;
-            }
-
-            async function renderPosts() {
-              response = await fetch("/api/posts");
-              posts = await response.json();
-
-              console.log(posts); 
-
-              posts.forEach(post => {
-                async function xd() {
-                  id = post['user_id'];
-
-                  userResponse = await fetch(`/api/users/${id}`);
-                  user = await userResponse.json();
-
-                  postElement = createPost(post, user);
-                  postsContainer.appendChild(postElement);
-                }
-                xd();
-              });
-            }
-
-            renderPosts();
-
-            function validate_form() {
-              form = document.getElementById('pop');
-
-
-              return false;
-            }
-          </script>
         </div>
-      </form>
+      </container>
     </div>
       <script src="scripts/scriptF.js"></script>
+      <script>
+        const iconsmec = document.querySelectorAll('.jose');
+      
+        iconsmec.forEach(iconr => {
+          iconr.addEventListener('click', () => {
+            iconr.addEventListener('click', () => {
+            // Remove a classe "selecionado" de todos os ícones
+            iconsmec.forEach(otherIcon => {
+                otherIcon.classList.remove('selecionado');
+            });
+
+                // Adiciona ou remove a classe "selecionado" do ícone clicado
+                if (!iconr.classList.contains('selecionado')) {
+                    iconr.classList.add('selecionado');
+                } else {
+                    iconr.classList.remove('selecionado');
+                    }
+                    });
+                });
+            });
+      </script>
+    </div>
+    <div class="inputcom">
+        <input style="width: 250px; border-radius: 25px; border-style: none; border: grey solid 2px" id="comentario" type="text">
+        
+    </div>
+    <div class="coment_post">
+      <button id="coco" style="border: none; background: none;"><i id="cool" class="bi bi-chat-dots-fill"></i></button>
+    </div>
+    
+  </div>
+  
+</div>
+</div>
+<script>
+const pendente2 = false;
+const status2 = document.getElementById("sacu")
+if (pendente2==true){
+    status2.textContent = "pendente"
+}else{
+    status2.textContent = "concluído"
+}
+</script>
+<script>
+
+const ascionar = document.getElementById("coco")
+
+ ascionar.addEventListener('click', ()=>{
+    console.log("asdasdas")
+    const textconcon = document.getElementById("comentario").value;
+    if (textconcon.trim() !== '') {
+    
+        const newconcon = document.createElement("div");
+        newconcon.classList.add("post")
+        
+        const lugar = document.getElementById("posts-c2")
+        newconcon.innerHTML = `
+    <div class="head_post">
+        <div class="icon_post">
+        <img src="img/adan.png" alt="taldo adan" />
+        </div>
+        <div class="txt_post">
+        <h1>User@129839012</h1>
+        <p>12/02/2024 | 15:15 
+        <p id="sacu"></p>
+        </p>
+        <div id="edit"class="edit">
+            <button class="butti">
+                Deletar <i class="bi bi-trash"></i>
+            </button>
+        </div>
+        </div>
+    </div>
+    <div class="body_post">
+        <div class="txtBody">
+        <h1>${textconcon}</h1>
+        </div>
+        <div class="imgBody">
+        </div>
+    </div>
+    <div class="footer_post">
+        <div class="likes_post">
+        <i id="like" class="bi bi-hand-thumbs-up-fill jose"></i>
+        <i id="deslike" class="bi bi-hand-thumbs-down-fill jose"></i>
+        </div>
+        
+    </div>
+    `;
+
+    lugar.appendChild(newconcon);
+    textconcon = ""
+
+    // Limpe o campo de input após o comentário
+    document.getElementById('comentario').value = '';
+    } else {
+    alert('Digite algo no campo de comentário.');
+}
+
+});
+
+
+</script>
   </body>
 </html>
