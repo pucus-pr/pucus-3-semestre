@@ -42,9 +42,7 @@ postButton.addEventListener("click", () => {
   newPost.classList.add("post");
   
   const tenis = false
-  const imageUrl = imageUpload.files[0]
-  ? URL.createObjectURL(imageUpload.files[0])
-  : "";
+  
 
   newPost.innerHTML = `
             <div class="head_post">
