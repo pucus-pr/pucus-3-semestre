@@ -2,7 +2,7 @@
 
 use App\Models\Model;
 
-require_once __DIR__ . '\..\app\Models\Model.php';
+require_once __DIR__ . '/../app/Models/Model.php';
 
 $migrationPath = __DIR__ . '/migrations';
 
