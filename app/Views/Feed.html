@@ -85,7 +85,7 @@
           </script>
               <div id="edit"class="edit">
                 <button class="butti">
-                    Deletar <i class="bi bi-trash"></i>
+                     <i class="bi bi-trash"></i>
                 </button>
               </div>
             </div>
@@ -140,7 +140,7 @@
     </container>
     <container class="Right">
         <div class="pinto">
-            <a href="perfil"><img src="./img/adan.png" alt=""></a>| <a href="config"><i class="bi bi-gear-fill"></i></a>
+            <a href="perfil"><img id="fotoDePerfilCuzinhoArthurMajorCorreiaPintoMexicano" src="./img/defaultProfilePicture.jpg" alt=""></a>| <a href="config"><i class="bi bi-gear-fill"></i></a>
         </div>
       <h1>Comunicados</h1>
       <div class="comunic">
@@ -210,7 +210,7 @@
       <!--trocar por </form>-->
     </div>
     <div class="overlay2">
-      <container id="pop2" class="pop2">
+      <form id="pop2" class="pop2" method="post">
         <div class="up">
           <h1>Tire uma foto e faça um post instantanêo</h1>
           <br />
@@ -233,59 +233,99 @@
             Fechar
           </button>
           <script>
-            
+            async function atualizarFotoPerfil() {
+              response = await fetch("/api/user");
+              user = await response.json();
 
-            function fodase() {
-              const postar = document.getElementById("takepic");
+              document.getElementById("fotoDePerfilCuzinhoArthurMajorCorreiaPintoMexicano").src = user["data"]["profilePicture"];
+            }
+
+            atualizarFotoPerfil();
+
+            function showPopup(front, back) {
+              front.style.display = "block";
+              back.style.display = "block";
+              if (front == popup2) {
+                video = document.querySelector("video");
+                navigator.mediaDevices
+                  .getUserMedia({ video: true })
+                  .then((stream) => {
+                    video.srcObject = stream;
+                    video.play;
+                  })
+                  //alert("Não foi possível acessar a camera")
+                  .catch();
+              }
+            }
+
+            function createPost(post, user) {
               const newinstPost = document.createElement("div");
               newinstPost.classList.add("post");
 
               newinstPost.innerHTML = `
-          <div class="head_post">
-          <div class="icon_post">
-            <img src="img/adan.png" alt="taldo adan" />
-          </div>
-          <div class="txt_post">
-            <h1>User@129839012</h1>
-            <p>12/02/2024 | 15:15</p>
-          </div>
-        </div>
-        <div class="body_post">
-          <div class="imgBody">
-              <canvas class = "sexo"></canvas>
-          </div>
-        </div>
-        <div class="footer_post">
-          <div class="likes_post">
-            <i id="cool" class="bi bi-hand-thumbs-up-fill"></i>
-            <i id="cool" class="bi bi-hand-thumbs-down-fill"></i>
-          </div>
-          <div class="coment_post">
-              <a href="/comment"><i id="cool" class="bi bi-chat-dots-fill"></i></a>
-            </div>
-          <div class="tags_post">
-              ${selectedReactions
-                .map((reaction) => `<i class="bi ${reaction}"></i>`)
-                .join("")}
+                <div class="head_post">
+                <div class="icon_post">
+                  <img src="${user['data']['profilePicture']}" />
+                </div>
+                <div class="txt_post">
+                  <h1>${user['data']['name']}</h1>
+                  <p>${post['created_at']}</p>
+                </div>
               </div>
-        </div>
-          `;
-              postsContainer.appendChild(newinstPost);
-                const canvas = document.querySelector("canvas")
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                var ft = canvas.getContext('2d');
-                ft.drawImage(video,0,0);
-                
-              // Limpar os campos e o array de reações após o post
+              <div class="body_post">
+                <div class="txtBody">
+              <h1>${post['text']}</h1>
+            </div>
+            <div class="imgBody">
+               <img src="${post['image']}">
+            </div>
+              </div>
+              <div class="footer_post">
+                <div class="likes_post">
+                  <i id="cool" class="bi bi-hand-thumbs-up-fill"></i>
+                  <i id="cool" class="bi bi-hand-thumbs-down-fill"></i>
+                </div>
+                <div class="coment_post">
+                    <a href="/comment"><i id="cool" class="bi bi-chat-dots-fill"></i></a>
+                  </div>
+                <div class="tags_post">
+                    </div>
+              </div>
+                `;
+                return newinstPost;
+            }
 
-              canvas = "";
-              selectedReactions = [];
-              resetReactionColors();
+            async function renderPosts() {
+              response = await fetch("/api/posts");
+              posts = await response.json();
+
+              console.log(posts); 
+
+              posts.forEach(post => {
+                async function xd() {
+                  id = post['user_id'];
+
+                  userResponse = await fetch(`/api/users/${id}`);
+                  user = await userResponse.json();
+
+                  postElement = createPost(post, user);
+                  postsContainer.appendChild(postElement);
+                }
+                xd();
+              });
+            }
+
+            renderPosts();
+
+            function validate_form() {
+              form = document.getElementById('pop');
+
+
+              return false;
             }
           </script>
         </div>
-      </container>
+      </form>
     </div>
       <script src="scripts/scriptF.js"></script>
   </body>

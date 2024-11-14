@@ -49,7 +49,14 @@
           <input type="file" id="image" name="image" accept="image/*" />
 
           <button class="button" type="submit">Salvar</button>
+
         </form>
+        <button class="button" onclick="deletarConta();">Deletar conta</button>
+        <div class="overlay4">
+          <div id="pop4" class="pop4">
+              
+          </div>
+      </div>
       </div>
     </main>
     <script>
@@ -60,6 +67,12 @@
         document.getElementById("nome").textContent = user["data"]["name"];
         document.getElementById("profilePicture").src = user["data"]["profilePicture"];
         document.getElementById("biografia").textContent = user["data"]["identifier"];
+      }
+
+      function deletarConta() {
+        fetch(`/api/deletarAtual`, {
+          method: 'DELETE'
+        });
       }
 
       getUser();
@@ -92,5 +105,7 @@
         return false;
       }
     </script>
+    <script src="./scripts/scriptF.js"></script>
+    <script src="./scripts/script.js"></script>
   </body>
 </html>

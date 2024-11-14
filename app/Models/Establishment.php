@@ -41,7 +41,7 @@ class Establishment extends Model {
         self::query($sql, [$id]);
         return [
             'status' => 'success',
-            'message' => 'Usuário deletado com sucesso!',
+            'message' => 'Estabelecimento deletado com sucesso!',
             'data' => null
         ];
     }

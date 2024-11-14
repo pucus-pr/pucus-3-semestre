@@ -436,6 +436,29 @@ nav{
         width: 600px;
     }
 }
+.pop4 {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 999;
+
+    width: 600px;
+    height: 200px;
+    border-radius: 25px;
+
+    box-shadow: rgb(58, 28, 29) 15px 20px 30px 0.5px;
+
+    .up{
+        display: flex;
+        justify-content: center;
+        width: 600px;
+    }
+}
 
 .mapa{
     width: 645px;
@@ -585,6 +608,7 @@ nav{
         width: 300px;
         margin-top: 30px;
     }
+    
     .butt7{
         display: flex;
         margin-top: 30px;
@@ -723,3 +747,18 @@ nav ul li.abas a{
     padding-left: 0px;
 }
 
+.goo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.palito{
+    display: grid;
+    flex-wrap: wrap;
+    max-width: 400px;
+    justify-content: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 25px;
+}

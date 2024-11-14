@@ -81,6 +81,7 @@ if (isset($_SESSION['user'])) {
     route('/api/user', [UserController::class, 'getUser'], 'GET');
     route('/api/get-posts-by-user-id', [PostController::class, 'getPostsByUserID'], 'GET');
     route('/api/updateProfile/{id}', [UserController::class, 'updateProfile'], 'PUT');
+    route('/api/deletarAtual', [UserController::class, 'deletarAtual'], method: 'DELETE');
 
     if (User::find($_SESSION['user'])[0]['access_level'] >= 3) {
         // Rotas de tags apenas para admins

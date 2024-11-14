@@ -4,22 +4,10 @@ const popup2 = document.getElementById("pop2");
 const overlay2 = document.querySelector(".overlay2");
 const popup3 = document.getElementById("pop3");
 const overlay3 = document.querySelector(".overlay3");
+const popup4 = document.getElementById("pop4");
+const overlay4 = document.querySelector(".overlay4");
 
-function showPopup(front, back) {
-  front.style.display = "block";
-  back.style.display = "block";
-  if (front == popup2) {
-    video = document.querySelector("video");
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        video.srcObject = stream;
-        video.play;
-      })
-      //alert("Não foi possível acessar a camera")
-      .catch();
-  }
-}
+
 function closePopup(front, back) {
   front.style.display = "none";
   back.style.display = "none";
