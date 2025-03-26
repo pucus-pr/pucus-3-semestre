@@ -16,41 +16,59 @@
             <div class="whiteNav">
                 <nav>
                     <div class="icon2">
-                        <a href="#"><i class="bi bi-arrow-bar-right" id="exp"></i></a>
+                      <a href="#"><i class="bi bi-arrow-bar-right" id="exp"></i></a>
                     </div>
                     <ul>
-                        <li class="abas">
-                            <a href="./home">
-                            <span class="icon"><i class="bi bi-house-fill"></i></span>
-                            <span class="text">Home</span>
-                            </a>
-                        </li>
-                        <li class="abas">
-                            <a href="./feed">
-                            <span class="icon"><i class="bi bi-backpack3"></i></span>
-                            <span class="text">Feed</span>
-                            </a>
-                        </li>
-                        <li class="abas">
-                            <a href="./estabelecimento">
-                            <span class="icon"><i class="bi bi-buildings-fill"></i></span>
-                            <span class="text">Estabelecimentos</span>
-                            </a>
-                        </li>
-                        <li class="abas">
-                            <a href="./ticket">
-                            <span class="icon"><i class="bi bi-car-front-fill"></i></span>
-                            <span class="text">Tickets</span>
-                            </a>
-                        </li>
-                        <li class="abas">
-                            <a href="./comunicados">
-                            <span class="icon"><i class="bi bi-award-fill"></i></span>
-                            <span class="text">Comunicados</span>
-                            </a>
-                        </li>
+                      <li class="abas">
+                        <a href="./home">
+                          <span class="icon"><i class="bi bi-house-fill"></i></span>
+                          <span class="text">Home</span>
+                        </a>
+                      </li>
+                      <li class="abas">
+                        <a href="./feed">
+                          <span class="icon"><i class="bi bi-backpack3"></i></span>
+                          <span class="text">Feed</span>
+                        </a>
+                      </li>
+                      <li class="abas">
+                        <a href="./ticket">
+                          <span class="icon"><i class="bi bi-car-front-fill"></i></span>
+                          <span class="text">Tickets</span>
+                        </a>
+                      </li>
+                      <li class="abas">
+                        <a href="/tags">
+                          <span class="icon"><i class="bi bi-bookmark-check-fill"></i></span>
+                          <span class="text">Tags</span>
+                        </a>
+                      </li>
+                      <li class="abas">
+                        <a href="/posts">
+                          <span class="icon"><i class="bi bi-file-earmark-post-fill"></i></span>
+                          <span class="text">Posts</span>
+                        </a>
+                      </li>
+                      <li class="abas">
+                        <a href="/comments">
+                          <span class="icon"><i class="bi bi-chat-dots-fill"></i></span>
+                          <span class="text">Comentarios</span>
+                        </a>
+                      </li>
+                      <li class="abas">
+                        <a href="/estabelecimentos">
+                          <span class="icon"><i class="bi bi-building-fill-exclamation"></i></span>
+                          <span class="text">Estabelecimentos</span>
+                        </a>
+                      </li>
+                      <li class="abas">
+                        <a href="/reactions">
+                          <span class="icon"><i class="bi bi-emoji-dizzy"></i></span>
+                          <span class="text">Reações</span>
+                        </a>
+                      </li>
                     </ul>
-                </nav>
+                  </nav>
             </div>
         </container>
         <container class="Mid">
@@ -75,7 +93,7 @@
         </container>
         <container class="Right">
             <div class="pinto">
-                <a href="perfil"><img src="./img/adan.png" alt=""></a>| <a href="config"><i class="bi bi-gear-fill"></i></a>
+                <a href="perfil"><img id="fotoDePerfilInsana" src="./img/adan.png" alt=""></a>| <a href="config"><i class="bi bi-gear-fill"></i></a>
             </div>
             <h1>Comunicados</h1>
             <div class="comunic">
@@ -96,5 +114,15 @@
         </container>       
         <script src="./scripts/scriptF.js"></script>
  
+        <script>
+            async function atualizarFotoPerfil() {
+              response = await fetch("/api/user");
+              user = await response.json();
+
+              document.getElementById("fotoDePerfilInsana").src = user["data"]["profilePicture"];
+            }
+
+            atualizarFotoPerfil();
+        </script>
 </body>
 </html>

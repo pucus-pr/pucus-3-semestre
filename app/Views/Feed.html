@@ -38,21 +38,39 @@
               </a>
             </li>
             <li class="abas">
-              <a href="./estabelecimento">
-                <span class="icon"><i class="bi bi-buildings-fill"></i></span>
-                <span class="text">Estabelecimentos</span>
-              </a>
-            </li>
-            <li class="abas">
               <a href="./ticket">
                 <span class="icon"><i class="bi bi-car-front-fill"></i></span>
                 <span class="text">Tickets</span>
               </a>
             </li>
             <li class="abas">
-              <a href="./comunicados">
-                <span class="icon"><i class="bi bi-award-fill"></i></span>
-                <span class="text">Comunicados</span>
+              <a href="/tags">
+                <span class="icon"><i class="bi bi-bookmark-check-fill"></i></span>
+                <span class="text">Tags</span>
+              </a>
+            </li>
+            <li class="abas">
+              <a href="/posts">
+                <span class="icon"><i class="bi bi-file-earmark-post-fill"></i></span>
+                <span class="text">Posts</span>
+              </a>
+            </li>
+            <li class="abas">
+              <a href="/comments">
+                <span class="icon"><i class="bi bi-chat-dots-fill"></i></span>
+                <span class="text">Comentarios</span>
+              </a>
+            </li>
+            <li class="abas">
+              <a href="/estabelecimentos">
+                <span class="icon"><i class="bi bi-building-fill-exclamation"></i></span>
+                <span class="text">Estabelecimentos</span>
+              </a>
+            </li>
+            <li class="abas">
+              <a href="/reactions">
+                <span class="icon"><i class="bi bi-emoji-dizzy"></i></span>
+                <span class="text">Reações</span>
               </a>
             </li>
           </ul>
@@ -153,6 +171,7 @@
       <div class="comunic">
         <img src="./img/images.png" alt=""><h1 class="meno">teste</h1>
       </div>
+    </a>
       <div class="pucar">
         <div class="1">
           <button onclick="showPopup(popup2,overlay2)">
@@ -166,47 +185,52 @@
           </button>
         </div>
       </div>
+      <div class="comunic">
+        <a href="./posts">
+
+            <h1>+</h1>
+            </a>
+      </div>
     </container>
-    <div class="overlay">
-      <!--trocar a divpop por <form>-->
-      <form id="pop" class="pop" method="post" onsubmit="return validate_form();">
-        <!--method="post"
-        onsubmit="return validate_form();"-->
+   
+  <div class="overlay">
+    <form id="pop" class="pop" method="post" onsubmit="return createTag();">
+      <container class="up">
+        <h1>Fazer postagem</h1>
+      </container>
+      <container class="chose">
+        <div class="write inputs">
+          <label for="createNome">Texto</label>
+          <input type="text" id="createNome" name="text" required>
+        </div>
+      </container>
+      <container class="chose">
+        <div class="write inputs">
+          <label for="createNome">Tipo</label>
+          <input type="text" id="createNome" name="type" required>
+        </div>
+      </container>
 
-        <container class="up">
-          <h1>Fazer postagem</h1>
-        </container>
-        <container class="chose">
-          <div class="write">
-            <input type="text" id="post-text" />
-          </div>
-        </container>
-
-        <div class="imgs">
-          <div class="porft">
-            <label for="image-upload"><i class="bi bi-image"></i></label>
-            <input type="file" id="image-upload" style="display: none" />
-          </div>
+      <div class="imgs">
+        <div class="porft inputs">
+          <label for="createNome">I</label>
+          <input type="text" id="createNome" name="image" required>
         </div>
-        <p>Selecione as tags desejadas</p>
-        <div class="iconst">
-          <i id="i1" class="bi bi-shield-fill-exclamation iconT"></i>
-          <i id="i2" class="bi bi-exclamation-diamond-fill iconT"></i>
-          <i id="i3" class="bi bi-backpack iconT"></i>
-          <i id="i4" class="bi bi-bank2 iconT"></i>
-        </div>
-        <div class="buttonF">
-          <button onclick="closePopup(popup,overlay)">FECHAR</button>
-          <button
-            id="post-button"
-            type="submit"
-            onclick="closePopup(popup,overlay)"
-          >
-            POSTAR
-          </button>
-        </div>
-        <script src="./scripts/scripts.js"></script>
-      </form>
+      </div>
+      <p>Selecione as tags desejadas</p>
+      <div class="iconst">
+        <i id="i1" class="bi bi-shield-fill-exclamation iconT"></i>
+        <i id="i2" class="bi bi-exclamation-diamond-fill iconT"></i>
+        <i id="i3" class="bi bi-backpack iconT"></i>
+        <i id="i4" class="bi bi-bank2 iconT"></i>
+      </div>
+      <div class="buttonF">
+        <button onclick="closePopup(popup,overlay)">FECHAR</button>
+        <button class="button" type="submit" id="post-button" onclick="closePopup(popup,overlay)">Postar</button>
+      </div>
+    </form>
+    <script src="./scripts/scripts.js"></script>
+  </div>
       <!--trocar por </form>-->
     </div>
     <div class="overlay2">
@@ -261,6 +285,7 @@
             function createPost(post, user) {
               const newinstPost = document.createElement("div");
               newinstPost.classList.add("post");
+              
 
               newinstPost.innerHTML = `
                 <div class="head_post">
@@ -318,10 +343,20 @@
             renderPosts();
 
             function validate_form() {
-              form = document.getElementById('pop');
-
-
               return false;
+            }
+
+            async function createTag() {
+                const form = new FormData(document.getElementById("pop"));
+                form.append('tags[0]', '1');
+
+                const response = await fetch('/api/posts', {
+                    method: 'POST',
+                    body: form
+                });
+    
+                const data = await response.json();
+                return false;
             }
           </script>
         </div>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 *{
     padding: 0;
@@ -28,7 +28,7 @@ body{
 
 
 nav{
-    margin-top: 10px;
+    margin-top: 0px;
 }
 
 .Navs{
@@ -468,7 +468,7 @@ nav{
     border: solid 2px grey;
     width: 400px;
     display: flex;
-    height: 200px;
+    height: 60px;
     border-radius: 25px;
     margin: 30px;
     margin-top: 40px;
@@ -480,18 +480,18 @@ nav{
         input{
             padding: 2px;
             width: 380px;
-            height: 180px;
-            border: none;
+            border: solid 2px grey;
             text-align: start;
             text-justify: start;
             vertical-align: top;
             text-wrap: wrap;
+            border-radius: 25px;
         }
     }
 }
 .porft{
     border: solid 2px grey;
-    width: 100px;
+    width: 300px;
     display: flex;
     height: 100px;
     border-radius: 25px;
@@ -712,9 +712,24 @@ nav{
 
 
 
+
+.voltar a{
+
+    display: flex;
+    background-color: white;
+    border-radius: 25px;
+    border-style: none;
+    padding: 10px;
+    margin: 10px;
+    text-decoration: none;
+}
+
+
+
+
 nav #exp{
     font-size: 22px;
-    margin-top: 30px;
+    margin-top: 10px;
     margin-left: 18px;
     color: rgb(0, 0, 0);
     cursor: pointer;
@@ -724,7 +739,7 @@ nav ul{
     height: 100%;
     list-style-type: none;
     margin-left: 20px;
-    margin-top: 30px;
+    margin-top: 0px;
 }
 
 
