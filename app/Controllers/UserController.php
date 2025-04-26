@@ -60,14 +60,13 @@ class UserController {
     }
 
     public function deletarAtual() {
-        User::delete($_SESSION['user']);
-
         if (isset($_SESSION['user'])) {
+            User::delete($_SESSION['user']);
             session_unset();
             session_destroy();
             return [
                 'status' => 'success',
-                'message' => 'Usuário deslogado com sucesso!',
+                'message' => 'Usuário deletado e sessão encerrada com sucesso!',
                 'data' => null
             ];
         } else {
@@ -80,14 +79,34 @@ class UserController {
     }
 
     public function createImage() {
-        $imageDir = __DIR__ . '/../../public/img/';
-        $imageName = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $imagePath = $imageDir . $imageName;
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $imageDir = __DIR__ . '/../../public/img/';
+            if (!is_dir($imageDir)) {
+                mkdir($imageDir, 0755, true); // Cria o diretório se não existir
+            }
+            
+            $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $imageName = uniqid('profile_', true) . '.' . $extension;
+            $imagePath = $imageDir . $imageName;
 
-        move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
+            move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
 
-        $_POST['image'] = $imagePath;
+            $relativePath = '/img/' . $imageName; // Caminho relativo para salvar no banco
 
-        User::create($_POST);
+            // Atualiza a imagem do usuário logado
+            User::updateProfile(['image' => $relativePath], $_SESSION['user']);
+
+            return [
+                'status' => 'success',
+                'message' => 'Imagem atualizada com sucesso!',
+                'data' => $relativePath
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Erro ao fazer upload da imagem!',
+                'data' => null
+            ];
+        }
     }
 }
