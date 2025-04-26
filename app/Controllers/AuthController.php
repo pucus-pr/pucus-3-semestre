@@ -35,6 +35,7 @@ class AuthController {
                     'status' => 'success',
                     'message' => 'Usuário logado com sucesso!',
                     'data' => null
+     
                 ];
             } else {
                 return [
