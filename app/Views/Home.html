@@ -75,12 +75,29 @@
             
             <!-- Opções adicionais -->
             <div id="moreOptions" style="display: none;">
-                <label for="postTheme">Escolha um tema:</label>
-                <select id="postTheme">
-                    <option value="tema1">Tema 1</option>
-                    <option value="tema2">Tema 2</option>
-                    <option value="tema3">Tema 3</option>
-                </select>
+                <label>Escolha um ou mais temas:</label>
+                <div class="themes">
+                    <label class="themeOption">
+                        <input type="checkbox" name="postTheme[]" value="tema1">
+                        Segurança
+                    </label>
+                    <label class="themeOption">
+                        <input type="checkbox" name="postTheme[]" value="tema2">
+                        TI
+                    </label>
+                    <label class="themeOption">
+                        <input type="checkbox" name="postTheme[]" value="tema3">
+                        Limpeza
+                    </label>
+                    <label class="themeOption">
+                        <input type="checkbox" name="postTheme[]" value="tema4">
+                        Estrutura
+                    </label>
+                    <label class="themeOption">
+                        <input type="checkbox" name="postTheme[]" value="tema5">
+                        Alerta Geral
+                    </label>
+                </div>
             </div>
             
             <!-- Botão principal de postar -->
@@ -89,7 +106,7 @@
     </div>
 
     <!-- Exemplo de um post existente -->
-                                <div class="post">
+                                <!-- <div class="post">
                                     <div class="postHeader">
                                         <div class="postIcon">
                                             <img src="img/adan.png" width="70px" alt="Foto de Perfil">
@@ -120,7 +137,7 @@
                                             <i class="bi bi-arrow-down"></i>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
 </section>
 

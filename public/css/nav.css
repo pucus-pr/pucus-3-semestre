@@ -449,3 +449,33 @@ nav ul li a:hover:before {
 .postFooter button:hover {
     background-color: #2980b9;
 }
+
+
+.themes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.themeOption {
+    background: #eee;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+    user-select: none;
+}
+
+.themeOption:hover {
+    background: #ddd;
+}
+
+.themeOption input[type="checkbox"] {
+    accent-color: #007bff; /* cor do quadradinho */
+    width: 18px;
+    height: 18px;
+}
