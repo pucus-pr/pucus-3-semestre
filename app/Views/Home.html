@@ -26,10 +26,9 @@
             <img alt="Logo" src="img/polvo.png">
         </li>
         <li><a href="#"><i class="fa fa-home"></i> home</a></li>
-        <li><a href="#"><i class="fa fa-book"></i> uhhhhh</a></li>
-        <li><a href="#"><i class="fa fa-users"></i> uuhhhhssdaaa</a></li>
-        <li><a href="#"><i class="fa fa-picture-o"></i> .....a.aaa</a></li>
-        <li><a href="#"><i class="fa fa-phone"></i> alkscnaaaa</a></li>
+        <li><a href="#"><i class="fa fa-book"></i> placeholder</a></li>
+        <li><a href="#"><i class="fa fa-users"></i> placeholder</a></li>
+        <li><a href="perfil"><i class="fa fa-phone"></i> configuração</a></li>
     </ul>
 </nav>
 
@@ -90,38 +89,38 @@
     </div>
 
     <!-- Exemplo de um post existente -->
-    <div class="post">
-        <div class="postHeader">
-            <div class="postIcon">
-                <img src="img/adan.png" width="70px" alt="Foto de Perfil">
-            </div>
-            <div class="postNnD">
-                <h1>Arthur Sales Major</h1>
-                <p>12/02/2025</p>
-            </div>
-        </div>
-        <div class="postDescription">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit beatae magnam ab delectus!</p>
-        </div>
-        <div class="postmid">
-            <img src="img/adan.png" alt="">
-        </div>
-        <div class="postBot">
-            <div class="upVolt">
-                <i class="bi bi-arrow-up"></i>
-            </div>
-            <div class="tags">
-                <button class="escudo"><i class="bi bi-shield-fill-exclamation"></i></button>
-                <button class="compt"><i class="bi bi-pc-display-horizontal"></i></button>
-                <button class="estrela"><i class="bi bi-stars"></i></button>
-                <button class="predio"><i class="bi bi-building-fill"></i></button>
-                <button class="triangle"><i class="bi bi-exclamation-triangle-fill"></i></button>
-            </div>
-            <div class="downVolt">
-                <i class="bi bi-arrow-down"></i>
-            </div>
-        </div>
-    </div>
+                                <div class="post">
+                                    <div class="postHeader">
+                                        <div class="postIcon">
+                                            <img src="img/adan.png" width="70px" alt="Foto de Perfil">
+                                        </div>
+                                        <div class="postNnD">
+                                            <h1>Arthur Sales Major</h1>
+                                            <p>12/02/2025</p>
+                                        </div>
+                                    </div>
+                                    <div class="postDescription">
+                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit beatae magnam ab delectus!</p>
+                                    </div>
+                                    <div class="postmid">
+                                        <img src="img/adan.png" alt="">
+                                    </div>
+                                    <div class="postBot">
+                                        <div class="upVolt">
+                                            <i class="bi bi-arrow-up"></i>
+                                        </div>
+                                        <div class="tags">
+                                            <button class="escudo"><i class="bi bi-shield-fill-exclamation"></i></button>
+                                            <button class="compt"><i class="bi bi-pc-display-horizontal"></i></button>
+                                            <button class="estrela"><i class="bi bi-stars"></i></button>
+                                            <button class="predio"><i class="bi bi-building-fill"></i></button>
+                                            <button class="triangle"><i class="bi bi-exclamation-triangle-fill"></i></button>
+                                        </div>
+                                        <div class="downVolt">
+                                            <i class="bi bi-arrow-down"></i>
+                                        </div>
+                                    </div>
+                                </div>
 
 </section>
 
@@ -151,7 +150,7 @@
         // Data atual para o post
         const now = new Date();
         const postDate = document.getElementById('postDate');
-        postDate.textContent = ${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()};
+        postDate.textContent = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}`;
 
         // Mostrar/ocultar novo post
         addPostBtn.addEventListener('click', function() {
