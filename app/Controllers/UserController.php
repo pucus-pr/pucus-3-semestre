@@ -82,7 +82,7 @@ class UserController {
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $imageDir = __DIR__ . '/../../public/img/';
             if (!is_dir($imageDir)) {
-                mkdir($imageDir, 0755, true); // Cria o diretório se não existir
+                mkdir($imageDir, 0755, true); 
             }
             
             $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
@@ -91,9 +91,8 @@ class UserController {
 
             move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
 
-            $relativePath = '/img/' . $imageName; // Caminho relativo para salvar no banco
+            $relativePath = '/img/' . $imageName; 
 
-            // Atualiza a imagem do usuário logado
             User::updateProfile(['image' => $relativePath], $_SESSION['user']);
 
             return [
