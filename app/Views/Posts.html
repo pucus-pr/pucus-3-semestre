@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments</title>
+    <link rel="stylesheet" href="./css/generalStyle.css">
+</head>
+<body>
+    <div class="goo">
+        <div class="voltar">
+            <a href="/Feed">Voltar</a>
+        </div>
+        <div class="palito">
+        <h2>Editar Post</h2>
+        <form id="editTagForm" method="post" onsubmit="return editTag();">
+            <div class="inputs">
+                <label for="createNome">Texto</label>
+                <input type="text" id="createNome" name="text" required>
+              </div>
+              <div class="inputs">
+                  <label for="createNome">Tipo</label>
+                  <input type="text" id="createNome" name="type" required>
+                </div>
+                <div class="inputs">
+                  <label for="createNome">Imagem</label>
+                  <input type="text" id="createNome" name="image" required>
+                </div>
+                <div class="inputs">
+                    <label for="createNome">ID</label>
+                    <input type="text" id="createNome" name="id" required>
+                  </div>
+            <button class="button" type="submit">Confirmar Edição</button>
+        </form>
+        
+        <br><br>
+    
+        <h2>Excluir Post</h2>
+        <form id="deleteTagForm" method="post" onsubmit="return removeTag();">
+            <div class="inputs">
+                <label for="deleteId">ID</label>
+                <input type="text" id="deleteId" name="id" required>
+            </div>
+            <button class="button" type="submit">Confirmar Exclusão</button>
+        </form>
+
+        <script>
+            async function createTag() {
+                const form = new FormData(document.getElementById("createTagForm"));
+                form.append('tags[0]', '1');
+
+                const response = await fetch('/api/posts', {
+                    method: 'POST',
+                    body: form
+                });
+    
+                const data = await response.json();
+                alert(data.message);
+                return false;
+            }
+    
+            async function editTag() {
+                const form = new FormData(document.getElementById("editTagForm"));
+                const id = form.get('id');
+                const formData = new URLSearchParams(form);
+    
+                const response = await fetch(`/api/posts/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+                alert(data.message);
+                return false;
+            }
+    
+            async function removeTag() {
+                const form = new FormData(document.getElementById("deleteTagForm"));
+                const id = form.get('id');
+    
+                const response = await fetch(`/api/posts/${id}`, {
+                    method: 'DELETE'
+                });
+    
+                const data = await response.json();
+                alert(data.message);
+                return false;
+            }
+        </script>
+        </div>
+    </div>
+</body>
+</html>

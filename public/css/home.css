@@ -1,0 +1,65 @@
+.midias{
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+
+    .post{
+        background-color: white;
+        border-radius: 20px;
+        padding: 30px;
+
+        display: flex;
+        flex-wrap: wrap;
+        width: 600px;
+
+
+        .select{
+            width: 100%;
+            display: flex;
+            justify-content: end;
+        }
+        .postHeader{
+            width: 100%;
+            flex-wrap: wrap;
+            display: flex;
+            .postIcon{
+                width: 20%;
+                img{
+                    border-radius: 50%;
+                }
+            }
+            .postNnD{
+                width: 70%;
+            }
+            .postDescription{
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        .postmid{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img{
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+        .postBot{
+            margin-top: 10px;
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+
+            .tags{
+                display: flex;
+                gap: 20px;
+            }
+        }
+    }
+
+    
+}
+

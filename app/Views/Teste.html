@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exibir Posts</title>
+</head>
+<body>
+    <div id="posts-container"></div>
+
+    <script>
+        // Função para buscar e exibir os posts
+        async function fetchAndDisplayPosts() {
+          try {
+            // Fazendo a requisição GET para obter os posts
+            const response = await fetch('/api/posts');
+            const posts = await response.json(); // Convertendo a resposta para JSON
+
+            // Seleciona o container onde os posts serão exibidos
+            const postsContainer = document.getElementById('posts-container');
+
+            // Limpa o container (caso já tenha algo renderizado)
+            postsContainer.innerHTML = '';
+
+            // Itera pelos posts e cria um elemento para cada post
+            posts.forEach(post => {
+                // Cria um novo elemento para o post
+                const postElement = document.createElement('div');
+                postElement.classList.add('post');
+
+                // Adiciona conteúdo ao post (exemplo de título e corpo)
+                postElement.innerHTML = `
+                    <h3>${post.text}</h3>
+                `;
+
+                // Adiciona o post ao container
+                postsContainer.appendChild(postElement);
+            });
+          } catch (error) {
+              console.error('Erro ao buscar posts:', error);
+          }
+        }
+
+        // Chama a função para buscar e exibir os posts ao carregar a página
+        fetchAndDisplayPosts();
+    </script>
+</body>
+</html>

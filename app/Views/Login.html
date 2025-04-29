@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> PUCUS</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/loginCad.css">
+</head>
+<body>
+    <div class="container">
+        
+        <div class="form-box login">
+            <form id="loginForm" method="post" onsubmit="return validate_form();">
+                <h1>Login</h1>
+                <div class="input-box">
+                    <input id="email" name="email" type="email" placeholder="email" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input id="password" name="password" type="password" placeholder="Senha" required>
+                    <i class='bx bxs-lock-alt' ></i>
+                </div>
+                <div class="forgot-link">
+                    <a href="#">Esqueci minha senha</a>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                
+            </form>
+        </div>
+
+        <div class="left-box">
+            <div class="leftidk">
+                <h1>Bem vindo ao</h1>
+                <h1>Pucus!</h1>
+                <p>Não tem uma conta?</p>
+                <button id="register-button" class="btn register-bnt">Cadastrar-se</button>
+
+            </div>
+        </div>
+
+
+
+    </div>
+</body>
+
+<script>
+    document.getElementById('register-button').addEventListener('click', function() {
+        window.location.href = "registers"; 
+    });
+</script>
+
+<script type="text/javascript" language="javascript">
+  async function validate_form() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (email === "") {
+      alert('Por favor, preencha o campo e-mail');
+      document.getElementById("email").focus();
+      return false;
+    }
+
+    if (password === "") {
+      alert('Por favor, preencha o campo senha.');
+      document.getElementById("password").focus();
+      return false;
+    }
+
+    const form = new FormData(document.getElementById("loginForm"));
+    const formData = new URLSearchParams(form);
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.status == 'success') {
+      window.location.href = '/home';
+    } else {
+      alert(data.message);
+    }
+
+    return false;
+  }
+</script>
+
+</html>

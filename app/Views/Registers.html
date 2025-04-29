@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> PUCUS</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/loginCad.css">
+</head>
+
+
+
+<body>
+    <div class="container">
+        
+        <div class="form-box cadastro">
+            <form action="">
+                <h1 id="titulo-cadastro">CADASTRO</h1>
+
+
+                <div class="choose-cadastro">
+                    <button onclick="showCadastro('aluno', event)" class="btn-tipocad">Sou Aluno</button>
+                    <button onclick="showCadastro('funcionario', event)" class="btn-tipocad">Sou Funcionário</button>
+                    <button onclick="showCadastro('coordenador', event)" class="btn-tipocad">Sou Coordenador</button>
+                </div>
+                
+                <button type="button" id="btn-voltar" style="display: none;" onclick="voltarCadastro()">
+                    <i class='bx bx-arrow-back'></i>
+                  </button>
+                
+                  <div id="cadastro-aluno" class="cadastro-form" style="display:none;">
+                    <h2>Cadastro Aluno</h2>
+                    <div class="input-box">
+                        <input type="text" placeholder="Username" required>
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" placeholder="Curso" required>
+                        <i class='bx bxs-graduation'></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" placeholder="E-mail" required>
+                        <i class='bx bxs-envelope' ></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Senha" required>
+                        <i class='bx bxs-lock-alt' ></i>
+                    </div>
+                  </div>
+                  
+                  <div id="cadastro-funcionario" class="cadastro-form" style="display:none;">
+                    <h2>Cadastro Funcionario</h2>
+                    <div class="input-box">
+                        <input type="text" placeholder="Username" required>
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" placeholder="Departamento" required>
+                        <i class='bx bxs-buildings' ></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" placeholder="E-mail" required>
+                        <i class='bx bxs-envelope' ></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Senha" required>
+                        <i class='bx bxs-lock-alt' ></i>
+                    </div>
+                  </div>
+                  
+                  <div id="cadastro-coordenador" class="cadastro-form" style="display:none;">
+                    <h2>Cadastro Coordenador</h2>
+                    <div class="input-box">
+                        <input type="text" placeholder="Username" required>
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" placeholder="uuuuhhhhhh" required>
+                        <i class='bx bxs-buildings' ></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" placeholder="E-mail" required>
+                        <i class='bx bxs-envelope' ></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Senha" required>
+                        <i class='bx bxs-lock-alt' ></i>
+                    </div>
+                  </div>
+            
+                  <button type="submit" class="btn" id="btn-cadastrar" style="display: none;">Cadastrar-se</button>
+
+
+
+                
+            </form>
+        </div>
+
+        <div class="left-box">
+            <div class="leftidk">
+                <h1>Bem vindo!</h1>
+                <p>Já tem uma conta?</p>
+                <button id="login-button" class="btn register-bnt">Login</button>
+
+            </div>
+        </div>
+
+
+
+    </div>
+</body>
+
+<script>
+    function showCadastro(tipo) {
+    document.getElementById('titulo-cadastro').style.display = 'none';
+    // Esconde todos os formulários
+    document.querySelectorAll('.cadastro-form').forEach(form => {
+        form.style.display = 'none';
+        form.classList.remove('show');
+    });
+
+    // Esconde os botões de escolha
+    document.querySelector('.choose-cadastro').style.display = 'none';
+
+    // Mostra o formulário escolhido
+    const selectedForm = document.getElementById('cadastro-' + tipo);
+    selectedForm.style.display = 'block';
+
+    // Força um pequeno atraso para o fade funcionar
+    setTimeout(() => {
+        selectedForm.classList.add('show');
+    }, 50);
+
+    // Mostra o botão "Cadastrar-se"
+    document.getElementById('btn-cadastrar').style.display = 'block';
+
+    // Mostra o botão "Voltar"
+    document.getElementById('btn-voltar').style.display = 'block';
+    }
+
+    function voltarCadastro() {
+    // Esconde o formulário de cadastro atual
+    document.querySelectorAll('.cadastro-form').forEach(form => {
+        document.getElementById('titulo-cadastro').style.display = 'block';
+        form.style.display = 'none';
+        form.classList.remove('show');
+        
+
+    });
+
+    // Exibe os botões de escolha de cadastro
+    document.querySelector('.choose-cadastro').style.display = 'flex';
+
+    // Esconde o botão "Cadastrar-se" e "Voltar"
+    document.getElementById('btn-cadastrar').style.display = 'none';
+    document.getElementById('btn-voltar').style.display = 'none';
+    }
+
+    document.getElementById('login-button').addEventListener('click', function() {
+    window.location.href = "login"; 
+});
+
+</script>
+</html>

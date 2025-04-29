@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PUCUS</title>
+    <link rel="stylesheet" href="css/generalStyle.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    
+  </head>
+  <body>
+    <container class="Navs">
+      <div class="whiteNav">
+        <nav>
+          <div class="icon2">
+            <a href="#"><i class="bi bi-arrow-bar-right" id="exp"></i></a>
+          </div>
+          <ul>
+            <li class="abas">
+              <a href="./home">
+                <span class="icon"><i class="bi bi-house-fill"></i></span>
+                <span class="text">Home</span>
+              </a>
+            </li>
+            <li class="abas">
+              <a href="./feed">
+                <span class="icon"><i class="bi bi-backpack3"></i></span>
+                <span class="text">Feed</span>
+              </a>
+            </li>
+            <li class="abas">
+              <a href="./estabelecimento">
+                <span class="icon"><i class="bi bi-buildings-fill"></i></span>
+                <span class="text">Estabelecimentos</span>
+              </a>
+            </li>
+            <li class="abas">
+              <a href="./ticket">
+                <span class="icon"><i class="bi bi-car-front-fill"></i></span>
+                <span class="text">Tickets</span>
+              </a>
+            </li>
+            <li class="abas">
+              <a href="./comunicados">
+                <span class="icon"><i class="bi bi-award-fill"></i></span>
+                <span class="text">Comunicados</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </container>
+    <container class="Mid">
+      <div class="logo">
+        <img src="img/logo.png" alt="" />
+      </div>
+      <div id="posts-c2" class="WM">
+        <div class="post">
+          <div class="head_post">
+            <div class="icon_post">
+              <img src="img/adan.png" alt="taldo adan" />
+            </div>
+            <div class="txt_post">
+              <h1>User@129839012</h1>
+              <p>12/02/2024 | 15:15 
+              <p id="sacu"></p>
+            </p>
+            <script>
+                const pendente = false;
+                const status = document.getElementById("sacu")
+                if (pendente==true){
+                    status.textContent = "pendente"
+                }else{
+                    status.textContent = "concluído"
+                }
+          </script>
+              <div id="edit"class="edit">
+                <button class="butti">
+                    Deletar <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="body_post">
+            <div class="txtBody">
+              <h1>Texto decorrente de uma possível ocorrência...</h1>
+            </div>
+            <div class="imgBody">
+              <img src="img/carFire.jpg" alt="fuego" />
+            </div>
+          </div>
+          <div class="footer_post">
+            <div class="likes_post">
+              <i id="like" class="bi bi-hand-thumbs-up-fill jose"></i>
+              <i id="deslike" class="bi bi-hand-thumbs-down-fill jose"></i>
+              
+    </container>
+    <container class="Right">
+        <div class="pinto">
+            <a href="/perfil"><img src="./img/adan.png" alt=""></a>| <i class="bi bi-gear-fill"></i>
+        </div>
+      <h1>Comunicados</h1>
+      <div class="comunic">
+        <img src="./img/images.png" alt=""><h1 class="meno">teste</h1>
+      </div>
+      <div class="comunic">
+        <img src="./img/images.png" alt=""><h1 class="meno">teste</h1>
+        
+      </div>
+      <div class="comunic">
+        <img src="./img/images.png" alt=""><h1 class="meno">teste</h1>
+      </div>
+    </container>
+    <div class="overlay">
+      <!--trocar a divpop por <form>-->
+      <div id="pop" class="pop">
+        <!--method="post"
+        onsubmit="return validate_form();"-->
+
+        <container class="up">
+          <h1>Fazer postagem</h1>
+        </container>
+        <container class="chose">
+          <div class="write">
+            <input type="text" id="post-text" />
+          </div>
+        </container>
+
+        <div class="imgs">
+          <div class="porft">
+            <label for="image-upload"><i class="bi bi-image"></i></label>
+            <input type="file" id="image-upload" style="display: none" />
+          </div>
+        </div>
+        <p>Selecione as tags desejadas</p>
+        <div class="iconst">
+          <i id="i1" class="bi bi-shield-fill-exclamation iconT"></i>
+          <i id="i2" class="bi bi-exclamation-diamond-fill iconT"></i>
+          <i id="i3" class="bi bi-backpack iconT"></i>
+          <i id="i4" class="bi bi-bank2 iconT"></i>
+        </div>
+        <div class="buttonF">
+          <button onclick="closePopup(popup,overlay)">FECHAR</button>
+          <button
+            id="post-button"
+            type="submit"
+            onclick="closePopup(popup,overlay)"
+          >
+            POSTAR
+          </button>
+        </div>
+        <script src="./scripts/scripts.js"></script>
+      </div>
+      <!--trocar por </form>-->
+    </div>
+    <div class="overlay2">
+      <container id="pop2" class="pop2">
+        <div class="up">
+          <h1>Tire uma foto e faça um post instantanêo</h1>
+          <br />
+        </div>
+        <div class="video">
+          <video autoplay></video>
+        </div>
+
+        <div class="iconst">
+          <i class="bi bi-shield-fill-exclamation iconT"></i>
+          <i class="bi bi-exclamation-diamond-fill iconT"></i>
+          <i class="bi bi-backpack iconT"></i>
+          <i class="bi bi-bank2 iconT"></i>
+        </div>
+        <div class="butt">
+          <button id="takepic" onclick="closePopup(popup2,overlay2),fodase()">
+            Tirar foto
+          </button>
+          <button onclick="closePopup(popup2,overlay2)">
+            Fechar
+          </button>
+        </div>
+      </container>
+    </div>
+      <script src="scripts/scriptF.js"></script>
+      <script>
+        const iconsmec = document.querySelectorAll('.jose');
+      
+        iconsmec.forEach(iconr => {
+          iconr.addEventListener('click', () => {
+            iconr.addEventListener('click', () => {
+            // Remove a classe "selecionado" de todos os ícones
+            iconsmec.forEach(otherIcon => {
+                otherIcon.classList.remove('selecionado');
+            });
+
+                // Adiciona ou remove a classe "selecionado" do ícone clicado
+                if (!iconr.classList.contains('selecionado')) {
+                    iconr.classList.add('selecionado');
+                } else {
+                    iconr.classList.remove('selecionado');
+                    }
+                    });
+                });
+            });
+      </script>
+    </div>
+    <div class="inputcom">
+        <input style="width: 250px; border-radius: 25px; border-style: none; border: grey solid 2px" id="comentario" type="text">
+        
+    </div>
+    <div class="coment_post">
+      <button id="coco" style="border: none; background: none;"><i id="cool" class="bi bi-chat-dots-fill"></i></button>
+    </div>
+    
+  </div>
+  
+</div>
+</div>
+<script>
+const pendente2 = false;
+const status2 = document.getElementById("sacu")
+if (pendente2==true){
+    status2.textContent = "pendente"
+}else{
+    status2.textContent = "concluído"
+}
+</script>
+<script>
+
+const ascionar = document.getElementById("coco")
+
+ ascionar.addEventListener('click', ()=>{
+    console.log("asdasdas")
+    const textconcon = document.getElementById("comentario").value;
+    if (textconcon.trim() !== '') {
+    
+        const newconcon = document.createElement("div");
+        newconcon.classList.add("post")
+        
+        const lugar = document.getElementById("posts-c2")
+        newconcon.innerHTML = `
+    <div class="head_post">
+        <div class="icon_post">
+        <img src="img/adan.png" alt="taldo adan" />
+        </div>
+        <div class="txt_post">
+        <h1>User@129839012</h1>
+        <p>12/02/2024 | 15:15 
+        <p id="sacu"></p>
+        </p>
+        <div id="edit"class="edit">
+            <button class="butti">
+                Deletar <i class="bi bi-trash"></i>
+            </button>
+        </div>
+        </div>
+    </div>
+    <div class="body_post">
+        <div class="txtBody">
+        <h1>${textconcon}</h1>
+        </div>
+        <div class="imgBody">
+        </div>
+    </div>
+    <div class="footer_post">
+        <div class="likes_post">
+        <i id="like" class="bi bi-hand-thumbs-up-fill jose"></i>
+        <i id="deslike" class="bi bi-hand-thumbs-down-fill jose"></i>
+        </div>
+        
+    </div>
+    `;
+
+    lugar.appendChild(newconcon);
+    textconcon = ""
+
+    // Limpe o campo de input após o comentário
+    document.getElementById('comentario').value = '';
+    } else {
+    alert('Digite algo no campo de comentário.');
+}
+
+});
+
+
+</script>
+  </body>
+</html>
