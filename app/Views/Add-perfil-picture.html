@@ -16,6 +16,7 @@
     </form>
 
     <script>
+      // Post de imagem
       async function postImage() {
         const form = new FormData(document.getElementById("imageForm"));
         const response = await fetch("/api/photos", {
