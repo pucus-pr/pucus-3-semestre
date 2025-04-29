@@ -98,14 +98,27 @@ nav ul li a:hover:before {
 .midias {
     display: flex;
     justify-content: center;
-    width: 100%;
+    max-width: 100%;
+
+
+}
+
+.midia {
+    display: flex;
+    justify-content: center;
+    max-width: 600px;
+	width: 100%;
+	flex-wrap: wrap;
+
+
 }
 
 .post {
     background-color: white;
     border-radius: 20px;
     padding: 20px;
-    width: 600px;
+	width: 100%;
+    max-width: 600px;
     margin-bottom: 20px;
     position: relative; /* Adicionado para posicionamento interno */
 }
@@ -139,6 +152,49 @@ nav ul li a:hover:before {
 }
 
 .postNnD p {
+    font-size: 14px;
+    color: #777;
+}
+
+
+.post2 {
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    width: 600px;
+    margin-bottom: 20px;
+    position: relative; /* Adicionado para posicionamento interno */
+}
+
+.postHeader2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.postIcon2 {
+    width: 70px; /* Definido pelo tamanho da imagem */
+    margin-right: 15px;
+}
+
+.postIcon2 img {
+    border-radius: 50%;
+    width: 100%;
+    height: auto;
+}
+
+.postNnD2 {
+    flex: 1; /* Ocupa o espaço restante */
+}
+
+
+.postNnD2 h1 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.postNnD2 p {
     font-size: 14px;
     color: #777;
 }

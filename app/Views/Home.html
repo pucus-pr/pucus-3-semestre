@@ -6,7 +6,7 @@
     <title>PUCUS</title>
     
     <link rel="stylesheet" href="css/nav.css">
-    <link rel="stylesheet" href="css/home.css">
+    <!-- <link rel="stylesheet" href="css/home.css"> -->
     <link rel="stylesheet" href="style.css">
     
     <!-- Ícones -->
@@ -44,17 +44,21 @@
 
 <!-- Conteúdo principal -->
 <section class="midias">
+    <section class="midia">
+
+    </section>
 
     <!-- Botão de adicionar post -->
     <button class="addPostBtn"><i class="fas fa-plus"></i></button>
 
     <!-- Área para criar novo post (escondida inicialmente) -->
-    <div class="post" id="newPost" style="display: none;">
-        <div class="postHeader">
-            <div class="postIcon">
+    <form onsubmit="criarPost(event)" class="post2" id="newPost" style="display: none;">
+        
+        <div class="postHeader2">
+            <div class="postIcon2">
                 <img src="img/adan.png" width="70px" alt="Foto de Perfil">
             </div>
-            <div class="postNnD">
+            <div class="postNnD2">
                 <h1>Arthur Sales Major</h1>
                 <p id="postDate">12/02/2025</p>
             </div>
@@ -101,9 +105,9 @@
             </div>
             
             <!-- Botão principal de postar -->
-            <button id="postar"><i class="fas fa-paper-plane"></i> Postar</button>
+            <button type="submit" id="postar"><i class="fas fa-paper-plane"></i> Postar</button>
         </div>
-    </div>
+    </form>
 
     <!-- Exemplo de um post existente -->
                                 <!-- <div class="post">
@@ -213,6 +217,53 @@
         });
     }); 
 </script>
+<script>
+    function criarPost(event) {
+
+        event.preventDefault()
+
+        const midia = document.querySelector('.midia');
+    
+        const novoPost = document.createElement('div');
+        novoPost.classList.add('post2');
+        novoPost.innerHTML = `
+            <div class="postHeader">
+                <div class="postIcon">
+                    <img src="img/adan.png" width="70px" alt="Foto de Perfil">
+                </div>
+                <div class="postNnD">
+                    <h1>Arthur Sales Major</h1>
+                    <p>12/02/2025</p>
+                </div>
+            </div>
+            <div class="postDescription">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit beatae magnam ab delectus!</p>
+            </div>
+            <div class="postmid">
+                <img src="img/adan.png" alt="">
+            </div>
+            <div class="postBot">
+                <div class="upVolt">
+                    <i class="bi bi-arrow-up"></i>
+                </div>
+                <div class="tags">
+                    <button class="escudo"><i class="bi bi-shield-fill-exclamation"></i></button>
+                    <button class="compt"><i class="bi bi-pc-display-horizontal"></i></button>
+                    <button class="estrela"><i class="bi bi-stars"></i></button>
+                    <button class="predio"><i class="bi bi-building-fill"></i></button>
+                    <button class="triangle"><i class="bi bi-exclamation-triangle-fill"></i></button>
+                </div>
+                <div class="downVolt">
+                    <i class="bi bi-arrow-down"></i>
+                </div>
+            </div>
+        `;
+    
+        midia.appendChild(novoPost);
+    }
+    </script>
+
+
 
 </body>
 </html>
