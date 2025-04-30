@@ -47,7 +47,9 @@ class UserController {
                 'id' => $user['id'],
                 'name' => $user['name'],
                 'identifier' => $user['identifier'],
-                'profilePicture' => $user['image']
+                'profilePicture' => $user['image'],
+                'access_level' => $user['access_level'],
+                'email' => $user['email']
             ]
         ];
     }
