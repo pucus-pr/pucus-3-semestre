@@ -1,93 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> PUCUS</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="css/loginCad.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> PUCUS</title>
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="css/loginCad.css">
 </head>
+
 <body>
-    <div class="container">
-        
-        <div class="form-box login">
-            <form id="loginForm" method="post" onsubmit="return validate_form();">
-                <h1>Login</h1>
-                <div class="input-box">
-                    <input id="email" name="email" type="email" placeholder="email" required>
-                    <i class='bx bxs-user'></i>
-                </div>
-                <div class="input-box">
-                    <input id="password" name="password" type="password" placeholder="Senha" required>
-                    <i class='bx bxs-lock-alt' ></i>
-                </div>
-                <div class="forgot-link">
-                    <a href="#">Esqueci minha senha</a>
-                </div>
-                <button type="submit" class="btn">Login</button>
-                
-            </form>
-        </div>
+	<div class="container">
+		<div class="form-box login">
+			<form id="loginForm" method="post" onsubmit="return validate_form();">
+				<h1>Login</h1>
+				<div class="input-box">
+					<input id="email" name="email" type="email" placeholder="email" required>
+					<i class='bx bxs-user'></i>
+				</div>
+				<div class="input-box">
+					<input id="password" name="password" type="password" placeholder="Senha" required>
+					<i class='bx bxs-lock-alt'></i>
+				</div>
+				<div class="forgot-link">
+					<a href="#">Esqueci minha senha</a>
+				</div>
+				<button type="submit" class="btn">Login</button>
 
-        <div class="left-box">
-            <div class="leftidk">
-                <h1>Bem vindo ao</h1>
-                <h1>Pucus!</h1>
-                <p>Não tem uma conta?</p>
-                <button id="register-button" class="btn register-bnt">Cadastrar-se</button>
+			</form>
+		</div>
 
-            </div>
-        </div>
-
-
-
-    </div>
+		<div class="left-box">
+			<div class="leftidk">
+				<h1>Bem vindo ao</h1>
+				<h1>Pucus!</h1>
+				<p>Não tem uma conta?</p>
+				<button id="register-button" class="btn register-bnt">Cadastrar-se</button>
+			</div>
+		</div>
+	</div>
 </body>
 
 <script>
-    document.getElementById('register-button').addEventListener('click', function() {
-        window.location.href = "registers"; 
-    });
+	document.getElementById('register-button').addEventListener('click', function () {
+		window.location.href = "registers";
+	});
 </script>
 
 <script type="text/javascript" language="javascript">
-  async function validate_form() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+	document.getElementById("loginForm").addEventListener("submit", async function (e) {
+		e.preventDefault(); // impede o reload
 
-    if (email === "") {
-      alert('Por favor, preencha o campo e-mail');
-      document.getElementById("email").focus();
-      return false;
-    }
+		const email = document.getElementById("email").value.trim();
+		const password = document.getElementById("password").value.trim();
 
-    if (password === "") {
-      alert('Por favor, preencha o campo senha.');
-      document.getElementById("password").focus();
-      return false;
-    }
+		if (email === "") {
+			alert('Por favor, preencha o campo e-mail');
+			document.getElementById("email").focus();
+			return;
+		}
 
-    const form = new FormData(document.getElementById("loginForm"));
-    const formData = new URLSearchParams(form);
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      body: formData
-    });
+		if (password === "") {
+			alert('Por favor, preencha o campo senha.');
+			document.getElementById("password").focus();
+			return;
+		}
 
-    const data = await response.json();
+		const form = new FormData(this);
+		const formData = new URLSearchParams(form);
 
-    if (data.status == 'success') {
-      window.location.href = '/home';
+		const response = await fetch('/api/login', {
+			method: 'POST',
+			body: formData
+		});
 
-      
-    } else {
-      alert(data.message);
-    }
+		const data = await response.json();
 
-    return false;
-  }
+		const response2 = await fetch('/api/user');
+		const data2 = await response2.json();
 
-  
+		console.log(data2);
+
+		alert('xd');
+
+		// Se quiser redirecionar ao sucesso:
+		// if (data.status === 'success') {
+		//   window.location.href = '/home';
+		// } else {
+		//   alert(data.message);
+		// }
+	});
 </script>
 
 
@@ -95,4 +97,3 @@
 
 
 </html>
-
