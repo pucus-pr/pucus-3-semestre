@@ -21,7 +21,7 @@ class Post extends Model {
         $tags = $request['tags'];
         unset($request['tags']);
 
-        $sql = 'INSERT INTO posts (user_id, text, type, image) VALUES (?, ?, ?, ?)';
+        $sql = 'INSERT INTO posts (user_id, text) VALUES (?, ?)';
         $id = self::query($sql, $request);
 
         foreach($tags as $tag) {
