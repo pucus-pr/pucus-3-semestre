@@ -19,6 +19,17 @@
 
 <body>
 
+    <div class="perfil-topo">
+        <img src="img/adan.png" alt="Foto de Perfil">
+        <span>Nome Inteiro</span>
+        <div class="perfil-menu">
+            <button onclick="window.location.href='/perfil'">Perfil</button>
+            <button onclick="logout()">Logout</button>
+          </div>
+          
+    </div>
+    
+
 <!-- Sidebar -->
 <nav>
     <ul>
@@ -62,7 +73,7 @@
                 <h1>Arthur Sales Major</h1>
                 <p id="postDate">12/02/2025</p>
             </div>
-            <button class="closeBtn"><i class="fas fa-times"></i></button>
+            <button type="button" class="closeBtn"><i class="fas fa-times"></i></button>
         </div>
         
         <div class="textt">      
@@ -72,10 +83,10 @@
  
         <div class="button-group">
             <!-- Botão para adicionar imagem (corrigido - sem ícone duplicado) -->
-            <button id="addimgPostBtn"> Adicionar Imagem</button>
+            <button type="button"id="addimgPostBtn"> Adicionar Imagem</button>
 
             <!-- Botão de mais opções -->
-            <button id="moreOptionsBtn"><i class="fas fa-filter"></i> Filtrar</button>
+            <button type="button" id="moreOptionsBtn"><i class="fas fa-filter"></i> Filtrar</button>
             
             <!-- Opções adicionais -->
             <div id="moreOptions" style="display: none;">
@@ -237,7 +248,7 @@
                 </div>
             </div>
             <div class="postDescription">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit beatae magnam ab delectus!</p>
+                <p>Eu amo o pucus!</p>
             </div>
             <div class="postmid">
                 <img src="img/adan.png" alt="">
@@ -262,7 +273,37 @@
         midia.appendChild(novoPost);
     }
     </script>
+    <script>
+        function showDropdown() {
+  document.getElementById("dropdown").style.display = "block";
+}
 
+function hideDropdown() {
+  document.getElementById("dropdown").style.display = "none";
+}
+
+function goHome() {
+  window.location.href = "/home";
+}
+
+async function logout() {
+  try {
+    await fetch('/api/logout', {
+      method: 'POST' // ou 'GET', conforme seu backend espera
+    });
+
+    // Limpa dados locais (se estiver usando localStorage)
+    localStorage.removeItem('userId');
+
+    // Redireciona para login
+    window.location.href = "/login";
+  } catch (err) {
+    console.error("Erro ao fazer logout:", err);
+    alert("Erro ao sair. Tente novamente.");
+  }
+}
+
+    </script>
 
 
 </body>
