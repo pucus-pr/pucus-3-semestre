@@ -26,9 +26,6 @@ function route($uri, $controllerMethod, $method) {
 
 route('/login', null, 'PUBLICACCESS');
 route('/registers', null, 'PUBLICACCESS');
-route('/register-student', null, 'PUBLICACCESS');
-route('/register-employee', null, 'PUBLICACCESS');
-route('/register-coordinator', null, 'PUBLICACCESS');
 
 route('/api/login', [AuthController::class, 'login'], 'POST');
 route('/api/register', [UserController::class, 'create'], 'POST');
@@ -51,6 +48,7 @@ if (isset($_SESSION['user'])) {
     route('/api/posts/{id}', [PostController::class, 'show'], 'GET');
     route('/api/posts/{id}', [PostController::class, 'update'], 'PUT');
     route('/api/posts/{id}', [PostController::class, 'destroy'], 'DELETE');
+    route('/api/posts/{tag}', [PostController::class, 'destroy'], 'GET');
 
     // Rotas de tags-posts
     route('/api/tags-posts', [TagPostController::class, 'create'], 'POST');
@@ -58,24 +56,6 @@ if (isset($_SESSION['user'])) {
     route('/api/tags-posts/{id}', [TagPostController::class, 'show'], 'GET');
     route('/api/tags-posts/{id}', [TagPostController::class, 'update'], 'PUT');
     route('/api/tags-posts/{id}', [TagPostController::class, 'destroy'], 'DELETE');
-
-    // Rotas de reações
-    route('/api/reactions', [ReactionController::class, 'create'], 'POST');
-    route('/api/reactions', [ReactionController::class, 'index'], 'GET');
-    route('/api/reactions/{id}', [ReactionController::class, 'show'], 'GET');
-    route('/api/reactions/{id}', [ReactionController::class, 'update'], 'PUT');
-    route('/api/reactions/{id}', [ReactionController::class, 'destroy'], 'DELETE');
-
-    // Rotas de comentários
-    route('/api/comments', [CommentController::class, 'create'], 'POST');
-    route('/api/comments', [CommentController::class, 'index'], 'GET');
-    route('/api/comments/{id}', [CommentController::class, 'show'], 'GET');
-    route('/api/comments/{id}', [CommentController::class, 'update'], 'PUT');
-    route('/api/comments/{id}', [CommentController::class, 'destroy'], 'DELETE');
-
-    // Rotas de estabelecimentos
-    route('/api/establishments', [EstablishmentController::class, 'index'], 'GET');
-    route('/api/establishments/{id}', [EstablishmentController::class, 'show'], 'GET');
 
     route('/api/photos', [PhotoController::class, 'create'], 'POST');
     route('/api/user', [UserController::class, 'getUser'], 'GET');
@@ -89,10 +69,5 @@ if (isset($_SESSION['user'])) {
         route('/api/tags', [TagController::class, 'create'], 'POST');
         route('/api/tags/{id}', [TagController::class, 'update'], 'PUT');
         route('/api/tags/{id}', [TagController::class, 'destroy'], 'DELETE');
-
-        // Rotas de estabelecimentos apenas para admins
-        route('/api/establishments', [EstablishmentController::class, 'create'], 'POST');
-        route('/api/establishments/{id}', [EstablishmentController::class, 'update'], 'PUT');
-        route('/api/establishments/{id}', [EstablishmentController::class, 'destroy'], 'DELETE');
     }
 }
