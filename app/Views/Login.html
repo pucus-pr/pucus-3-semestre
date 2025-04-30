@@ -80,14 +80,24 @@
 
 		console.log(data2);
 
-		alert('xd');
-
 		// Se quiser redirecionar ao sucesso:
-		// if (data.status === 'success') {
-		//   window.location.href = '/home';
-		// } else {
-		//   alert(data.message);
-		// }
+		if (data.status === 'success') {
+  const userData = data2.data;
+
+  // Salva os dados do usuário como um único objeto
+  localStorage.setItem('user', JSON.stringify({
+    name: userData.name,
+    identifier: userData.identifier,
+    profilePicture: userData.profilePicture,
+    email: userData.email,
+    access_level: userData.access_level
+    }));
+
+    window.location.href = '/home';
+    } else {
+      alert(data.message);
+    }
+
 	});
 </script>
 

@@ -21,7 +21,7 @@
 
     <div class="perfil-topo">
         <img src="img/adan.png" alt="Foto de Perfil">
-        <span>Nome Inteiro</span>
+        <span>Arthur</span>
         <div class="perfil-menu">
             <button onclick="window.location.href='/perfil'">Perfil</button>
             <button onclick="logout()">Logout</button>
@@ -91,32 +91,18 @@
             <!-- Opções adicionais -->
             <div id="moreOptions" style="display: none;">
                 <label>Escolha um ou mais temas:</label>
-                <div class="themes">
-                    <label class="themeOption">
-                        <input type="checkbox" name="postTheme[]" value="tema1">
-                        Segurança
-                    </label>
-                    <label class="themeOption">
-                        <input type="checkbox" name="postTheme[]" value="tema2">
-                        TI
-                    </label>
-                    <label class="themeOption">
-                        <input type="checkbox" name="postTheme[]" value="tema3">
-                        Limpeza
-                    </label>
-                    <label class="themeOption">
-                        <input type="checkbox" name="postTheme[]" value="tema4">
-                        Estrutura
-                    </label>
-                    <label class="themeOption">
-                        <input type="checkbox" name="postTheme[]" value="tema5">
-                        Alerta Geral
-                    </label>
-                </div>
+                <div class="filtros">
+                    <label><input type="checkbox" value="escudo"> Segurança</label>
+                    <label><input type="checkbox" value="compt"> Computador</label>
+                    <label><input type="checkbox" value="estrela"> Destaque</label>
+                    <label><input type="checkbox" value="predio"> Infraestrutura</label>
+                    <label><input type="checkbox" value="triangle"> Alerta</label>
+                  </div>
             </div>
             
             <!-- Botão principal de postar -->
-            <button type="submit" id="postar"><i class="fas fa-paper-plane"></i> Postar</button>
+            <button onclick="criarPost(event)" id="postar" type="button">Criar Post</button>
+
         </div>
     </form>
 
@@ -218,61 +204,92 @@
         postarBtn.addEventListener('click', function() {
             const postText = postTextarea.value.trim();
             if(postText) {
-                alert('Post criado com sucesso!');
+                
                 postTextarea.value = '';
                 closeNewPost();
                 // Aqui você pode adicionar a lógica para criar o post dinamicamente
             } else {
-                alert('Digite algo para postar!');
+                
+                closeNewPost();
             }
         });
     }); 
 </script>
 <script>
     function criarPost(event) {
-
-        event.preventDefault()
-
-        const midia = document.querySelector('.midia');
-    
-        const novoPost = document.createElement('div');
-        novoPost.classList.add('post2');
-        novoPost.innerHTML = `
-            <div class="postHeader">
-                <div class="postIcon">
-                    <img src="img/adan.png" width="70px" alt="Foto de Perfil">
-                </div>
-                <div class="postNnD">
-                    <h1>Arthur Sales Major</h1>
-                    <p>12/02/2025</p>
-                </div>
-            </div>
-            <div class="postDescription">
-                <p>Eu amo o pucus!</p>
-            </div>
-            <div class="postmid">
-                <img src="img/adan.png" alt="">
-            </div>
-            <div class="postBot">
-                <div class="upVolt">
-                    <i class="bi bi-arrow-up"></i>
-                </div>
-                <div class="tags">
-                    <button class="escudo"><i class="bi bi-shield-fill-exclamation"></i></button>
-                    <button class="compt"><i class="bi bi-pc-display-horizontal"></i></button>
-                    <button class="estrela"><i class="bi bi-stars"></i></button>
-                    <button class="predio"><i class="bi bi-building-fill"></i></button>
-                    <button class="triangle"><i class="bi bi-exclamation-triangle-fill"></i></button>
-                </div>
-                <div class="downVolt">
-                    <i class="bi bi-arrow-down"></i>
-                </div>
-            </div>
-        `;
-    
-        midia.appendChild(novoPost);
+      event.preventDefault();
+  
+      const midia = document.querySelector('.midia');
+      const texto = document.querySelector('.textt textarea').value.trim();
+      if (!texto) {
+        alert("Digite algo para postar!");
+        return;
+      }
+  
+      const user = JSON.parse(localStorage.getItem('user'));
+      const nome = user?.name || "Usuário";
+      const foto = user?.profilePicture || "img/placeholder.png";
+  
+      // Formatar data atual (DD/MM/AAAA)
+      const dataAtual = new Date();
+      const dataFormatada = dataAtual.toLocaleDateString('pt-BR');
+  
+      // Captura as tags selecionadas
+      const tagsSelecionadas = Array.from(document.querySelectorAll('.filtros input[type="checkbox"]:checked'))
+        .map(input => input.value);
+  
+      // Mapeia os ícones por tag
+      const icones = {
+        escudo: '<button class="escudo"><i class="bi bi-shield-fill-exclamation"></i></button>',
+        compt: '<button class="compt"><i class="bi bi-pc-display-horizontal"></i></button>',
+        estrela: '<button class="estrela"><i class="bi bi-stars"></i></button>',
+        predio: '<button class="predio"><i class="bi bi-building-fill"></i></button>',
+        triangle: '<button class="triangle"><i class="bi bi-exclamation-triangle-fill"></i></button>'
+      };
+  
+      // Gera os botões com base nas tags marcadas
+      const botoesHTML = tagsSelecionadas.map(tag => icones[tag]).join('');
+  
+      const novoPost = document.createElement('div');
+      novoPost.classList.add('post2');
+      novoPost.innerHTML = `
+        <div class="postHeader">
+          <div class="postIcon">
+            <img src="${foto}" width="70px" alt="Foto de Perfil">
+          </div>
+          <div class="postNnD">
+            <h1>${nome}</h1>
+            <p>${dataFormatada}</p>
+          </div>
+        </div>
+        <div class="postDescription">
+          <p>${texto}</p>
+        </div>
+        <div class="postmid">
+          <img src="${foto}" alt="">
+        </div>
+        <div class="postBot">
+          <div class="upVolt">
+            <i class="bi bi-arrow-up"></i>
+          </div>
+          <div class="tags">
+            ${botoesHTML}
+          </div>
+          <div class="downVolt">
+            <i class="bi bi-arrow-down"></i>
+          </div>
+        </div>
+      `;
+  
+      midia.appendChild(novoPost);
+  
+      // Limpar textarea e filtros
+      document.querySelector('.textt textarea').value = '';
+      document.querySelectorAll('.filtros input[type="checkbox"]').forEach(cb => cb.checked = false);
     }
-    </script>
+  </script>
+  
+  
     <script>
         function showDropdown() {
   document.getElementById("dropdown").style.display = "block";
@@ -305,6 +322,22 @@ async function logout() {
 
     </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.name) {
+        const nomeSpan = document.querySelector('.perfil-topo span');
+        if (nomeSpan) {
+          nomeSpan.textContent = user.name;
+        }
+  
+        const fotoPerfil = document.querySelector('.perfil-topo img');
+        if (fotoPerfil && user.profilePicture) {
+          fotoPerfil.src = user.profilePicture;
+        }
+      }
+    });
+  </script>
 
 </body>
 </html>
