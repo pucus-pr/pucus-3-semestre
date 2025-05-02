@@ -601,3 +601,13 @@ nav ul li a:hover:before {
     background-color: #f2f2f2;
 }
 
+.contador-votos {
+    margin-left: 5px;
+    font-weight: bold;
+  }
+  .upVolt, .downVolt {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  

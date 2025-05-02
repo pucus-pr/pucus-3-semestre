@@ -1,257 +1,195 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUCUS</title>
-    
-    <link rel="stylesheet" href="css/nav.css">
-    <!-- <link rel="stylesheet" href="css/home.css"> -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- Ícones -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Fonte -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUCUS</title>
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Ícones -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
 </head>
 
 <body>
-
-    <div class="perfil-topo">
-        <img src="img/adan.png" alt="Foto de Perfil">
-        <span>Arthur</span>
-        <div class="perfil-menu">
-            <button onclick="window.location.href='/perfil'">Perfil</button>
-            <button onclick="logout()">Logout</button>
-          </div>
-          
+  <div class="perfil-topo">
+    <img src="img/adan.png" alt="Foto de Perfil" />
+    <span>Arthur</span>
+    <div class="perfil-menu">
+      <button onclick="window.location.href='/perfil'">Perfil</button>
+      <button onclick="logout()">Logout</button>
     </div>
-    
+  </div>
 
-<!-- Sidebar -->
-<nav>
+  <!-- Sidebar -->
+  <nav>
     <ul>
-        <li class="logo">
-            <img alt="Logo" src="img/polvo.png">
-        </li>
-        <li><a href="#"><i class="fa fa-home"></i> home</a></li>
-        <li><a href="#"><i class="fa fa-book"></i> placeholder</a></li>
-        <li><a href="#"><i class="fa fa-users"></i> placeholder</a></li>
-        <li><a href="perfil"><i class="fa fa-phone"></i> configuração</a></li>
+      <li class="logo"><img alt="Logo" src="img/polvo.png" /></li>
+      <li><a href="#"><i class="fa fa-home"></i> home</a></li>
+      <li><a href="#"><i class="fa fa-book"></i> placeholder</a></li>
+      <li><a href="#"><i class="fa fa-users"></i> placeholder</a></li>
+      <li><a href="perfil"><i class="fa fa-phone"></i> configuração</a></li>
     </ul>
-</nav>
+  </nav>
 
-<!-- Comunicados acima do botão -->
-<section class="comunicados">
+  <!-- Comunicados -->
+  <section class="comunicados">
     <div class="comunicado">Novo comunicado: Atualize seu perfil!</div>
     <div class="comunicado">Lembre-se de verificar as últimas atualizações!</div>
     <div class="comunicado">Comunicado importante sobre a plataforma!</div>
-</section>
+  </section>
 
-<!-- Overlay -->
-<div id="overlay" class="overlay"></div>
+  <div id="overlay" class="overlay"></div>
 
-<!-- Conteúdo principal -->
-<section class="midias">
-    <section class="midia">
-
-    </section>
+  <!-- Área principal -->
+  <section class="midias">
+    <section class="midia"></section>
 
     <!-- Botão de adicionar post -->
     <button class="addPostBtn"><i class="fas fa-plus"></i></button>
 
-    <!-- Área para criar novo post (escondida inicialmente) -->
-    <form onsubmit="criarPost(event)" class="post2" id="newPost" style="display: none;">
-        
-        <div class="postHeader2">
-            <div class="postIcon2">
-                <img src="img/adan.png" width="70px" alt="Foto de Perfil">
-            </div>
-            <div class="postNnD2">
-                <h1>Arthur Sales Major</h1>
-                <p id="postDate">12/02/2025</p>
-            </div>
-            <button type="button" class="closeBtn"><i class="fas fa-times"></i></button>
+    <!-- Formulário de novo post -->
+    <form onsubmit="criarPost(event)" class="post" id="newPost" style="display: none;">
+      <div class="postHeader">
+        <div class="postIcon">
+          <img src="img/adan.png" width="70px" alt="Foto de Perfil" />
         </div>
-        
-        <div class="textt">      
-            <!-- Caixa de Texto para Comentário -->
-            <textarea placeholder="No que você está pensando?" rows="4"></textarea>
+        <div class="postNnD">
+          <h1 id="postUserName">Arthur Sales Major</h1>
+          <p id="postDate">12/02/2025</p>
         </div>
- 
-        <div class="button-group">
-            <!-- Botão para adicionar imagem (corrigido - sem ícone duplicado) -->
-            <button type="button"id="addimgPostBtn"> Adicionar Imagem</button>
+        <button type="button" class="closeBtn"><i class="fas fa-times"></i></button>
+      </div>
 
-            <!-- Botão de mais opções -->
-            <button type="button" id="moreOptionsBtn"><i class="fas fa-filter"></i> Filtrar</button>
-            
-            <!-- Opções adicionais -->
-            <div id="moreOptions" style="display: none;">
-                <label>Escolha um ou mais temas:</label>
-                <div class="filtros">
-                    <label><input type="checkbox" value="escudo"> Segurança</label>
-                    <label><input type="checkbox" value="compt"> Computador</label>
-                    <label><input type="checkbox" value="estrela"> Destaque</label>
-                    <label><input type="checkbox" value="predio"> Infraestrutura</label>
-                    <label><input type="checkbox" value="triangle"> Alerta</label>
-                  </div>
-            </div>
-            
-            <!-- Botão principal de postar -->
-            <button onclick="criarPost(event)" id="postar" type="button">Criar Post</button>
+      <div class="textt">
+        <textarea placeholder="No que você está pensando?" rows="4"></textarea>
+      </div>
 
+      <input type="file" id="imagemInput" style="display: none;" />
+      <div id="imagemPreviewContainer" style="display:none; margin-top:10px;">
+        <img id="imagemPreview" src="" alt="Pré-visualização"
+          style="max-width: 100%; max-height: 300px; border-radius: 10px;" />
+      </div>
+
+      <div class="button-group">
+        <button type="button" id="addimgPostBtn">Adicionar Imagem</button>
+        <button type="button" id="moreOptionsBtn"><i class="fas fa-filter"></i> Filtrar</button>
+
+        <div id="moreOptions" style="display: none;">
+          <label>Escolha um ou mais temas:</label>
+          <div class="filtros" id="filtrosContainer"></div>
         </div>
+
+        <button type="submit" id="postar">Criar Post</button>
+      </div>
     </form>
+  </section>
 
-    <!-- Exemplo de um post existente -->
-                                <!-- <div class="post">
-                                    <div class="postHeader">
-                                        <div class="postIcon">
-                                            <img src="img/adan.png" width="70px" alt="Foto de Perfil">
-                                        </div>
-                                        <div class="postNnD">
-                                            <h1>Arthur Sales Major</h1>
-                                            <p>12/02/2025</p>
-                                        </div>
-                                    </div>
-                                    <div class="postDescription">
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit beatae magnam ab delectus!</p>
-                                    </div>
-                                    <div class="postmid">
-                                        <img src="img/adan.png" alt="">
-                                    </div>
-                                    <div class="postBot">
-                                        <div class="upVolt">
-                                            <i class="bi bi-arrow-up"></i>
-                                        </div>
-                                        <div class="tags">
-                                            <button class="escudo"><i class="bi bi-shield-fill-exclamation"></i></button>
-                                            <button class="compt"><i class="bi bi-pc-display-horizontal"></i></button>
-                                            <button class="estrela"><i class="bi bi-stars"></i></button>
-                                            <button class="predio"><i class="bi bi-building-fill"></i></button>
-                                            <button class="triangle"><i class="bi bi-exclamation-triangle-fill"></i></button>
-                                        </div>
-                                        <div class="downVolt">
-                                            <i class="bi bi-arrow-down"></i>
-                                        </div>
-                                    </div>
-                                </div> -->
+  <!-- JavaScript -->
+  <script>
+    let imagemBase64 = '';
 
-</section>
+    document.addEventListener('DOMContentLoaded', async function () {
+      const addPostBtn = document.querySelector('.addPostBtn');
+      const newPost = document.getElementById('newPost');
+      const overlay = document.getElementById('overlay');
+      const closeBtn = document.querySelector('.closeBtn');
+      const moreOptionsBtn = document.getElementById('moreOptionsBtn');
+      const moreOptions = document.getElementById('moreOptions');
+      const postTextarea = document.querySelector('#newPost textarea');
+      const addImgBtn = document.getElementById('addimgPostBtn');
+      const imagemInput = document.getElementById('imagemInput');
+      const imagemPreview = document.getElementById('imagemPreview');
+      const imagemPreviewContainer = document.getElementById('imagemPreviewContainer');
+      const filtrosContainer = document.getElementById('filtrosContainer');
 
-<!-- Perfil (você pode preencher depois) -->
-<section class="perfil">
-    <div class="profile">
-        <!-- Conteúdo do perfil aqui -->
-    </div>
-</section>
+      const now = new Date();
+      document.getElementById('postDate').textContent = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
 
-<!-- JS para mostrar/ocultar campo de criar post -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Elementos principais
-        const addPostBtn = document.querySelector('.addPostBtn');
-        const newPost = document.getElementById('newPost');
-        const overlay = document.getElementById('overlay');
-        const closeBtn = document.querySelector('.closeBtn');
-        
-        // Elementos do formulário de postagem
-        const moreOptionsBtn = document.getElementById('moreOptionsBtn');
-        const moreOptions = document.getElementById('moreOptions');
-        const postarBtn = document.getElementById('postar');
-        const postTextarea = document.querySelector('#newPost textarea');
-        const addImgBtn = document.getElementById('addimgPostBtn');
-        
-        // Data atual para o post
-        const now = new Date();
-        const postDate = document.getElementById('postDate');
-        postDate.textContent = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}`;
+      // Carrega categorias da API
+      try {
+        const response = await fetch('/api/tags');
+        const tags = await response.json();
 
-        // Mostrar/ocultar novo post
-        addPostBtn.addEventListener('click', function() {
-            newPost.style.display = 'block';
-            overlay.style.display = 'block';
-            postTextarea.focus();
+        filtrosContainer.innerHTML = '';
+        tags.forEach(tag => {
+          const label = document.createElement('label');
+          label.innerHTML = `<input type="checkbox" value="${tag.id}" /> ${tag.name}`;
+          filtrosContainer.appendChild(label);
         });
+      } catch (error) {
+        console.error('Erro ao carregar categorias:', error);
+        filtrosContainer.innerHTML = '<p>Erro ao carregar filtros</p>';
+      }
 
-        // Fechar novo post
-        function closeNewPost() {
-            newPost.style.display = 'none';
-            overlay.style.display = 'none';
-            moreOptions.style.display = 'none';
-            moreOptionsBtn.classList.remove('active');
+      addPostBtn.addEventListener('click', function () {
+        newPost.style.display = 'block';
+        overlay.style.display = 'block';
+        postTextarea.focus();
+      });
+
+      function closeNewPost() {
+        newPost.style.display = 'none';
+        overlay.style.display = 'none';
+        moreOptions.style.display = 'none';
+        moreOptionsBtn.classList.remove('active');
+        imagemPreviewContainer.style.display = 'none';
+        imagemBase64 = '';
+      }
+
+      overlay.addEventListener('click', closeNewPost);
+      closeBtn.addEventListener('click', closeNewPost);
+
+      moreOptionsBtn.addEventListener('click', function () {
+        this.classList.toggle('active');
+        moreOptions.style.display = moreOptions.style.display === 'none' ? 'block' : 'none';
+      });
+
+      addImgBtn.addEventListener('click', function () {
+        imagemInput.click();
+      });
+
+      imagemInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            imagemBase64 = e.target.result;
+            imagemPreview.src = imagemBase64;
+            imagemPreviewContainer.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
         }
+      });
+    });
 
-        overlay.addEventListener('click', closeNewPost);
-        closeBtn.addEventListener('click', closeNewPost);
-        
-        // Funcionalidade do botão de mais opções
-        moreOptionsBtn.addEventListener('click', function() {
-            this.classList.toggle('active');
-            moreOptions.style.display = moreOptions.style.display === 'none' ? 'block' : 'none';
-        });
-
-        // Funcionalidade do botão de adicionar imagem
-        addImgBtn.addEventListener('click', function() {
-            // Aqui você pode adicionar a lógica para selecionar uma imagem
-            alert('Funcionalidade de adicionar imagem será implementada aqui');
-        });
-
-        // Simular postagem
-        postarBtn.addEventListener('click', function() {
-            const postText = postTextarea.value.trim();
-            if(postText) {
-                
-                postTextarea.value = '';
-                closeNewPost();
-                // Aqui você pode adicionar a lógica para criar o post dinamicamente
-            } else {
-                
-                closeNewPost();
-            }
-        });
-    }); 
-</script>
-<script>
-    function criarPost(event) {
+    async function criarPost(event) {
       event.preventDefault();
-  
+
       const midia = document.querySelector('.midia');
       const texto = document.querySelector('.textt textarea').value.trim();
       if (!texto) {
         alert("Digite algo para postar!");
         return;
       }
-  
+
       const user = JSON.parse(localStorage.getItem('user'));
       const nome = user?.name || "Usuário";
       const foto = user?.profilePicture || "img/placeholder.png";
-  
-      // Formatar data atual (DD/MM/AAAA)
+
       const dataAtual = new Date();
       const dataFormatada = dataAtual.toLocaleDateString('pt-BR');
-  
-      // Captura as tags selecionadas
-      const tagsSelecionadas = Array.from(document.querySelectorAll('.filtros input[type="checkbox"]:checked'))
-        .map(input => input.value);
-  
-      // Mapeia os ícones por tag
-      const icones = {
-        escudo: '<button class="escudo"><i class="bi bi-shield-fill-exclamation"></i></button>',
-        compt: '<button class="compt"><i class="bi bi-pc-display-horizontal"></i></button>',
-        estrela: '<button class="estrela"><i class="bi bi-stars"></i></button>',
-        predio: '<button class="predio"><i class="bi bi-building-fill"></i></button>',
-        triangle: '<button class="triangle"><i class="bi bi-exclamation-triangle-fill"></i></button>'
-      };
-  
-      // Gera os botões com base nas tags marcadas
-      const botoesHTML = tagsSelecionadas.map(tag => icones[tag]).join('');
-  
+
+      const tagsSelecionadas = Array.from(document.querySelectorAll('.filtros input[type="checkbox"]:checked')).map(input => input.value);
+
+      const imagemHTML = imagemBase64 ? `<div class="postmid"><img src="${imagemBase64}" alt="Imagem do Post"></div>` : '';
+
       const novoPost = document.createElement('div');
-      novoPost.classList.add('post2');
+      novoPost.classList.add('post');
       novoPost.innerHTML = `
         <div class="postHeader">
           <div class="postIcon">
@@ -261,83 +199,96 @@
             <h1>${nome}</h1>
             <p>${dataFormatada}</p>
           </div>
+          <button class="threeDotsBtn"><i class="bi bi-three-dots"></i></button>
+          <div class="postActions" style="display:none;">
+            <button class="editPostBtn">Editar</button>
+            <button class="deletePostBtn">Apagar</button>
+          </div>
         </div>
         <div class="postDescription">
           <p>${texto}</p>
         </div>
-        <div class="postmid">
-          <img src="${foto}" alt="">
-        </div>
+        ${imagemHTML}
         <div class="postBot">
-          <div class="upVolt">
-            <i class="bi bi-arrow-up"></i>
-          </div>
-          <div class="tags">
-            ${botoesHTML}
-          </div>
-          <div class="downVolt">
-            <i class="bi bi-arrow-down"></i>
-          </div>
+          <div class="upVolt"><i class="bi bi-arrow-up"></i></div>
+          <div class="tags">${tagsSelecionadas.map(tag => `<button class="tag">${tag}</button>`).join('')}</div>
+          <div class="downVolt"><i class="bi bi-arrow-down"></i></div>
         </div>
       `;
-  
+
       midia.appendChild(novoPost);
-  
-      // Limpar textarea e filtros
+
+      const threeDotsBtn = novoPost.querySelector('.threeDotsBtn');
+      const postActions = novoPost.querySelector('.postActions');
+      const editPostBtn = novoPost.querySelector('.editPostBtn');
+      const deletePostBtn = novoPost.querySelector('.deletePostBtn');
+
+      threeDotsBtn.addEventListener('click', function () {
+        postActions.style.display = postActions.style.display === 'none' ? 'block' : 'none';
+      });
+
+      editPostBtn.addEventListener('click', function () {
+        alert('Função de editar post ainda não implementada.');
+      });
+
+      deletePostBtn.addEventListener('click', function () {
+        if (confirm('Tem certeza que deseja apagar esta publicação?')) {
+          novoPost.remove();
+        }
+      });
+
+      // Envia o post para a API
+      try {
+        const formData = new FormData();
+        formData.append('texto', texto);
+        tagsSelecionadas.forEach((tag, index) => {
+          formData.append(`tags[${index}]`, tag);
+        });
+        const imagemFile = imagemInput.files[0];
+        if (imagemFile) {
+          formData.append('file', imagemFile); // envia o arquivo diretamente
+        }
+
+        const response = await fetch('/api/posts', {
+          method: 'POST',
+          body: formData
+        });
+
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Erro ao criar o post');
+        }
+
+        const data = await response.json();
+        console.log('Post criado com sucesso:', data);
+
+      } catch (error) {
+        console.error('Erro ao enviar post para a API:', error);
+      }
+
+      // Limpeza do formulário e fechamento do modal
       document.querySelector('.textt textarea').value = '';
       document.querySelectorAll('.filtros input[type="checkbox"]').forEach(cb => cb.checked = false);
+      document.getElementById('imagemInput').value = '';
+      document.getElementById('imagemPreviewContainer').style.display = 'none';
+      imagemBase64 = '';
+
+      document.getElementById('newPost').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    async function logout() {
+      try {
+        await fetch('/api/logout', { method: 'POST' });
+        localStorage.removeItem('user');
+        window.location.href = '/login.html';
+      } catch (error) {
+        console.error('Erro ao fazer logout:', error);
+        alert('Erro ao sair. Tente novamente.');
+      }
     }
   </script>
-  
-  
-    <script>
-        function showDropdown() {
-  document.getElementById("dropdown").style.display = "block";
-}
-
-function hideDropdown() {
-  document.getElementById("dropdown").style.display = "none";
-}
-
-function goHome() {
-  window.location.href = "/home";
-}
-
-async function logout() {
-  try {
-    await fetch('/api/logout', {
-      method: 'POST' // ou 'GET', conforme seu backend espera
-    });
-
-    // Limpa dados locais (se estiver usando localStorage)
-    localStorage.removeItem('userId');
-
-    // Redireciona para login
-    window.location.href = "/login";
-  } catch (err) {
-    console.error("Erro ao fazer logout:", err);
-    alert("Erro ao sair. Tente novamente.");
-  }
-}
-
-    </script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && user.name) {
-        const nomeSpan = document.querySelector('.perfil-topo span');
-        if (nomeSpan) {
-          nomeSpan.textContent = user.name;
-        }
-  
-        const fotoPerfil = document.querySelector('.perfil-topo img');
-        if (fotoPerfil && user.profilePicture) {
-          fotoPerfil.src = user.profilePicture;
-        }
-      }
-    });
-  </script>
-
 </body>
+
 </html>
