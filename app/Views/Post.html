@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="" id="postForm">
+        <div>
+            <input type="text" name="text">
+        </div>
+        <div>
+            <input type="file" name="file">
+        </div>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        document.getElementById("postForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            formData.append('tags[0]', '1');
+
+            try {
+                const response = await fetch("/api/posts", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+                console.log(result);
+            } catch (err) {
+                console.error("Erro ao enviar:", err);
+            }
+        });
+    </script>
+</body>
+
+</html>

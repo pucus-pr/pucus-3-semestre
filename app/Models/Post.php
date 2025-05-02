@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Controllers\TagController;
-
 class Post extends Model {
     public static function all() {
         $sql = 'SELECT * FROM posts';
@@ -15,13 +13,17 @@ class Post extends Model {
         return self::query($sql, [$id]);
     }
 
-    public static function create($request) {
+    public static function create($request, $image) {
         array_unshift($request, $_SESSION['user']);
+
+        $imagePath = Photo::create($image);
+
+        array_push($request, $imagePath);
 
         $tags = $request['tags'];
         unset($request['tags']);
 
-        $sql = 'INSERT INTO posts (user_id, text) VALUES (?, ?)';
+        $sql = 'INSERT INTO posts (user_id, text, image) VALUES (?, ?, ?)';
         $id = self::query($sql, $request);
 
         foreach($tags as $tag) {

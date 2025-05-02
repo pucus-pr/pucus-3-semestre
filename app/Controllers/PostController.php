@@ -14,7 +14,7 @@ class PostController {
     }
 
     public function create() {
-        return Post::create($_POST);
+        return Post::create($_POST, $_FILES);
     }
 
     public function update($id) {
