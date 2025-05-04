@@ -29,7 +29,7 @@ class PostController {
     }
 
     public function getPostsByUserID() {
-        $posts = Post::where('user_id', '=', $_SESSION['user']);
+        $posts = Post::allByUserId($_SESSION['user']);
 
         return [
             'status' => 'success',

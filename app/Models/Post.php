@@ -25,8 +25,6 @@ class Post extends Model {
         return $posts;
     }
     
-    
-    
     public static function find($id) {
         $sql = 'SELECT * FROM posts WHERE id = ?';
         return self::query($sql, [$id]);
@@ -85,5 +83,28 @@ class Post extends Model {
     public static function where($column, $operator, $value) {
         $sql = "SELECT * FROM posts WHERE $column $operator ?";
         return self::query($sql, [$value]);
+    }
+
+    public static function allByUserId($userId) {
+        $sql = '
+            SELECT posts.*, 
+                   users.name AS user_name, 
+                   users.image AS user_image,
+                   GROUP_CONCAT(tags_posts.tag_id) AS tags
+            FROM posts
+            JOIN users ON posts.user_id = users.id
+            LEFT JOIN tags_posts ON posts.id = tags_posts.post_id
+            WHERE posts.user_id = ?
+            GROUP BY posts.id
+        ';
+    
+        $posts = self::query($sql, [$userId]);
+    
+        // Converter a string de tags em array
+        foreach ($posts as &$post) {
+            $post['tags'] = $post['tags'] ? array_map('intval', explode(',', $post['tags'])) : [];
+        }
+    
+        return $posts;
     }
 }
