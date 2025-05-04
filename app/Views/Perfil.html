@@ -8,6 +8,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
   <link href="css/styleperf.css" rel="stylesheet">
   <link href="css/nav.css" rel="stylesheet">
+  <link href="css/home.css" rel="stylesheet">
 </head>
 
 <body>
@@ -25,21 +26,30 @@
 
   <div class="wrapper">
     <div class="profile">
+      <!-- Banner -->
       <div class="cover-photo">
-        <img src="img/adamfoda.jpg" alt="">
+        <img id="banner-img" src="img/placeholder-banner.jpg" alt="">
       </div>
+
+      <!-- Foto de perfil, nome, email, bio, curso -->
       <div class="profile-info">
-        <img src="img/adan.png" alt="Foto de Perfil" class="profile-pic">
-        <h2>Arthur Sales Major</h2>
-        <p>@majj</p>
-        <p>Gosto de gatos</p>
+        <img id="profile-img" src="img/placeholder-profile.jpg" alt="Foto de Perfil" class="profile-pic">
+        <h2 id="profile-name"></h2>
+        
+        <p id="profile-email"></p>
+        <p id="profile-bio"></p>
         <div class="info">
-          <span>Engenharia de Software </span> 
+          <span id="profile-course"></span>
         </div>
         <button class="edit-profile-btn" onclick="openModal()">Editar perfil</button>
       </div>
 
-      <div class="post">
+      <div id="posts-container">
+        
+
+      </div>
+
+      <!-- <div class="post">
         <div class="postHeader">
           <div class="postIcon">
             <img src="img/adan.png" width="70px" alt="">
@@ -70,7 +80,7 @@
             <i class="bi bi-arrow-down"></i>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -111,8 +121,6 @@
         <label for="course">Curso</label>
         <input type="text" id="course" placeholder="Seu curso">
 
-        <label for="birthdate">Data de Nascimento</label>
-        <input type="date" id="birthdate">
 
         <button type="button" class="edit-profile-save-btn" onclick="saveProfile1()">Salvar</button>
       </form>
@@ -136,11 +144,49 @@
     }
 
     function saveProfile1() {
-      alert('Perfil salvo com sucesso!');
-      closeModal();
-    }
+      const user = JSON.parse(localStorage.getItem("user")) || {};
+
+      user.name = document.getElementById("username").value;
+      user.email = document.getElementById("userhandle").value;
+      user.bio = document.getElementById("bio").value;
+      user.course = document.getElementById("course").value;
+
+      localStorage.setItem("user", JSON.stringify(user));
+
+      alert("Perfil salvo com sucesso!");
+      location.reload(); // Recarrega para refletir as mudanças
+}
+
   </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) return;
+
+    // Dados básicos
+    document.getElementById("profile-name").textContent = user.name || "Usuário";
+    document.getElementById("profile-email").textContent = user.email ? `${user.email}` : "email";
+    document.getElementById("profile-bio").textContent = user.bio || ""; // Pode vir em branco
+    document.getElementById("profile-course").textContent = user.identifier || "Curso não definido";
+
+    // Imagens
+    document.getElementById("profile-img").src = user.profilePicture || "img/placeholder-profile.jpg";
+    document.getElementById("banner-img").src = user.banner || "img/placeholder-banner.jpg";
+
+    // Se quiser, pode preencher os campos do modal também:
+    document.getElementById("username").value = user.name || "";
+    document.getElementById("userhandle").value = user.email || "";
+    document.getElementById("bio").value = user.bio || "";
+    document.getElementById("course").value = user.identifier || "";
+  });
+</script>
+
+
+
 
 </body>
 
 </html>
+
+
