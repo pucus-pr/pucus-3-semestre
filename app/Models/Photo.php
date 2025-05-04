@@ -10,6 +10,6 @@ class Photo extends Model {
 
         move_uploaded_file($_FILES['file']['tmp_name'], $imagePath);
 
-        return $imagePath;
+        return '/img/' . $imageName;
     }
 }
