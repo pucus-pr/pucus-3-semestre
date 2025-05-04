@@ -57,10 +57,11 @@ if (isset($_SESSION['user'])) {
     route('/api/tags-posts/{id}', [TagPostController::class, 'update'], 'PUT');
     route('/api/tags-posts/{id}', [TagPostController::class, 'destroy'], 'DELETE');
 
+    // Rotas diversas
     route('/api/photos', [PhotoController::class, 'create'], 'POST');
     route('/api/user', [UserController::class, 'getUser'], 'GET');
     route('/api/get-posts-by-user-id', [PostController::class, 'getPostsByUserID'], 'GET');
-    route('/api/updateProfile/{id}', [UserController::class, 'updateProfile'], 'PUT');
+    route('/api/updateProfile', [UserController::class, 'updateProfile'], 'POST');
     route('/api/deletarAtual', [UserController::class, 'deletarAtual'], method: 'DELETE');
     route('/api/postsImage', [UserController::class, 'createImage'], 'POST');
     route('/api/updatePostTags/{id}', [TagPostController::class, 'updatePostTags'], 'PUT');
