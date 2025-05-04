@@ -4,7 +4,13 @@ namespace App\Models;
 
 class Post extends Model {
     public static function all() {
-        $sql = 'SELECT * FROM posts';
+        $sql = '
+            SELECT posts.*, 
+                   users.name AS user_name, 
+                   users.image AS user_image
+            FROM posts
+            JOIN users ON posts.user_id = users.id
+        ';
         return self::query($sql, []);
     }
     
