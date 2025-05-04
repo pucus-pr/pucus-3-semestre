@@ -13,6 +13,7 @@ class Post extends Model {
             JOIN users ON posts.user_id = users.id
             LEFT JOIN tags_posts ON posts.id = tags_posts.post_id
             GROUP BY posts.id
+            ORDER BY posts.id DESC
         ';
     
         $posts = self::query($sql, []);
@@ -96,6 +97,7 @@ class Post extends Model {
             LEFT JOIN tags_posts ON posts.id = tags_posts.post_id
             WHERE posts.user_id = ?
             GROUP BY posts.id
+            ORDER BY posts.id DESC
         ';
     
         $posts = self::query($sql, [$userId]);
