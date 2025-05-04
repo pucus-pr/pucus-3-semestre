@@ -60,9 +60,13 @@ class User extends Model {
         return self::query($sql, [$value]);
     }
 
-    public static function updateProfile($request, $id) {
-        $sql = "UPDATE users SET name = ?, identifier = ?, image = ? WHERE id = ?";
-        $request['id'] = $id;
+    public static function updateProfile($request, $image) {
+        $imagePath = Photo::create($image);
+
+        array_push($request, $imagePath);
+
+        $sql = "UPDATE users SET name = ?, email = ?, identifier = ?, image = ? WHERE id = ?";
+        $request['id'] = $_SESSION['user'];
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
