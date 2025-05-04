@@ -17,13 +17,15 @@
 
 <body>
   <div class="perfil-topo">
-    <img src="img/adan.png" alt="Foto de Perfil" />
-    <span>Arthur</span>
+    <img id="perfil-img" src="img/placeholder.png" alt="Foto de Perfil" />
+    <span id="perfil-nome">Usuário</span>
     <div class="perfil-menu">
       <button onclick="window.location.href='/perfil'">Perfil</button>
       <button onclick="logout()">Logout</button>
     </div>
   </div>
+
+ 
 
   <!-- Sidebar -->
   <nav>
@@ -56,10 +58,10 @@
     <form onsubmit="criarPost(event)" class="post" id="newPost" style="display: none;">
       <div class="postHeader">
         <div class="postIcon">
-          <img src="img/adan.png" width="70px" alt="Foto de Perfil" />
+          <img id="newPost-img" src="img/placeholder.png" width="70px" alt="Foto de Perfil" />
         </div>
         <div class="postNnD">
-          <h1 id="postUserName">Arthur Sales Major</h1>
+          <h1 id="newPost-name">Usuário</h1>
           <p id="postDate">12/02/2025</p>
         </div>
         <button type="button" class="closeBtn"><i class="fas fa-times"></i></button>
@@ -289,6 +291,21 @@
       }
     }
   </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      // Topo
+      document.getElementById('perfil-nome').textContent = user.name || 'Usuário';
+      document.getElementById('perfil-img').src = user.profilePicture || 'img/placeholder.png';
+
+      // Novo Post
+      document.getElementById('newPost-name').textContent = user.name || 'Usuário';
+      document.getElementById('newPost-img').src = user.profilePicture || 'img/placeholder.png';
+    }
+      });
+</script>
 </body>
 
 </html>
