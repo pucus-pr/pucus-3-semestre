@@ -295,6 +295,12 @@
         return;
       }
 
+      const palavras = texto.split(/\s+/).filter(p => p.length > 0); // separa por espaços e remove vazios
+      if (palavras.length < 5) {
+        alert("Seu post precisa ter no mínimo 5 palavras.");
+        return;
+      }
+
       const user = JSON.parse(localStorage.getItem('user'));
       const nome = user?.name || "Usuário";
       const foto = user?.profilePicture || "img/placeholder.png";
