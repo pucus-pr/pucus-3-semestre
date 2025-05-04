@@ -7,12 +7,25 @@ class Post extends Model {
         $sql = '
             SELECT posts.*, 
                    users.name AS user_name, 
-                   users.image AS user_image
+                   users.image AS user_image,
+                   GROUP_CONCAT(tags_posts.tag_id) AS tags
             FROM posts
             JOIN users ON posts.user_id = users.id
+            LEFT JOIN tags_posts ON posts.id = tags_posts.post_id
+            GROUP BY posts.id
         ';
-        return self::query($sql, []);
+    
+        $posts = self::query($sql, []);
+    
+        // Converter a string de tags em array
+        foreach ($posts as &$post) {
+            $post['tags'] = $post['tags'] ? array_map('intval', explode(',', $post['tags'])) : [];
+        }
+    
+        return $posts;
     }
+    
+    
     
     public static function find($id) {
         $sql = 'SELECT * FROM posts WHERE id = ?';
