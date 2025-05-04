@@ -20,7 +20,7 @@
         <li><a href="home"><i class="fa fa-home"></i> home</a></li>
         <li><a href="#"><i class="fa fa-book"></i> placeholder</a></li>
         <li><a href="#"><i class="fa fa-users"></i> placeholder</a></li>
-        <li><a href="perfil"><i class="fa fa-phone"></i> configuração</a></li>
+        <li><a href="perfil"><i class="bi bi-person-lines-fill"></i> Perfil</a></li>
     </ul>
 </nav>
 
@@ -152,6 +152,7 @@
   function createPostElement(post) {
     const postElement = document.createElement('div');
     postElement.classList.add('post');
+    postElement.dataset.postId = post.id
 
     // Formata a data
     const postDate = new Date(post.created_at);
@@ -191,10 +192,146 @@
       </div>
     `;
 
+    postElement.innerHTML += `
+        <div class="editTagsModal" style="display:none;">
+            <div class="editTagsContent">
+                <h3>Editar Tags</h3>
+                <div class="tagsCheckboxes">
+                    <label><input type="checkbox" value="1"> <i class="bi bi-shield-fill-exclamation"></i> Tag 1</label>
+                    <label><input type="checkbox" value="2"> <i class="bi bi-pc-display-horizontal"></i> Tag 2</label>
+                    <label><input type="checkbox" value="3"> <i class="bi bi-stars"></i> Tag 3</label>
+                    <label><input type="checkbox" value="4"> <i class="bi bi-building-fill"></i> Tag 4</label>
+                    <label><input type="checkbox" value="5"> <i class="bi bi-exclamation-triangle-fill"></i> Tag 5</label>
+                </div>
+                <div class="editTagsActions">
+                    <button class="cancelEditTags">Cancelar</button>
+                    <button class="confirmEditTags">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    `;
+
     // Adiciona funcionalidade de deletar post
 
+    const threeDotsBtn = postElement.querySelector('.threeDotsBtn');
+    const postActions = postElement.querySelector('.postActions');
+    
+    threeDotsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Alterna a visibilidade do menu de ações
+        postActions.style.display = postActions.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Adiciona evento para deletar post
+    const deletePostBtn = postElement.querySelector('.deletePostBtn');
+    deletePostBtn.addEventListener('click', async () => {
+        if(confirm('Tem certeza que deseja deletar este post?')) {
+            try {
+                const response = await fetch(`/api/posts/${post.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                
+                if(response.ok) {
+                    postElement.remove();
+                } else {
+                    alert('Erro ao deletar post');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao deletar post');
+            }
+        }
+    });
+
+    // Fecha o menu de ações quando clicar fora
+    document.addEventListener('click', (e) => {
+        if(!postElement.contains(e.target)) {
+            postActions.style.display = 'none';
+        }
+    });
+
+    const editPostBtn = postElement.querySelector('.editPostBtn');
+    editPostBtn.addEventListener('click', () => {
+        const editModal = postElement.querySelector('.editTagsModal');
+        const checkboxes = editModal.querySelectorAll('input[type="checkbox"]');
+        
+        // Marca as checkboxes baseado nas tags atuais do post
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = post.tags && post.tags.some(tag => 
+                (typeof tag === 'object' ? tag.id : tag) == checkbox.value
+            );
+        });
+        
+        editModal.style.display = 'block';
+        postActions.style.display = 'none'; // Fecha o menu de ações
+    });
+
+    // Adiciona eventos para os botões do modal
+    const cancelBtn = postElement.querySelector('.cancelEditTags');
+    cancelBtn.addEventListener('click', () => {
+        postElement.querySelector('.editTagsModal').style.display = 'none';
+    });
+
+    const confirmBtn = postElement.querySelector('.confirmEditTags');
+confirmBtn.addEventListener('click', async () => {
+    const selectedTags = [...postElement.querySelectorAll('.tagsCheckboxes input:checked')]
+        .map(cb => parseInt(cb.value));
+    
+    try {
+        const response = await fetch(`/api/updatePostTags/${post.id}`, {
+            method: 'PUT',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // Garante que queremos JSON de volta
+            },
+            body: JSON.stringify({ tags: selectedTags })
+        });
+
+        // Verifica primeiro o tipo de conteúdo
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            throw new Error(`Resposta não é JSON: ${text.substring(0, 100)}...`);
+        }
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Erro ao atualizar tags');
+        }
+
+        // Atualiza a visualização
+        postElement.querySelector('.tags').innerHTML = convertTagsToIcons(selectedTags);
+        postElement.querySelector('.editTagsModal').style.display = 'none';
+        
+        // Atualiza o post no array global se existir
+        if (window.userPosts) {
+            const postIndex = window.userPosts.findIndex(p => p.id === post.id);
+            if (postIndex !== -1) {
+                window.userPosts[postIndex].tags = selectedTags;
+            }
+        }
+        
+    } catch (error) {
+        console.error('Erro ao atualizar tags:', error);
+        alert(error.message || 'Erro ao atualizar tags');
+    }
+});
+
+    // Fecha o modal quando clicar fora
+    const editModal = postElement.querySelector('.editTagsModal');
+    editModal.addEventListener('click', (e) => {
+        if(e.target === editModal) {
+            editModal.style.display = 'none';
+        }
+    });
+
     return postElement;
-  }
+}
 
   
 
@@ -326,30 +463,6 @@ if (!user.id) {
 }
 </script>
 
-
-<script>
-  const threeDotsBtn = novoPost.querySelector('.threeDotsBtn');
-  const postActions = novoPost.querySelector('.postActions');
-  const editPostBtn = novoPost.querySelector('.editPostBtn');
-  const deletePostBtn = novoPost.querySelector('.deletePostBtn');
-
-
-
-  threeDotsBtn.addEventListener('click', function () {
-        postActions.style.display = postActions.style.display === 'none' ? 'block' : 'none';
-      });
-
-      editPostBtn.addEventListener('click', function () {
-        alert('Função de editar post ainda não implementada.');
-      });
-
-      deletePostBtn.addEventListener('click', function () {
-        if (confirm('Tem certeza que deseja apagar esta publicação?')) {
-          novoPost.remove();
-        }
-      });
-      
-</script>
 
 
 
