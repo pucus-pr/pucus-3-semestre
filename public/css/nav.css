@@ -131,7 +131,7 @@ nav ul li a:hover:before {
 }
 
 .postIcon {
-    width: 70px; /* Definido pelo tamanho da imagem */
+    width: 60px; /* Definido pelo tamanho da imagem */
     margin-right: 15px;
 }
 
@@ -615,4 +615,63 @@ nav ul li a:hover:before {
 
   .cuzma{
     display: none;
+  }
+
+
+  /* Estilos para o formulário de edição */
+.edit-post-form {
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin: 10px 0;
+  }
+  
+  .edit-post-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .edit-tags-container {
+    margin: 15px 0;
+  }
+  
+  .edit-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+  }
+  
+  .edit-tags-list label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+  
+  .edit-post-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .edit-post-buttons button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .cancel-edit-btn {
+    background: #f0f0f0;
+  }
+  
+  .save-edit-btn {
+    background: #4CAF50;
+    color: white;
   }

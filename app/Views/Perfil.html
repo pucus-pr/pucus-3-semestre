@@ -48,39 +48,8 @@
         
 
       </div>
-
-      <!-- <div class="post">
-        <div class="postHeader">
-          <div class="postIcon">
-            <img src="img/adan.png" width="70px" alt="">
-          </div>
-          <div class="postNnD">
-            <h1>Arthur Sales Major</h1>
-            <p></p>
-          </div>
-          <div class="postDescription">
-            <p>Eu amo o pucus!</p>
-          </div>
-        </div>
-        <div class="postmid">
-          <img src="img/adan.png" alt="">
-        </div>
-        <div class="postBot">
-          <div class="upVolt">
-            <i class="bi bi-arrow-up"></i>
-          </div>
-          <div class="tags">
-            <i class="bi bi-shield-fill-exclamation"></i>
-            <i class="bi bi-pc-display-horizontal"></i>
-            <i class="bi bi-stars"></i>
-            <i class="bi bi-building-fill"></i>
-            <i class="bi bi-exclamation-triangle-fill"></i>
-          </div>
-          <div class="downVolt">
-            <i class="bi bi-arrow-down"></i>
-          </div>
-        </div>
-      </div> -->
+        <!-- Os posts tem q estar aqui -->
+      
     </div>
   </div>
 
@@ -160,28 +129,227 @@
   </script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) return;
+  // Mapeamento de tags para ícones (mantido igual)
+  const tagIcons = {
+    1: '<i class="bi bi-shield-fill-exclamation"></i>',
+    2: '<i class="bi bi-pc-display-horizontal"></i>',
+    3: '<i class="bi bi-stars"></i>',
+    4: '<i class="bi bi-building-fill"></i>',
+    5: '<i class="bi bi-exclamation-triangle-fill"></i>'
+  };
 
-    // Dados básicos
-    document.getElementById("profile-name").textContent = user.name || "Usuário";
-    document.getElementById("profile-email").textContent = user.email ? `${user.email}` : "email";
-    document.getElementById("profile-bio").textContent = user.bio || ""; // Pode vir em branco
-    document.getElementById("profile-course").textContent = user.identifier || "Curso não definido";
+  // Função para converter tags em ícones (mantido igual)
+  function convertTagsToIcons(tags) {
+    if (!tags || !Array.isArray(tags)) return '';
+    
+    return tags.map(tag => {
+      const tagId = typeof tag === 'object' ? tag.id : tag;
+      return tagIcons[tagId] || `<span>${tagId}</span>`;
+    }).join('');
+  }
+
+  // Função para criar elementos de postagem - AJUSTADA PARA PÁGINA DE PERFIL
+  function createPostElement(post) {
+    const postElement = document.createElement('div');
+    postElement.classList.add('post');
+
+    // Formata a data
+    const postDate = new Date(post.created_at);
+    const formattedDate = `${postDate.getDate()}/${postDate.getMonth() + 1}/${postDate.getFullYear()}`;
+
+    // Converte as tags em ícones
+    const tags = post.tags || [];
+    const tagsHtml = convertTagsToIcons(tags);
+    
+    const imageHtml = post.image ? 
+      `<div class="postmid"><img src="${post.image.replace(/\\/g, '/').replace('C:/xampp/htdocs/pucus/app/Models/../../public/', '')}" alt="Imagem do Post"></div>` : 
+      '';
+
+    postElement.innerHTML = `
+      <div class="postHeader">
+        <div class="postIcon">
+          <img src="${post.user_image || 'img/placeholder-profile.jpg'}" width="70px" alt="Foto de Perfil">
+        </div>
+        <div class="postNnD">
+          <h1>${post.user_name || 'Usuário'}</h1>
+          <p>${formattedDate}</p>
+        </div>
+        <button class="threeDotsBtn"><i class="bi bi-three-dots"></i></button>
+          <div class="postActions" style="display:none;">
+            <button class="editPostBtn">Editar</button>
+            <button class="deletePostBtn">Apagar</button>
+          </div>
+      </div>
+      <div class="postDescription">
+        <p>${post.text || ''}</p>
+      </div>
+      ${imageHtml}
+      <div class="postBot">
+        <div class="upVolt"><i class="bi bi-arrow-up"></i></div>
+        <div class="tags">${tagsHtml}</div>
+        <div class="downVolt"><i class="bi bi-arrow-down"></i></div>
+      </div>
+    `;
+
+    // Adiciona funcionalidade de deletar post
+
+    return postElement;
+  }
+
+  
+
+
+
+
+
+
+  // Carrega posts do usuário logado
+  async function loadUserPosts() {
+  try {
+    // Recupera o usuário do localStorage
+    const userString = localStorage.getItem('user');
+    if (!userString) {
+      throw new Error('Nenhum usuário encontrado no localStorage');
+    }
+
+    const user = JSON.parse(userString);
+    
+    if (!user || !user.id) {
+      throw new Error('ID do usuário não encontrado');
+    }
+
+    const response = await fetch(`/api/get-posts-by-user-id`);
+    
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Verifica e converte os posts para array
+    let posts = [];
+    if (Array.isArray(data)) {
+      posts = data;
+    } else if (data && typeof data === 'object') {
+      // Tenta extrair posts de diferentes estruturas de resposta
+      posts = data.posts || data.data || data.result || [];
+    }
+    
+    const postsContainer = document.getElementById('posts-container');
+    postsContainer.innerHTML = '';
+    
+    if (posts.length === 0) {
+      postsContainer.innerHTML = '<div class="no-posts">Você ainda não fez nenhum post</div>';
+    } else {
+      // Ordena apenas se for array
+      if (Array.isArray(posts)) {
+        posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      }
+      
+      posts.forEach(post => {
+        postsContainer.appendChild(createPostElement(post));
+      });
+    }
+    
+  } catch (error) {
+    console.error('Erro ao carregar posts:', error);
+    document.getElementById('posts-container').innerHTML = `
+      <div class="error-message">
+        Ocorreu um erro ao carregar seus posts.<br>
+        ${error.message}<br>
+        <button onclick="location.reload()">Recarregar</button>
+      </div>
+    `;
+  }
+}
+  // Carrega os dados quando a página é aberta
+  document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const userString = localStorage.getItem('user');
+    if (!userString) {
+      throw new Error('Por favor, faça login para acessar esta página');
+    }
+
+    const user = JSON.parse(userString);
+    
+    // Verifica se o objeto user tem as propriedades mínimas necessárias
+    if (!user.id || !user.name) {
+      throw new Error('Dados do usuário incompletos');
+    }
+
+    // Preenche os dados do perfil
+    document.getElementById("profile-name").textContent = user.name;
+    document.getElementById("profile-email").textContent = user.email || "E-mail não cadastrado";
+    document.getElementById("profile-bio").textContent = user.bio || "Nenhuma bio fornecida";
+    document.getElementById("profile-course").textContent = user.course || user.identifier || "Curso não definido";
 
     // Imagens
     document.getElementById("profile-img").src = user.profilePicture || "img/placeholder-profile.jpg";
     document.getElementById("banner-img").src = user.banner || "img/placeholder-banner.jpg";
 
-    // Se quiser, pode preencher os campos do modal também:
-    document.getElementById("username").value = user.name || "";
-    document.getElementById("userhandle").value = user.email || "";
-    document.getElementById("bio").value = user.bio || "";
-    document.getElementById("course").value = user.identifier || "";
-  });
+    // Preenche o formulário de edição
+    if (document.getElementById("username")) {
+      document.getElementById("username").value = user.name || "";
+      document.getElementById("userhandle").value = user.email || "";
+      document.getElementById("bio").value = user.bio || "";
+      document.getElementById("course").value = user.course || user.identifier || "";
+    }
+
+    // Carrega os posts
+    loadUserPosts();
+
+  } catch (error) {
+    console.error('Erro ao carregar página:', error);
+    document.body.innerHTML = `
+      <div style="text-align: center; padding: 50px;">
+        <h2>Erro ao carregar a página</h2>
+        <p>${error.message}</p>
+        <button onclick="window.location.href='/login.html'" 
+                style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px;">
+          Fazer login
+        </button>
+      </div>
+    `;
+  }
+});
+
+
+
+// Debug: Verifica o conteúdo do localStorage
+console.log('Conteúdo do localStorage:', localStorage.getItem('user'));
+
+// Debug: Verifica se está logado
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+console.log('Usuário logado:', user);
+if (!user.id) {
+  console.error('Usuário não tem ID:', user);
+}
 </script>
 
+
+<script>
+  const threeDotsBtn = novoPost.querySelector('.threeDotsBtn');
+  const postActions = novoPost.querySelector('.postActions');
+  const editPostBtn = novoPost.querySelector('.editPostBtn');
+  const deletePostBtn = novoPost.querySelector('.deletePostBtn');
+
+
+
+  threeDotsBtn.addEventListener('click', function () {
+        postActions.style.display = postActions.style.display === 'none' ? 'block' : 'none';
+      });
+
+      editPostBtn.addEventListener('click', function () {
+        alert('Função de editar post ainda não implementada.');
+      });
+
+      deletePostBtn.addEventListener('click', function () {
+        if (confirm('Tem certeza que deseja apagar esta publicação?')) {
+          novoPost.remove();
+        }
+      });
+      
+</script>
 
 
 
