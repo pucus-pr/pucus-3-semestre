@@ -80,16 +80,4 @@ class UserController {
             ];
         }
     }
-
-    public function createImage() {
-        $imageDir = __DIR__ . '/../../public/img/';
-        $imageName = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $imagePath = $imageDir . $imageName;
-
-        move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
-
-        $_POST['image'] = $imagePath;
-
-        User::create($_POST);
-    }
 }
