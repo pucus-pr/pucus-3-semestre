@@ -52,7 +52,12 @@
 						<i class='bx bxs-user'></i>
 					</div>
 					<div class="input-box">
-						<input type="text" name="identifier" placeholder="Departamento" required>
+						<select name="identifier" class="departamento" id="departamento">
+							<option value="segurança">Segurança</option>
+							<option value="TI">TI</option>
+							<option value="Limpeza">Limpeza</option>
+							<option value="Estrutura">Estrutura</option>
+						</select>
 						<i class='bx bxs-buildings'></i>
 					</div>
 					<div class="input-box">
@@ -72,7 +77,7 @@
 						<i class='bx bxs-user'></i>
 					</div>
 					<div class="input-box">
-						<input type="text" name="identifier" placeholder="uuuuhhhhhh" required>
+						<input type="text" name="identifier" placeholder="Bloco" required>
 						<i class='bx bxs-buildings'></i>
 					</div>
 					<div class="input-box">
@@ -156,48 +161,60 @@
 		});
 
 		document.getElementById('cadastroForm').addEventListener('submit', async function (e) {
-			e.preventDefault();
+    e.preventDefault();
 
-			const formElement = document.getElementById('cadastro-' + tipoSelecionado);
-			const inputs = formElement.querySelectorAll('input');
-			const formData = new FormData();
+    const formElement = document.getElementById('cadastro-' + tipoSelecionado);
+    const formData = new FormData();
 
-			inputs.forEach(input => {
-				if (input.value.trim() !== '') {
-					formData.append(input.name, input.value);
-				}
-			});
+    // Captura todos os inputs (incluindo select)
+    const inputs = formElement.querySelectorAll('input, select');
+    
+    inputs.forEach(input => {
+        if (input.value.trim() !== '') {
+            // Para select, usa o name e value corretamente
+            if (input.tagName === 'SELECT') {
+                formData.append(input.name, input.value);
+            } else {
+                formData.append(input.name, input.value);
+            }
+        }
+    });
 
-			if (tipoSelecionado == "aluno") {
-				formData.append("access_level", "1");
-			} else if (tipoSelecionado == "coordenador") {
-				formData.append("access_level", "3");
-			} else if (tipoSelecionado == "funcionario") {
-				formData.append("access_level", "2");
-			}
-			formData.append("image", "img/defaultProfilePicture.jpg");
+    // Adiciona access_level conforme o tipo
+    if (tipoSelecionado === "aluno") {
+        formData.append("access_level", "1");
+    } else if (tipoSelecionado === "coordenador") {
+        formData.append("access_level", "3");
+    } else if (tipoSelecionado === "funcionario") {
+        formData.append("access_level", "2");
+    }
+    
+    // Adiciona imagem padrão
+    formData.append("image", "img/defaultProfilePicture.jpg");
 
-			const urlParams = new URLSearchParams(formData);
+    try {
+        const response = await fetch('/api/register', {
+            method: 'POST',
+            body: formData  // Envia FormData diretamente, não converta para URLSearchParams
+        });
 
-			urlParams.forEach((value, key) => {
-				console.log(value);
-				console.log(key);
-			});
+        const data = await response.json();
 
-			const response = await fetch('/api/register', {
-				method: 'POST',
-				body: urlParams
-			});
+        if (!response.ok) {
+            throw new Error(data.message || 'Erro no cadastro');
+        }
 
-			const data = await response.json();
-
-			if (data.status == "success") {
-				alert('Cadastro realizado com sucesso!');
-				window.location.href = "login"; // redireciona para o login depois
-			} else {
-				alert(data.message);
-			}
-		});
+        if (data.status === "success") {
+            alert('Cadastro realizado com sucesso!');
+            window.location.href = "login";
+        } else {
+            alert(data.message || 'Erro desconhecido');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert(error.message || 'Erro ao processar cadastro');
+    }
+});
 	</script>
 </body>
 

@@ -25,6 +25,13 @@ body {
     overflow: hidden;
 }
 
+.departamento{
+   width: 285px;
+   height: 100%;
+   color: #333;
+   background: #fff;
+}
+
 .form-box {
     position: absolute;
     right: 0;

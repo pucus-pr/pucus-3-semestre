@@ -91,22 +91,44 @@
 
   <!-- JavaScript -->
   <script>
+    // Mapeamento de tags para ícones (ADICIONADO)
+    const tagIcons = {
+      1: '<i class="bi bi-shield-fill-exclamation"></i>',
+      2: '<i class="bi bi-pc-display-horizontal"></i>',
+      3: '<i class="bi bi-stars"></i>',
+      4: '<i class="bi bi-building-fill"></i>',
+      5: '<i class="bi bi-exclamation-triangle-fill"></i>',
+      6: '<i class="bi bi-x-circle"></i>',
+      7: '<i class="bi bi-clock-history"></i>',
+      8: '<i class="bi bi-check2"></i>'
+
+  };
+
+
+    // Função para converter tags em ícones (ADICIONADO)
+    function convertTagsToIcons(tags) {
+      if (!tags || !Array.isArray(tags)) return '';
+      
+      return tags.map(tag => {
+        const tagId = typeof tag === 'object' ? tag.id : tag;
+        return tagIcons[tagId] || `<span>${tagId}</span>`;
+      }).join('');
+    }
+
     let imagemBase64 = '';
 
-    // Função para criar elementos de postagem
+    // Função para criar elementos de postagem (MODIFICADA para usar ícones)
     function createPostElement(post) {
       const postElement = document.createElement('div');
       postElement.classList.add('post');
 
-      // Verifica se post.tags existe e é um array
+      // Converte as tags em ícones (MODIFICADO)
       const tags = post.tags || [];
-      const tagsHtml = tags.map(tag => `<button class="tag">${tag.name || tag}</button>`).join('');
+      const tagsHtml = convertTagsToIcons(tags);
       
       const imageHtml = post.image ? `<div class="postmid"><img src="${post.image}" alt="Imagem do Post"></div>` : '';
 
       const nome = post.user_name || "undefined";
-
-
 
       postElement.innerHTML = `
         <div class="postHeader">
@@ -159,6 +181,7 @@
       return postElement;
     }
 
+    // Restante do código permanece EXATAMENTE IGUAL...
     // Carrega posts ao iniciar
     async function loadPosts() {
       try {
@@ -355,7 +378,7 @@
       });
 
       editPostBtn.addEventListener('click', function () {
-        alert('Função de editar post ainda não implementada.');
+        console.log('meu saco');
       });
 
       deletePostBtn.addEventListener('click', function () {
