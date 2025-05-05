@@ -131,14 +131,16 @@ nav ul li a:hover:before {
 }
 
 .postIcon {
-    width: 60px; /* Definido pelo tamanho da imagem */
+    width: 60px;
+    height: 60px; /* Definido pelo tamanho da imagem */
     margin-right: 15px;
+    display: flex;
 }
 
 .postIcon img {
     border-radius: 50%;
-    width: 100%;
-    height: auto;
+    width: 70px;
+    height: 70px;
 }
 
 .postNnD {
