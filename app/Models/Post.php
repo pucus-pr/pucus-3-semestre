@@ -4,6 +4,18 @@ namespace App\Models;
 
 class Post extends Model {
     public static function all() {
+        $user = User::find($_SESSION['user'])[0];
+    
+        // Mapeamento de identifier para tag_id
+        $identifierTagMap = [
+            'Segurança' => 1,
+            'TI' => 2,
+            'Limpeza' => 3,
+            'Estrutura' => 4,
+            'Alerta Geral' => 5
+        ];
+    
+        // Base da query
         $sql = '
             SELECT posts.*, 
                    users.name AS user_name, 
@@ -12,11 +24,26 @@ class Post extends Model {
             FROM posts
             JOIN users ON posts.user_id = users.id
             LEFT JOIN tags_posts ON posts.id = tags_posts.post_id
+        ';
+    
+        $params = [];
+    
+        // Adiciona filtro se o usuário for de nível 2
+        if ($user['access_level'] == 2 && isset($identifierTagMap[$user['identifier']])) {
+            $tagId = $identifierTagMap[$user['identifier']];
+            $sql .= ' WHERE posts.id IN (
+                SELECT post_id FROM tags_posts WHERE tag_id = ?
+            )';
+            $params[] = $tagId;
+        }
+    
+        // Finaliza a query
+        $sql .= '
             GROUP BY posts.id
             ORDER BY posts.id DESC
         ';
     
-        $posts = self::query($sql, []);
+        $posts = self::query($sql, $params);
     
         // Converter a string de tags em array
         foreach ($posts as &$post) {
@@ -25,6 +52,7 @@ class Post extends Model {
     
         return $posts;
     }
+    
     
     public static function find($id) {
         $sql = 'SELECT * FROM posts WHERE id = ?';
