@@ -11,8 +11,7 @@ class Post extends Model {
             'Segurança' => 1,
             'TI' => 2,
             'Limpeza' => 3,
-            'Estrutura' => 4,
-            'Alerta Geral' => 5
+            'Estrutura' => 4
         ];
     
         // Base da query
@@ -29,12 +28,22 @@ class Post extends Model {
         $params = [];
     
         // Adiciona filtro se o usuário for de nível 2
-        if ($user['access_level'] == 2 && isset($identifierTagMap[$user['identifier']])) {
-            $tagId = $identifierTagMap[$user['identifier']];
+        if ($user['access_level'] == 2) {
+            $whereTags = [];
+    
+            // Se o identificador tiver tag específica
+            if (isset($identifierTagMap[$user['identifier']])) {
+                $whereTags[] = 'tag_id = ?';
+                $params[] = $identifierTagMap[$user['identifier']];
+            }
+    
+            // Sempre incluir Alerta Geral (tag 5)
+            $whereTags[] = 'tag_id = ?';
+            $params[] = 5;
+    
             $sql .= ' WHERE posts.id IN (
-                SELECT post_id FROM tags_posts WHERE tag_id = ?
+                SELECT post_id FROM tags_posts WHERE ' . implode(' OR ', $whereTags) . '
             )';
-            $params[] = $tagId;
         }
     
         // Finaliza a query
@@ -52,6 +61,7 @@ class Post extends Model {
     
         return $posts;
     }
+    
     
     
     public static function find($id) {
