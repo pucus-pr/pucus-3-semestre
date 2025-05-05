@@ -4,7 +4,7 @@ Este é o projeto **Pucus**, uma aplicação desenvolvida para melhorar a comuni
 
 ## Requisitos
 
-- XAMPP
+- Servidor APACHE
 
 ## Instalação
 
