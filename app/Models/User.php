@@ -26,10 +26,20 @@ class User extends Model {
                 ]
             ];
         } catch (\Exception $e) {
+            $errorMessage = $e->getMessage();
+        
+            if (strpos($errorMessage, "Duplicate entry") !== false && strpos($errorMessage, "users.email") !== false) {
+                return [
+                    'status' => 'error',
+                    'message' => 'E-mail já cadastrado!',
+                    'data' => null
+                ];
+            }
+        
             return [
                 'status' => 'error',
                 'message' => 'Erro ao criar o usuário!',
-                'data' => $e->getMessage()
+                'data' => $errorMessage
             ];
         }
     }
