@@ -82,30 +82,31 @@
 
 		// Se quiser redirecionar ao sucesso:
 		if (data.status === 'success') {
-  const userData = data2.data;
+			const userData = data2.data;
 
-  // Salva os dados do usuário como um único objetoposts.sort
-  localStorage.setItem('user', JSON.stringify({
-    name: userData.name,
-	id: userData.id,
-    identifier: userData.identifier,
-    profilePicture: userData.profilePicture,
-    email: userData.email,
-    access_level: userData.access_level
-    }));
+			// Salva os dados do usuário como um único objetoposts.sort
+			localStorage.setItem('user', JSON.stringify({
+				name: userData.name,
+				id: userData.id,
+				identifier: userData.identifier,
+				profilePicture: userData.profilePicture,
+				email: userData.email,
+				access_level: userData.access_level
+			}));
 
-	const user = JSON.parse(localStorage.getItem('user'))
-	if (user.access_level == 3){
-		window.location.href = '/homeADM';
-	}else if (user.access_level == 1){
-		window.location.href = '/home';
-	}else if (user.access_level == 2){
-		window.location.href = '/home'
-	}
-
-    } else {
-      alert(data.message);
-    }
+			const user = JSON.parse(localStorage.getItem('user'))
+			if (user.access_level == 3) {
+				window.location.href = '/homeADM';
+			} else if (user.access_level == 1) {
+				window.location.href = '/home';
+			} else if (user.access_level == 2) {
+				window.location.href = '/home'
+			} else if (user.access_level == 4) {
+				window.location.href = '/homeADM'
+			}
+		} else {
+			alert(data.message);
+		}
 
 	});
 </script>

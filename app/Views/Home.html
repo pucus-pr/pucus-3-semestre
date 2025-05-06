@@ -102,17 +102,17 @@
       7: '<i class="bi bi-clock-history"></i>',
       8: '<i class="bi bi-check2"></i>'
 
-  };
+    };
 
     // Função para converter tags em ícones
     function convertTagsToIcons(tags) {
-        if (!tags || !Array.isArray(tags)) return '';
-        
-        return tags.map(tag => {
-            // Se a tag for um objeto com propriedade id, usa o id
-            const tagId = typeof tag === 'object' ? tag.id : tag;
-            return tagIcons[tagId] || `<span>${tagId}</span>`;
-        }).join('');
+      if (!tags || !Array.isArray(tags)) return '';
+
+      return tags.map(tag => {
+        // Se a tag for um objeto com propriedade id, usa o id
+        const tagId = typeof tag === 'object' ? tag.id : tag;
+        return tagIcons[tagId] || `<span>${tagId}</span>`;
+      }).join('');
     }
 
     // Função para criar elementos de postagem - ATUALIZADA
@@ -123,7 +123,7 @@
       // Converte as tags em ícones
       const tags = post.tags || [];
       const tagsHtml = convertTagsToIcons(tags);
-      
+
       const imageHtml = post.image ? `<div class="postmid"><img src="${post.image}" alt="Imagem do Post"></div>` : '';
 
       postElement.innerHTML = `
@@ -150,33 +150,32 @@
 
       return postElement;
     }
-    
 
     // Carrega posts ao iniciar
     async function loadPosts() {
       try {
         const response = await fetch('/api/posts');
-        
+
         if (!response.ok) {
           throw new Error(`Erro HTTP: ${response.status}`);
         }
-        
+
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
           throw new TypeError("A resposta não é JSON");
         }
-        
-        const data = await response.json();
-        
-        // Verifica se data é um array, se não for, tenta converter
-        const posts = Array.isArray(data) ? data : 
-                     (data.posts ? data.posts : 
-                     (data.results ? data.results : []));
 
-        
+        const data = await response.json();
+
+        // Verifica se data é um array, se não for, tenta converter
+        const posts = Array.isArray(data) ? data :
+          (data.posts ? data.posts :
+            (data.results ? data.results : []));
+
+
         const midiaSection = document.querySelector('.midia');
         midiaSection.innerHTML = '';
-        
+
         if (posts.length === 0) {
           midiaSection.innerHTML = '<div class="no-posts">Nenhum post encontrado</div>';
         } else {
@@ -184,7 +183,7 @@
             midiaSection.appendChild(createPostElement(post));
           });
         }
-        
+
       } catch (error) {
         console.error('Erro ao carregar posts:', error);
         const midiaSection = document.querySelector('.midia');
@@ -203,7 +202,6 @@
         // Topo
         document.getElementById('perfil-nome').textContent = user.name || 'Usuário';
         document.getElementById('perfil-img').src = user.profilePicture;
-        console.log(user)
 
         // Novo Post
         document.getElementById('newPost-name').textContent = user.name || 'Usuário';
@@ -290,8 +288,6 @@
 
     async function criarPost(event) {
       event.preventDefault();
-
-      
 
       const midia = document.querySelector('.midia');
       const texto = document.querySelector('.textt textarea').value.trim();
@@ -420,45 +416,39 @@
     }
   </script>
 
-<script>
-async function updateUserData() {
-  try {
-    const response = await fetch('/api/user', {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+  <script>
+    async function updateUserData() {
+      try {
+        const response = await fetch('/api/user', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao obter dados do usuário');
+        }
+
+        const data = await response.json();
+        const userData = data.data;
+
+        // Atualiza o localStorage com todos os dados necessários
+        localStorage.setItem('user', JSON.stringify({
+          name: userData.name,
+          id: userData.id,
+          identifier: userData.identifier,
+          profilePicture: userData.profilePicture || 'img/default-profile.png',
+          email: userData.email,
+          access_level: userData.access_level
+        }));
+
+        return true;
+      } catch (error) {
+        console.error('Erro ao atualizar dados do usuário:', error);
+        return false;
       }
-    });
-    
-    if (!response.ok) {
-      throw new Error('Erro ao obter dados do usuário');
     }
-    
-    const data = await response.json();
-    const userData = data.data;
-    
-    // Atualiza o localStorage com todos os dados necessários
-    localStorage.setItem('user', JSON.stringify({
-      name: userData.name,
-      id: userData.id,
-      identifier: userData.identifier,
-      profilePicture: userData.profilePicture || 'img/default-profile.png',
-      email: userData.email,
-      access_level: userData.access_level
-    }));
-    
-    // Atualiza a UI imediatamente
-    updateUserUI();
-    
-    return true;
-  } catch (error) {
-    console.error('Erro ao atualizar dados do usuário:', error);
-    return false;
-  }
-}
-updateUserData()
-</script>
-
-  
+    updateUserData()
+  </script>
 </body>
-
 </html>
