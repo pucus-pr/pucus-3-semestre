@@ -1,221 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PUCUS</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/loginCad.css" />
+  </head>
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>PUCUS</title>
-	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-	<link rel="stylesheet" href="css/loginCad.css">
-</head>
+  <body>
+    <div class="container">
+      <div class="form-box cadastro">
+        <form id="cadastroForm">
+          <h1 id="titulo-cadastro">CADASTRO</h1>
 
-<body>
-	<div class="container">
-		<div class="form-box cadastro">
-			<form id="cadastroForm">
-				<h1 id="titulo-cadastro">CADASTRO</h1>
+          <div class="choose-cadastro">
+            <button onclick="showCadastro('aluno', event)" class="btn-tipocad">
+              Sou Aluno
+            </button>
+            <button
+              onclick="showCadastro('funcionario', event)"
+              class="btn-tipocad"
+            >
+              Sou Funcionário
+            </button>
+            <button
+              onclick="showCadastro('coordenador', event)"
+              class="btn-tipocad"
+            >
+              Sou Coordenador
+            </button>
+          </div>
 
-				<div class="choose-cadastro">
-					<button onclick="showCadastro('aluno', event)" class="btn-tipocad">Sou Aluno</button>
-					<button onclick="showCadastro('funcionario', event)" class="btn-tipocad">Sou Funcionário</button>
-					<button onclick="showCadastro('coordenador', event)" class="btn-tipocad">Sou Coordenador</button>
-				</div>
+          <button
+            type="button"
+            id="btn-voltar"
+            style="display: none"
+            onclick="voltarCadastro()"
+          >
+            <i class="bx bx-arrow-back"></i>
+          </button>
 
-				<button type="button" id="btn-voltar" style="display: none;" onclick="voltarCadastro()">
-					<i class='bx bx-arrow-back'></i>
-				</button>
+          <div id="cadastro-aluno" class="cadastro-form" style="display: none">
+            <h2>Cadastro Aluno</h2>
+            <div class="input-box">
+              <input type="text" name="name" placeholder="Username" required />
+              <i class="bx bxs-user"></i>
+            </div>
+            <div class="input-box">
+              <input
+                type="text"
+                name="identifier"
+                placeholder="Curso"
+                required
+              />
+              <i class="bx bxs-graduation"></i>
+            </div>
+            <div class="input-box">
+              <input type="email" name="email" placeholder="E-mail" required />
+              <i class="bx bxs-envelope"></i>
+            </div>
+            <div class="input-box">
+              <input
+                type="password"
+                name="password"
+                placeholder="Senha"
+                required
+              />
+              <i class="bx bxs-lock-alt"></i>
+            </div>
+          </div>
 
-				<div id="cadastro-aluno" class="cadastro-form" style="display:none;">
-					<h2>Cadastro Aluno</h2>
-					<div class="input-box">
-						<input type="text" name="name" placeholder="Username" required>
-						<i class='bx bxs-user'></i>
-					</div>
-					<div class="input-box">
-						<input type="text" name="identifier" placeholder="Curso" required>
-						<i class='bx bxs-graduation'></i>
-					</div>
-					<div class="input-box">
-						<input type="email" name="email" placeholder="E-mail" required>
-						<i class='bx bxs-envelope'></i>
-					</div>
-					<div class="input-box">
-						<input type="password" name="password" placeholder="Senha" required>
-						<i class='bx bxs-lock-alt'></i>
-					</div>
-				</div>
+          <div
+            id="cadastro-funcionario"
+            class="cadastro-form"
+            style="display: none"
+          >
+            <h2>Cadastro Funcionario</h2>
+            <div class="input-box">
+              <input type="text" name="name" placeholder="Username" required />
+              <i class="bx bxs-user"></i>
+            </div>
+            <div class="input-box">
+              <select name="identifier" class="departamento" id="departamento">
+                <option value="segurança">Segurança</option>
+                <option value="TI">TI</option>
+                <option value="Limpeza">Limpeza</option>
+                <option value="Estrutura">Estrutura</option>
+              </select>
+              <i class="bx bxs-buildings"></i>
+            </div>
+            <div class="input-box">
+              <input type="email" name="email" placeholder="E-mail" required />
+              <i class="bx bxs-envelope"></i>
+            </div>
+            <div class="input-box">
+              <input
+                type="password"
+                name="password"
+                placeholder="Senha"
+                required
+              />
+              <i class="bx bxs-lock-alt"></i>
+            </div>
+          </div>
 
-				<div id="cadastro-funcionario" class="cadastro-form" style="display:none;">
-					<h2>Cadastro Funcionario</h2>
-					<div class="input-box">
-						<input type="text" name="name" placeholder="Username" required>
-						<i class='bx bxs-user'></i>
-					</div>
-					<div class="input-box">
-						<select name="identifier" class="departamento" id="departamento">
-							<option value="segurança">Segurança</option>
-							<option value="TI">TI</option>
-							<option value="Limpeza">Limpeza</option>
-							<option value="Estrutura">Estrutura</option>
-						</select>
-						<i class='bx bxs-buildings'></i>
-					</div>
-					<div class="input-box">
-						<input type="email" name="email" placeholder="E-mail" required>
-						<i class='bx bxs-envelope'></i>
-					</div>
-					<div class="input-box">
-						<input type="password" name="password" placeholder="Senha" required>
-						<i class='bx bxs-lock-alt'></i>
-					</div>
-				</div>
+          <div
+            id="cadastro-coordenador"
+            class="cadastro-form"
+            style="display: none"
+          >
+            <h2>Cadastro Coordenador</h2>
+            <div class="input-box">
+              <input type="text" name="name" placeholder="Username" required />
+              <i class="bx bxs-user"></i>
+            </div>
+            <div class="input-box">
+              <input
+                type="text"
+                name="identifier"
+                placeholder="Bloco"
+                required
+              />
+              <i class="bx bxs-buildings"></i>
+            </div>
+            <div class="input-box">
+              <input type="email" name="email" placeholder="E-mail" required />
+              <i class="bx bxs-envelope"></i>
+            </div>
+            <div class="input-box">
+              <input
+                type="password"
+                name="password"
+                placeholder="Senha"
+                required
+              />
+              <i class="bx bxs-lock-alt"></i>
+            </div>
+          </div>
 
-				<div id="cadastro-coordenador" class="cadastro-form" style="display:none;">
-					<h2>Cadastro Coordenador</h2>
-					<div class="input-box">
-						<input type="text" name="name" placeholder="Username" required>
-						<i class='bx bxs-user'></i>
-					</div>
-					<div class="input-box">
-						<input type="text" name="identifier" placeholder="Bloco" required>
-						<i class='bx bxs-buildings'></i>
-					</div>
-					<div class="input-box">
-						<input type="email" name="email" placeholder="E-mail" required>
-						<i class='bx bxs-envelope'></i>
-					</div>
-					<div class="input-box">
-						<input type="password" name="password" placeholder="Senha" required>
-						<i class='bx bxs-lock-alt'></i>
-					</div>
-				</div>
+          <button
+            type="submit"
+            class="btn"
+            id="btn-cadastrar"
+            style="display: none"
+          >
+            Cadastrar-se
+          </button>
+        </form>
+      </div>
 
-				<button type="submit" class="btn" id="btn-cadastrar" style="display: none;">Cadastrar-se</button>
-			</form>
-		</div>
+      <div class="left-box">
+        <div class="leftidk">
+          <h1>Bem vindo!</h1>
+          <p>Já tem uma conta?</p>
+          <button id="login-button" class="btn register-bnt">Login</button>
+        </div>
+      </div>
+    </div>
 
-		<div class="left-box">
-			<div class="leftidk">
-				<h1>Bem vindo!</h1>
-				<p>Já tem uma conta?</p>
-				<button id="login-button" class="btn register-bnt">Login</button>
-			</div>
-		</div>
-	</div>
+    <script>
+      let tipoSelecionado = "";
 
-	<script>
-		let tipoSelecionado = '';
+      function showCadastro(tipo) {
+        tipoSelecionado = tipo;
+        document.getElementById("titulo-cadastro").style.display = "none";
 
-		function showCadastro(tipo) {
-			tipoSelecionado = tipo;
-			document.getElementById('titulo-cadastro').style.display = 'none';
+        document.querySelectorAll(".cadastro-form").forEach((form) => {
+          form.style.display = "none";
+          form.classList.remove("show");
 
-			document.querySelectorAll('.cadastro-form').forEach(form => {
-				form.style.display = 'none';
-				form.classList.remove('show');
+          // Desabilita todos os inputs dos outros formulários
+          form.querySelectorAll("input").forEach((input) => {
+            input.disabled = true;
+          });
+        });
 
-				// Desabilita todos os inputs dos outros formulários
-				form.querySelectorAll('input').forEach(input => {
-					input.disabled = true;
-				});
-			});
+        document.querySelector(".choose-cadastro").style.display = "none";
+        const selectedForm = document.getElementById("cadastro-" + tipo);
+        selectedForm.style.display = "block";
 
-			document.querySelector('.choose-cadastro').style.display = 'none';
-			const selectedForm = document.getElementById('cadastro-' + tipo);
-			selectedForm.style.display = 'block';
+        // Habilita os inputs do formulário atual
+        selectedForm.querySelectorAll("input").forEach((input) => {
+          input.disabled = false;
+        });
 
-			// Habilita os inputs do formulário atual
-			selectedForm.querySelectorAll('input').forEach(input => {
-				input.disabled = false;
-			});
+        setTimeout(() => {
+          selectedForm.classList.add("show");
+        }, 50);
 
-			setTimeout(() => {
-				selectedForm.classList.add('show');
-			}, 50);
+        document.getElementById("btn-cadastrar").style.display = "block";
+        document.getElementById("btn-voltar").style.display = "block";
+      }
 
-			document.getElementById('btn-cadastrar').style.display = 'block';
-			document.getElementById('btn-voltar').style.display = 'block';
-		}
+      function voltarCadastro() {
+        tipoSelecionado = "";
+        document.querySelectorAll(".cadastro-form").forEach((form) => {
+          document.getElementById("titulo-cadastro").style.display = "block";
+          form.style.display = "none";
+          form.classList.remove("show");
 
-		function voltarCadastro() {
-			tipoSelecionado = '';
-			document.querySelectorAll('.cadastro-form').forEach(form => {
-				document.getElementById('titulo-cadastro').style.display = 'block';
-				form.style.display = 'none';
-				form.classList.remove('show');
+          // Habilita tudo de volta (por segurança)
+          form.querySelectorAll("input").forEach((input) => {
+            input.disabled = false;
+          });
+        });
 
-				// Habilita tudo de volta (por segurança)
-				form.querySelectorAll('input').forEach(input => {
-					input.disabled = false;
-				});
-			});
+        document.querySelector(".choose-cadastro").style.display = "flex";
+        document.getElementById("btn-cadastrar").style.display = "none";
+        document.getElementById("btn-voltar").style.display = "none";
+      }
 
-			document.querySelector('.choose-cadastro').style.display = 'flex';
-			document.getElementById('btn-cadastrar').style.display = 'none';
-			document.getElementById('btn-voltar').style.display = 'none';
-		}
+      document
+        .getElementById("login-button")
+        .addEventListener("click", function () {
+          window.location.href = "login";
+        });
 
+      document
+        .getElementById("cadastroForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
 
-		document.getElementById('login-button').addEventListener('click', function () {
-			window.location.href = "login";
-		});
+          const formElement = document.getElementById(
+            "cadastro-" + tipoSelecionado
+          );
+          const formData = new FormData();
 
-		document.getElementById('cadastroForm').addEventListener('submit', async function (e) {
-			e.preventDefault();
+          // Captura todos os inputs (incluindo select)
+          const inputs = formElement.querySelectorAll("input, select");
 
-			const formElement = document.getElementById('cadastro-' + tipoSelecionado);
-			const formData = new FormData();
+          inputs.forEach((input) => {
+            if (input.value.trim() !== "") {
+              // Para select, usa o name e value corretamente
+              if (input.tagName === "SELECT") {
+                formData.append(input.name, input.value);
+              } else {
+                formData.append(input.name, input.value);
+              }
+            }
+          });
 
-			// Captura todos os inputs (incluindo select)
-			const inputs = formElement.querySelectorAll('input, select');
+          // Adiciona access_level conforme o tipo
+          if (tipoSelecionado === "aluno") {
+            formData.append("access_level", "1");
+          } else if (tipoSelecionado === "coordenador") {
+            formData.append("access_level", "3");
+          } else if (tipoSelecionado === "funcionario") {
+            formData.append("access_level", "2");
+          }
 
-			inputs.forEach(input => {
-				if (input.value.trim() !== '') {
-					// Para select, usa o name e value corretamente
-					if (input.tagName === 'SELECT') {
-						formData.append(input.name, input.value);
-					} else {
-						formData.append(input.name, input.value);
-					}
-				}
-			});
+          // Adiciona imagem padrão
+          formData.append("image", "img/defaultProfilePicture.jpg");
 
-			// Adiciona access_level conforme o tipo
-			if (tipoSelecionado === "aluno") {
-				formData.append("access_level", "1");
-			} else if (tipoSelecionado === "coordenador") {
-				formData.append("access_level", "3");
-			} else if (tipoSelecionado === "funcionario") {
-				formData.append("access_level", "2");
-			}
+          try {
+            const response = await fetch("/api/register", {
+              method: "POST",
+              body: formData, // Envia FormData diretamente, não converta para URLSearchParams
+            });
 
-			// Adiciona imagem padrão
-			formData.append("image", "img/defaultProfilePicture.jpg");
+            const data = await response.json();
 
-			try {
-				const response = await fetch('/api/register', {
-					method: 'POST',
-					body: formData  // Envia FormData diretamente, não converta para URLSearchParams
-				});
+            if (!response.ok) {
+              throw new Error(data.message || "Erro no cadastro");
+            }
 
-				const data = await response.json();
-
-				if (!response.ok) {
-					throw new Error(data.message || 'Erro no cadastro');
-				}
-
-				if (data.status === "success") {
-					alert('Cadastro realizado com sucesso!');
-					window.location.href = "login";
-				} else {
-					alert(data.message || 'Erro desconhecido');
-				}
-			} catch (error) {
-				console.error('Erro:', error);
-				alert(error.message || 'Erro ao processar cadastro');
-			}
-		});
-	</script>
-</body>
-
+            if (data.status === "success") {
+              alert("Cadastro realizado com sucesso!");
+              window.location.href = "login";
+            } else {
+              alert(data.message || "Erro desconhecido");
+              if (data.message == "E-mail já cadastrado!") {
+                window.location.href = "login";
+              }
+            }
+          } catch (error) {
+            console.error("Erro:", error);
+            alert(error.message || "Erro ao processar cadastro");
+          }
+        });
+    </script>
+  </body>
 </html>

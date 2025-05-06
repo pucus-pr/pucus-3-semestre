@@ -106,6 +106,9 @@
 			}
 		} else {
 			alert(data.message);
+			if (data.message == "Usuário não existe!") {
+				window.location.href = '/registers'
+			}
 		}
 
 	});

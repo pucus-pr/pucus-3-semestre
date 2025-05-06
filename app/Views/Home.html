@@ -1,144 +1,190 @@
 <!DOCTYPE html>
 <html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PUCUS</title>
+    <link rel="stylesheet" href="css/nav.css" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Ícones -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Fonte -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>PUCUS</title>
-	<link rel="stylesheet" href="css/nav.css" />
-	<link rel="stylesheet" href="style.css" />
-	<!-- Ícones -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-	<!-- Fonte -->
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
-		rel="stylesheet" />
-</head>
+  <body>
+    <div class="perfil-topo">
+      <img id="perfil-img" src="img/placeholder.png" alt="Foto de Perfil" />
+      <span id="perfil-nome">Usuário</span>
+      <div class="perfil-menu">
+        <button onclick="window.location.href='/perfil'">Perfil</button>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
 
-<body>
-	<div class="perfil-topo">
-		<img id="perfil-img" src="img/placeholder.png" alt="Foto de Perfil" />
-		<span id="perfil-nome">Usuário</span>
-		<div class="perfil-menu">
-			<button onclick="window.location.href='/perfil'">Perfil</button>
-			<button onclick="logout()">Logout</button>
-		</div>
-	</div>
+    <!-- Sidebar -->
+    <nav>
+      <ul>
+        <li class="logo">
+          <img alt="Logo" src="img/polvo.png" />
+        </li>
+        <li>
+          <a href="home"><i class="fa fa-home"></i> home</a>
+        </li>
+        <li>
+          <a href="#"><i class="fa fa-book"></i> placeholder</a>
+        </li>
+        <li>
+          <a href="#"><i class="fa fa-users"></i> placeholder</a>
+        </li>
+        <li>
+          <a href="perfil"><i class="bi bi-person-lines-fill"></i> Perfil</a>
+        </li>
+      </ul>
+    </nav>
 
-	<!-- Sidebar -->
-	<nav>
-		<ul>
-			<li class="logo"><img alt="Logo" src="img/polvo.png" /></li>
-			<li><a href="#"><i class="fa fa-home"></i> home</a></li>
-			<li><a href="#"><i class="fa fa-book"></i> placeholder</a></li>
-			<li><a href="#"><i class="fa fa-users"></i> placeholder</a></li>
-			<li><a href="perfil"><i class="bi bi-person-lines-fill"></i> Perfil</a></li>
-		</ul>
-	</nav>
+    <!-- Comunicados -->
+    <section class="comunicados">
+      <div class="comunicado">Novo comunicado: Atualize seu perfil!</div>
+      <div class="comunicado">
+        Lembre-se de verificar as últimas atualizações!
+      </div>
+      <div class="comunicado">Comunicado importante sobre a plataforma!</div>
+    </section>
 
-	<!-- Comunicados -->
-	<section class="comunicados">
-		<div class="comunicado">Novo comunicado: Atualize seu perfil!</div>
-		<div class="comunicado">Lembre-se de verificar as últimas atualizações!</div>
-		<div class="comunicado">Comunicado importante sobre a plataforma!</div>
-	</section>
+    <div id="overlay" class="overlay"></div>
 
-	<div id="overlay" class="overlay"></div>
+    <!-- Área principal -->
+    <section class="midias">
+      <section class="midia"></section>
 
-	<!-- Área principal -->
-	<section class="midias">
-		<section class="midia"></section>
+      <!-- Botão de adicionar post -->
+      <button class="addPostBtn"><i class="fas fa-plus"></i></button>
 
-		<!-- Botão de adicionar post -->
-		<button class="addPostBtn"><i class="fas fa-plus"></i></button>
+      <!-- Formulário de novo post -->
+      <form
+        onsubmit="criarPost(event)"
+        class="post"
+        id="newPost"
+        style="display: none"
+      >
+        <div class="postHeader">
+          <div class="postIcon">
+            <img
+              id="newPost-img"
+              src="img/placeholder.png"
+              width="70px"
+              alt="Foto de Perfil"
+            />
+          </div>
+          <div class="postNnD">
+            <h1 id="newPost-name">Usuário</h1>
+            <p id="postDate">12/02/2025</p>
+          </div>
+          <button type="button" class="closeBtn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
 
-		<!-- Formulário de novo post -->
-		<form onsubmit="criarPost(event)" class="post" id="newPost" style="display: none;">
-			<div class="postHeader">
-				<div class="postIcon">
-					<img id="newPost-img" src="img/placeholder.png" width="70px" alt="Foto de Perfil" />
-				</div>
-				<div class="postNnD">
-					<h1 id="newPost-name">Usuário</h1>
-					<p id="postDate">12/02/2025</p>
-				</div>
-				<button type="button" class="closeBtn"><i class="fas fa-times"></i></button>
-			</div>
+        <div class="textt">
+          <textarea
+            placeholder="No que você está pensando?"
+            rows="4"
+          ></textarea>
+        </div>
 
-			<div class="textt">
-				<textarea placeholder="No que você está pensando?" rows="4"></textarea>
-			</div>
+        <input type="file" id="imagemInput" style="display: none" />
+        <div
+          id="imagemPreviewContainer"
+          style="display: none; margin-top: 10px"
+        >
+          <img
+            id="imagemPreview"
+            src=""
+            alt="Pré-visualização"
+            style="max-width: 100%; max-height: 300px; border-radius: 10px"
+          />
+        </div>
 
-			<input type="file" id="imagemInput" style="display: none;" />
-			<div id="imagemPreviewContainer" style="display:none; margin-top:10px;">
-				<img id="imagemPreview" src="" alt="Pré-visualização"
-					style="max-width: 100%; max-height: 300px; border-radius: 10px;" />
-			</div>
+        <div class="button-group">
+          <button type="button" id="addimgPostBtn">Adicionar Imagem</button>
+          <button type="button" id="moreOptionsBtn">
+            <i class="fas fa-filter"></i> Filtrar
+          </button>
 
-			<div class="button-group">
-				<button type="button" id="addimgPostBtn">Adicionar Imagem</button>
-				<button type="button" id="moreOptionsBtn"><i class="fas fa-filter"></i> Filtrar</button>
+          <div id="moreOptions" style="display: none">
+            <label>Escolha um ou mais temas:</label>
+            <div class="filtros" id="filtrosContainer"></div>
+          </div>
 
-				<div id="moreOptions" style="display: none;">
-					<label>Escolha um ou mais temas:</label>
-					<div class="filtros" id="filtrosContainer"></div>
-				</div>
+          <button type="submit" id="postar">Criar Post</button>
+        </div>
+      </form>
+    </section>
 
-				<button type="submit" id="postar">Criar Post</button>
-			</div>
-		</form>
-	</section>
+    <!-- JavaScript -->
+    <script>
+      // Mapeamento de tags para ícones
+      const tagIcons = {
+        1: '<i class="bi bi-shield-fill-exclamation"></i>',
+        2: '<i class="bi bi-pc-display-horizontal"></i>',
+        3: '<i class="bi bi-stars"></i>',
+        4: '<i class="bi bi-building-fill"></i>',
+        5: '<i class="bi bi-exclamation-triangle-fill"></i>',
+        6: '<i class="bi bi-x-circle"></i>',
+        7: '<i class="bi bi-clock-history"></i>',
+        8: '<i class="bi bi-check2"></i>',
+      };
 
-	<!-- JavaScript -->
-	<script>
-		// Mapeamento de tags para ícones
-		const tagIcons = {
-			1: '<i class="bi bi-shield-fill-exclamation"></i>',
-			2: '<i class="bi bi-pc-display-horizontal"></i>',
-			3: '<i class="bi bi-stars"></i>',
-			4: '<i class="bi bi-building-fill"></i>',
-			5: '<i class="bi bi-exclamation-triangle-fill"></i>',
-			6: '<i class="bi bi-x-circle"></i>',
-			7: '<i class="bi bi-clock-history"></i>',
-			8: '<i class="bi bi-check2"></i>'
+      // Função para converter tags em ícones
+      function convertTagsToIcons(tags) {
+        if (!tags || !Array.isArray(tags)) return "";
 
-		};
+        return tags
+          .map((tag) => {
+            // Se a tag for um objeto com propriedade id, usa o id
+            const tagId = typeof tag === "object" ? tag.id : tag;
+            return tagIcons[tagId] || `<span>${tagId}</span>`;
+          })
+          .join("");
+      }
 
-		// Função para converter tags em ícones
-		function convertTagsToIcons(tags) {
-			if (!tags || !Array.isArray(tags)) return '';
+      // Função para criar elementos de postagem - ATUALIZADA
+      function createPostElement(post) {
+        const postElement = document.createElement("div");
+        postElement.classList.add("post");
 
-			return tags.map(tag => {
-				// Se a tag for um objeto com propriedade id, usa o id
-				const tagId = typeof tag === 'object' ? tag.id : tag;
-				return tagIcons[tagId] || `<span>${tagId}</span>`;
-			}).join('');
-		}
+        // Converte as tags em ícones
+        const tags = post.tags || [];
+        const tagsHtml = convertTagsToIcons(tags);
 
-		// Função para criar elementos de postagem - ATUALIZADA
-		function createPostElement(post) {
-			const postElement = document.createElement('div');
-			postElement.classList.add('post');
+        const imageHtml = post.image
+          ? `<div class="postmid"><img src="${post.image}" alt="Imagem do Post"></div>`
+          : "";
 
-			// Converte as tags em ícones
-			const tags = post.tags || [];
-			const tagsHtml = convertTagsToIcons(tags);
-
-			const imageHtml = post.image ? `<div class="postmid"><img src="${post.image}" alt="Imagem do Post"></div>` : '';
-
-			postElement.innerHTML = `
+        postElement.innerHTML = `
 				<div class="postHeader">
 				<div class="postIcon">
 					<img src="${post.user_image}" alt="Foto de Perfil">
 				</div>
 				<div class="postNnD">
 					<h1>${post.user_name}</h1>
-					<p>${post.created_at || new Date().toLocaleDateString('pt-BR')}</p>
+					<p>${post.created_at || new Date().toLocaleDateString("pt-BR")}</p>
 				</div>
 				<div class="threeDotsBtn cuzma"></div>
 				</div>
 				<div class="postDescription">
-				<p>${post.text || post.content || ''}</p>
+				<p>${post.text || post.content || ""}</p>
 				</div>
 				${imageHtml}
 				<div class="postBot">
@@ -148,174 +194,189 @@
 				</div>
 			`;
 
-			return postElement;
-		}
+        return postElement;
+      }
 
-		// Carrega posts ao iniciar
-		async function loadPosts() {
-			try {
-				const response = await fetch('/api/posts');
+      // Carrega posts ao iniciar
+      async function loadPosts() {
+        try {
+          const response = await fetch("/api/posts");
 
-				if (!response.ok) {
-					throw new Error(`Erro HTTP: ${response.status}`);
-				}
+          if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+          }
 
-				const contentType = response.headers.get('content-type');
-				if (!contentType || !contentType.includes('application/json')) {
-					throw new TypeError("A resposta não é JSON");
-				}
+          const contentType = response.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
+            throw new TypeError("A resposta não é JSON");
+          }
 
-				const data = await response.json();
+          const data = await response.json();
 
-				// Verifica se data é um array, se não for, tenta converter
-				const posts = Array.isArray(data) ? data :
-					(data.posts ? data.posts :
-						(data.results ? data.results : []));
+          // Verifica se data é um array, se não for, tenta converter
+          const posts = Array.isArray(data)
+            ? data
+            : data.posts
+            ? data.posts
+            : data.results
+            ? data.results
+            : [];
 
+          const midiaSection = document.querySelector(".midia");
+          midiaSection.innerHTML = "";
 
-				const midiaSection = document.querySelector('.midia');
-				midiaSection.innerHTML = '';
-
-				if (posts.length === 0) {
-					midiaSection.innerHTML = '<div class="no-posts">Nenhum post encontrado</div>';
-				} else {
-					posts.forEach(post => {
-						midiaSection.appendChild(createPostElement(post));
-					});
-				}
-
-			} catch (error) {
-				console.error('Erro ao carregar posts:', error);
-				const midiaSection = document.querySelector('.midia');
-				midiaSection.innerHTML = `
+          if (posts.length === 0) {
+            midiaSection.innerHTML =
+              '<div class="no-posts">Nenhum post encontrado</div>';
+          } else {
+            posts.forEach((post) => {
+              midiaSection.appendChild(createPostElement(post));
+            });
+          }
+        } catch (error) {
+          console.error("Erro ao carregar posts:", error);
+          const midiaSection = document.querySelector(".midia");
+          midiaSection.innerHTML = `
 				<div class="error-message">
 					Ocorreu um erro ao carregar os posts. Tente recarregar a página.
 				</div>
 				`;
-			}
-		}
+        }
+      }
 
-		document.addEventListener('DOMContentLoaded', async function () {
-			// Carrega informações do usuário
-			const user = JSON.parse(localStorage.getItem('user'));
-			if (user) {
-				// Topo
-				document.getElementById('perfil-nome').textContent = user.name || 'Usuário';
-				document.getElementById('perfil-img').src = user.profilePicture;
+      document.addEventListener("DOMContentLoaded", async function () {
+        // Carrega informações do usuário
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+          // Topo
+          document.getElementById("perfil-nome").textContent =
+            user.name || "Usuário";
+          document.getElementById("perfil-img").src = user.profilePicture;
 
-				// Novo Post
-				document.getElementById('newPost-name').textContent = user.name || 'Usuário';
-				document.getElementById('newPost-img').src = user.profilePicture || 'img/placeholder.png';
-			}
+          // Novo Post
+          document.getElementById("newPost-name").textContent =
+            user.name || "Usuário";
+          document.getElementById("newPost-img").src =
+            user.profilePicture || "img/placeholder.png";
+        }
 
-			const addPostBtn = document.querySelector('.addPostBtn');
-			const newPost = document.getElementById('newPost');
-			const overlay = document.getElementById('overlay');
-			const closeBtn = document.querySelector('.closeBtn');
-			const moreOptionsBtn = document.getElementById('moreOptionsBtn');
-			const moreOptions = document.getElementById('moreOptions');
-			const postTextarea = document.querySelector('#newPost textarea');
-			const addImgBtn = document.getElementById('addimgPostBtn');
-			const imagemInput = document.getElementById('imagemInput');
-			const imagemPreview = document.getElementById('imagemPreview');
-			const imagemPreviewContainer = document.getElementById('imagemPreviewContainer');
-			const filtrosContainer = document.getElementById('filtrosContainer');
+        const addPostBtn = document.querySelector(".addPostBtn");
+        const newPost = document.getElementById("newPost");
+        const overlay = document.getElementById("overlay");
+        const closeBtn = document.querySelector(".closeBtn");
+        const moreOptionsBtn = document.getElementById("moreOptionsBtn");
+        const moreOptions = document.getElementById("moreOptions");
+        const postTextarea = document.querySelector("#newPost textarea");
+        const addImgBtn = document.getElementById("addimgPostBtn");
+        const imagemInput = document.getElementById("imagemInput");
+        const imagemPreview = document.getElementById("imagemPreview");
+        const imagemPreviewContainer = document.getElementById(
+          "imagemPreviewContainer"
+        );
+        const filtrosContainer = document.getElementById("filtrosContainer");
 
-			const now = new Date();
-			document.getElementById('postDate').textContent = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
+        const now = new Date();
+        document.getElementById("postDate").textContent = `${now.getDate()}/${
+          now.getMonth() + 1
+        }/${now.getFullYear()}`;
 
-			// Carrega categorias da API
-			try {
-				const response = await fetch('/api/tags');
-				const tags = await response.json();
+        // Carrega categorias da API
+        try {
+          const response = await fetch("/api/tags");
+          const tags = await response.json();
 
-				filtrosContainer.innerHTML = '';
-				if (Array.isArray(tags)) {
-					tags.forEach(tag => {
-						const label = document.createElement('label');
-						label.innerHTML = `<input type="checkbox" value="${tag.id}" /> ${tag.name}`;
-						filtrosContainer.appendChild(label);
-					});
-				}
-			} catch (error) {
-				console.error('Erro ao carregar categorias:', error);
-				filtrosContainer.innerHTML = '<p>Erro ao carregar filtros</p>';
-			}
+          filtrosContainer.innerHTML = "";
+          if (Array.isArray(tags)) {
+            tags.forEach((tag) => {
+              const label = document.createElement("label");
+              label.innerHTML = `<input type="checkbox" value="${tag.id}" /> ${tag.name}`;
+              filtrosContainer.appendChild(label);
+            });
+          }
+        } catch (error) {
+          console.error("Erro ao carregar categorias:", error);
+          filtrosContainer.innerHTML = "<p>Erro ao carregar filtros</p>";
+        }
 
-			// Carrega os posts
-			await loadPosts();
+        // Carrega os posts
+        await loadPosts();
 
-			addPostBtn.addEventListener('click', function () {
-				newPost.style.display = 'block';
-				overlay.style.display = 'block';
-				postTextarea.focus();
-			});
+        addPostBtn.addEventListener("click", function () {
+          newPost.style.display = "block";
+          overlay.style.display = "block";
+          postTextarea.focus();
+        });
 
-			function closeNewPost() {
-				newPost.style.display = 'none';
-				overlay.style.display = 'none';
-				moreOptions.style.display = 'none';
-				moreOptionsBtn.classList.remove('active');
-				imagemPreviewContainer.style.display = 'none';
-				imagemBase64 = '';
-			}
+        function closeNewPost() {
+          newPost.style.display = "none";
+          overlay.style.display = "none";
+          moreOptions.style.display = "none";
+          moreOptionsBtn.classList.remove("active");
+          imagemPreviewContainer.style.display = "none";
+          imagemBase64 = "";
+        }
 
-			overlay.addEventListener('click', closeNewPost);
-			closeBtn.addEventListener('click', closeNewPost);
+        overlay.addEventListener("click", closeNewPost);
+        closeBtn.addEventListener("click", closeNewPost);
 
-			moreOptionsBtn.addEventListener('click', function () {
-				this.classList.toggle('active');
-				moreOptions.style.display = moreOptions.style.display === 'none' ? 'block' : 'none';
-			});
+        moreOptionsBtn.addEventListener("click", function () {
+          this.classList.toggle("active");
+          moreOptions.style.display =
+            moreOptions.style.display === "none" ? "block" : "none";
+        });
 
-			addImgBtn.addEventListener('click', function () {
-				imagemInput.click();
-			});
+        addImgBtn.addEventListener("click", function () {
+          imagemInput.click();
+        });
 
-			imagemInput.addEventListener('change', function () {
-				const file = this.files[0];
-				if (file) {
-					const reader = new FileReader();
-					reader.onload = function (e) {
-						imagemBase64 = e.target.result;
-						imagemPreview.src = imagemBase64;
-						imagemPreviewContainer.style.display = 'block';
-					};
-					reader.readAsDataURL(file);
-				}
-			});
-		});
+        imagemInput.addEventListener("change", function () {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              imagemBase64 = e.target.result;
+              imagemPreview.src = imagemBase64;
+              imagemPreviewContainer.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      });
 
-		async function criarPost(event) {
-			event.preventDefault();
+      async function criarPost(event) {
+        event.preventDefault();
 
-			const midia = document.querySelector('.midia');
-			const texto = document.querySelector('.textt textarea').value.trim();
-			if (!texto) {
-				alert("Digite algo para postar!");
-				return;
-			}
+        const midia = document.querySelector(".midia");
+        const texto = document.querySelector(".textt textarea").value.trim();
+        if (!texto) {
+          alert("Digite algo para postar!");
+          return;
+        }
 
-			const palavras = texto.split(/\s+/).filter(p => p.length > 0); // separa por espaços e remove vazios
-			if (palavras.length < 5) {
-				alert("Seu post precisa ter no mínimo 5 palavras.");
-				return;
-			}
+        const palavras = texto.split(/\s+/).filter((p) => p.length > 0); // separa por espaços e remove vazios
+        if (palavras.length < 5) {
+          alert("Seu post precisa ter no mínimo 5 palavras.");
+          return;
+        }
 
-			const user = JSON.parse(localStorage.getItem('user'));
-			const nome = user?.name || "Usuário";
-			const foto = user?.profilePicture || "img/placeholder.png";
+        const user = JSON.parse(localStorage.getItem("user"));
+        const nome = user?.name || "Usuário";
+        const foto = user?.profilePicture || "img/placeholder.png";
 
-			const dataAtual = new Date();
-			const dataFormatada = dataAtual.toLocaleDateString('pt-BR');
+        const dataAtual = new Date();
+        const dataFormatada = dataAtual.toLocaleDateString("pt-BR");
 
-			const tagsSelecionadas = Array.from(document.querySelectorAll('.filtros input[type="checkbox"]:checked')).map(input => input.value);
+        const tagsSelecionadas = Array.from(
+          document.querySelectorAll('.filtros input[type="checkbox"]:checked')
+        ).map((input) => input.value);
 
-			const imagemHTML = imagemBase64 ? `<div class="postmid"><img src="${imagemBase64}" alt="Imagem do Post"></div>` : '';
+        const imagemHTML = imagemBase64
+          ? `<div class="postmid"><img src="${imagemBase64}" alt="Imagem do Post"></div>`
+          : "";
 
-			const novoPost = document.createElement('div');
-			novoPost.classList.add('post');
-			novoPost.innerHTML = `
+        const novoPost = document.createElement("div");
+        novoPost.classList.add("post");
+        novoPost.innerHTML = `
 				<div class="postHeader">
 				<div class="postIcon">
 					<img src="${foto}" width="70px" alt="Foto de Perfil">
@@ -336,120 +397,141 @@
 				${imagemHTML}
 				<div class="postBot">
 				<div class="upVolt"><i class="bi bi-arrow-up"></i></div>
-				<div class="tags">${tagsSelecionadas.map(tag => `<button class="tag">${tag}</button>`).join('')}</div>
+				<div class="tags">${tagsSelecionadas
+          .map((tag) => `<button class="tag">${tag}</button>`)
+          .join("")}</div>
 				<div class="downVolt"><i class="bi bi-arrow-down"></i></div>
 				</div>
 			`;
 
-			midia.prepend(novoPost); // Adiciona no início para posts mais recentes aparecerem primeiro
+        midia.prepend(novoPost); // Adiciona no início para posts mais recentes aparecerem primeiro
 
-			const threeDotsBtn = novoPost.querySelector('.threeDotsBtn');
-			const postActions = novoPost.querySelector('.postActions');
-			const editPostBtn = novoPost.querySelector('.editPostBtn');
-			const deletePostBtn = novoPost.querySelector('.deletePostBtn');
+        const threeDotsBtn = novoPost.querySelector(".threeDotsBtn");
+        const postActions = novoPost.querySelector(".postActions");
+        const editPostBtn = novoPost.querySelector(".editPostBtn");
+        const deletePostBtn = novoPost.querySelector(".deletePostBtn");
 
-			threeDotsBtn.addEventListener('click', function () {
-				postActions.style.display = postActions.style.display === 'none' ? 'block' : 'none';
-			});
+        threeDotsBtn.addEventListener("click", function () {
+          postActions.style.display =
+            postActions.style.display === "none" ? "block" : "none";
+        });
 
-			editPostBtn.addEventListener('click', function () {
-				alert('Função de editar post ainda não implementada.');
-			});
+        editPostBtn.addEventListener("click", function () {
+          alert("Função de editar post ainda não implementada.");
+        });
 
-			deletePostBtn.addEventListener('click', function () {
-				if (confirm('Tem certeza que deseja apagar esta publicação?')) {
-					novoPost.remove();
-				}
-			});
+        deletePostBtn.addEventListener("click", function () {
+          if (confirm("Tem certeza que deseja apagar esta publicação?")) {
+            novoPost.remove();
+          }
+        });
 
-			// Envia o post para a API
-			try {
-				const formData = new FormData();
-				formData.append('texto', texto);
-				tagsSelecionadas.forEach((tag, index) => {
-					formData.append(`tags[${index}]`, tag);
-				});
-				const imagemFile = imagemInput.files[0];
-				if (imagemFile) {
-					formData.append('file', imagemFile);
-				}
+        // Envia o post para a API
+        try {
+          const formData = new FormData();
+          formData.append("texto", texto);
+          tagsSelecionadas.forEach((tag, index) => {
+            formData.append(`tags[${index}]`, tag);
+          });
+          const imagemFile = imagemInput.files[0];
+          if (imagemFile) {
+            formData.append("file", imagemFile);
+          }
 
-				const response = await fetch('/api/posts', {
-					method: 'POST',
-					body: formData
-				});
+          const response = await fetch("/api/posts", {
+            method: "POST",
+            body: formData,
+          });
 
-				if (!response.ok) {
-					const errorData = await response.json();
-					throw new Error(errorData.error || 'Erro ao criar o post');
-				}
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Erro ao criar o post");
+          }
 
-				const data = await response.json();
-				console.log('Post criado com sucesso:', data);
+          const data = await response.json();
+          console.log("Post criado com sucesso:", data);
+        } catch (error) {
+          console.error("Erro ao enviar post para a API:", error);
+        }
 
-			} catch (error) {
-				console.error('Erro ao enviar post para a API:', error);
-			}
+        // Limpeza do formulário e fechamento do modal
+        document.querySelector(".textt textarea").value = "";
+        document
+          .querySelectorAll('.filtros input[type="checkbox"]')
+          .forEach((cb) => (cb.checked = false));
+        document.getElementById("imagemInput").value = "";
+        document.getElementById("imagemPreviewContainer").style.display =
+          "none";
+        imagemBase64 = "";
 
-			// Limpeza do formulário e fechamento do modal
-			document.querySelector('.textt textarea').value = '';
-			document.querySelectorAll('.filtros input[type="checkbox"]').forEach(cb => cb.checked = false);
-			document.getElementById('imagemInput').value = '';
-			document.getElementById('imagemPreviewContainer').style.display = 'none';
-			imagemBase64 = '';
+        document.getElementById("newPost").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
 
-			document.getElementById('newPost').style.display = 'none';
-			document.getElementById('overlay').style.display = 'none';
+        location.reload();
+      }
 
-			location.reload()
-		}
+      async function logout() {
+        try {
+          await fetch("/api/logout", { method: "POST" });
+          localStorage.removeItem("user");
+          window.location.href = "/login.html";
+        } catch (error) {
+          console.error("Erro ao fazer logout:", error);
+          alert("Erro ao sair. Tente novamente.");
+        }
+      }
+    </script>
 
-		async function logout() {
-			try {
-				await fetch('/api/logout', { method: 'POST' });
-				localStorage.removeItem('user');
-				window.location.href = '/login.html';
-			} catch (error) {
-				console.error('Erro ao fazer logout:', error);
-				alert('Erro ao sair. Tente novamente.');
-			}
-		}
-	</script>
+    <script>
+      async function updateUserData() {
+        try {
+          const response = await fetch("/api/user", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
 
-	<script>
-		async function updateUserData() {
-			try {
-				const response = await fetch('/api/user', {
-					headers: {
-						'Authorization': `Bearer ${localStorage.getItem('token')}`
-					}
-				});
+          if (!response.ok) {
+            throw new Error("Erro ao obter dados do usuário");
+          }
 
-				if (!response.ok) {
-					throw new Error('Erro ao obter dados do usuário');
-				}
+          const data = await response.json();
+          const userData = data.data;
 
-				const data = await response.json();
-				const userData = data.data;
+          // Atualiza o localStorage com todos os dados necessários
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              name: userData.name,
+              id: userData.id,
+              identifier: userData.identifier,
+              profilePicture:
+                userData.profilePicture || "img/default-profile.png",
+              email: userData.email,
+              access_level: userData.access_level,
+            })
+          );
 
-				// Atualiza o localStorage com todos os dados necessários
-				localStorage.setItem('user', JSON.stringify({
-					name: userData.name,
-					id: userData.id,
-					identifier: userData.identifier,
-					profilePicture: userData.profilePicture || 'img/default-profile.png',
-					email: userData.email,
-					access_level: userData.access_level
-				}));
+          return true;
+        } catch (error) {
+          console.error("Erro ao atualizar dados do usuário:", error);
+          return false;
+        }
+      }
+      updateUserData();
+    </script>
 
-				return true;
-			} catch (error) {
-				console.error('Erro ao atualizar dados do usuário:', error);
-				return false;
-			}
-		}
-		updateUserData()
-	</script>
-</body>
+    <script>
+      async function checkUser() {
+        const response = await fetch("/api/user");
+        const data = await response.json();
 
+        if (data.data.access_level == 4) {
+          window.location.href = "/homeADM";
+        }
+      }
+
+      checkUser();
+    </script>
+  </body>
 </html>

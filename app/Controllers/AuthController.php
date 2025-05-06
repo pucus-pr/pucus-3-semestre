@@ -24,7 +24,7 @@ class AuthController {
             } else {
                 return [
                     'status' => 'error',
-                    'message' => 'Usuário inválido!',
+                    'message' => 'Usuário não existe!',
                     'data' => null
                 ];
             }
@@ -39,7 +39,7 @@ class AuthController {
             } else {
                 return [
                     'status' => 'error',
-                    'message' => 'Usuário inválido!',
+                    'message' => 'Senha incorreta!',
                     'data' => null
                 ];
             }

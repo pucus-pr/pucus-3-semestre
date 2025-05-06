@@ -27,8 +27,8 @@ class User extends Model {
             ];
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
-        
-            if (strpos($errorMessage, "Duplicate entry") !== false && strpos($errorMessage, "users.email") !== false) {
+
+            if (strpos($errorMessage, "Duplicate entry") !== false && strpos($errorMessage, "email") !== false) {
                 return [
                     'status' => 'error',
                     'message' => 'E-mail já cadastrado!',
