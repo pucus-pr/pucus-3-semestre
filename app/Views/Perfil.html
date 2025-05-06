@@ -2,555 +2,553 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Perfil</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
-  <link href="css/styleperf.css" rel="stylesheet">
-  <link href="css/nav.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title>Perfil</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+	<link href="css/styleperf.css" rel="stylesheet">
+	<link href="css/nav.css" rel="stylesheet">
 </head>
 
 <body>
-  <nav>
-    <ul>
-      <li class="logo">
-        <img alt="Logo" src="img/polvo.png">
-      </li>
-      <li><a href="home"><i class="fa fa-home"></i> home</a></li>
-      <li><a href="#"><i class="fa fa-book"></i> placeholder</a></li>
-      <li><a href="#"><i class="fa fa-users"></i> placeholder</a></li>
-      <li><a href="perfil"><i class="bi bi-person-lines-fill"></i> Perfil</a></li>
-    </ul>
-  </nav>
-
-  <div class="wrapper">
-    <div class="profile">
-      <!-- Banner -->
-      <div class="cover-photo">
-        <img id="banner-img" src="img/placeholder-banner.jpg" alt="">
-      </div>
-
-      <!-- Foto de perfil, nome, email, bio, curso -->
-      <div class="profile-info">
-        <img id="profile-img" src="img/placeholder-profile.jpg" alt="Foto de Perfil" class="profile-pic">
-        <h2 id="profile-name"></h2>
-
-        <p id="profile-email"></p>
-        <p id="profile-bio"></p>
-        <div class="info">
-          <span id="profile-course"></span>
-        </div>
-        <button class="edit-profile-btn" onclick="openModal()">Editar perfil</button>
-      </div>
-
-      <div id="posts-container">
-
-
-      </div>
-      <!-- Os posts tem q estar aqui -->
-
-    </div>
-  </div>
-
-  <div id="editProfileModal" class="edit-profile-modal">
-    <div class="edit-profile-modal-content">
-      <div class="edit-profile-modal-header">
-        <h2>Editar Perfil</h2>
-        <span class="edit-profile-close" onclick="closeModal()">&times;</span>
-      </div>
-
-      <form id="sprofile" class="edit-profile-modal-body">
-        <br>
-
-        <div class="edit-profile-profile-photo">
-          <img id="modal-profile-img" src="" alt="Foto de Perfil">
-          <label class="edit-profile-upload-btn small">
-            <i class="bi bi-camera-fill"></i>
-            <input name="file" type="file" id="profilePhotoInput" accept="image/*">
-          </label>
-        </div>
-
-        <label for="username">Nome</label>
-        <input name="username" type="text" id="username" placeholder="Digite seu nome">
-
-        <label for="userhandle">email</label>
-        <input name="email" type="text" id="userhandle" placeholder="@exemplo">
-
-        <label for="bio">Bio</label>
-        <textarea id="bio" placeholder="Algo sobre você..."></textarea>
-
-        <label for="course">Curso</label>
-        <input name="curso" type="text" id="course" placeholder="Seu curso">
-
-
-        <button type="button" class="edit-profile-save-btn" onclick="saveProfile1()">Salvar</button>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    // Função para carregar a imagem do perfil no modal
-    function loadProfileImageInModal() {
-      const user = JSON.parse(localStorage.getItem('user')) || {};
-      const modalProfileImg = document.getElementById('modal-profile-img');
-
-      if (user.profilePicture) {
-        modalProfileImg.src = user.profilePicture;
-      } else {
-        modalProfileImg.src = 'defaultProfilePicture.jpg';
-      }
-    }
-
-    // Chame esta função quando abrir o modal
-    function openModal() {
-
-      loadProfileImageInModal();
-      const user = JSON.parse(localStorage.getItem("user")) || {};
-      document.getElementById("username").value = user.name || "";
-      document.getElementById("userhandle").value = user.email || "";
-      document.getElementById("bio").value = user.bio || "";
-      document.getElementById("course").value = user.course || "";
-      document.getElementById('editProfileModal').style.display = 'block';
-    }
-
-    function closeModal() {
-      document.getElementById('editProfileModal').style.display = 'none';
-    }
-
-    window.onclick = function (event) {
-      const modal = document.getElementById('editProfileModal');
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-
-    async function saveProfile1() {
-      try {
-        // Obter os valores atuais do formulário
-        const userData = {
-          name: document.getElementById("username").value,
-          email: document.getElementById("userhandle").value,
-          course: document.getElementById("course").value,
-
-          // Inclua todos os outros campos necessários aqui
-        };
-
-        const form = document.getElementById('sprofile');
-        const formData = new FormData(form);
-
-        // Envia para a API
-        const response = await fetch('/api/updateProfile', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-          },
-          body: formData
-        });
-
-        // Verifica se a resposta é JSON
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          const errorText = await response.text();
-          throw new Error(`Resposta inválida: ${errorText.substring(0, 100)}`);
-        }
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Erro ao atualizar perfil');
-        }
-
-        // Atualiza localStorage e interface
-        const user = JSON.parse(localStorage.getItem("user")) || {};
-        const updatedUser = { ...user, ...userData };
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-
-        // Atualiza a exibição sem recarregar
-        document.getElementById("profile-name").textContent = updatedUser.name;
-        document.getElementById("profile-email").textContent = updatedUser.email || "E-mail não cadastrado";
-        document.getElementById("profile-bio").textContent = updatedUser.bio || "Nenhuma bio fornecida";
-        document.getElementById("profile-course").textContent = updatedUser.course || "Curso não definido";
-
-        if (!userData.name || !userData.email) {
-          alert('Nome e e-mail são obrigatórios!');
-          return;
-        }
-
-        // Fecha o modal
-        closeModal();
-
-        // Feedback visual
-        alert("Perfil atualizado com sucesso!");
-
-      } catch (error) {
-        console.error('Erro ao salvar perfil:', error);
-        alert(`Erro ao atualizar perfil: ${error.message}`);
-      }
-    }
-
-  </script>
-
-  <script>
-    // Mapeamento de tags para ícones (mantido igual)
-    const tagIcons = {
-      1: '<i class="bi bi-shield-fill-exclamation"></i>',
-      2: '<i class="bi bi-pc-display-horizontal"></i>',
-      3: '<i class="bi bi-stars"></i>',
-      4: '<i class="bi bi-building-fill"></i>',
-      5: '<i class="bi bi-exclamation-triangle-fill"></i>',
-      6: '<i class="bi bi-x-circle"></i>',
-      7: '<i class="bi bi-clock-history"></i>',
-      8: '<i class="bi bi-check2"></i>'
-    };
-
-    // Função para converter tags em ícones (mantido igual)
-    function convertTagsToIcons(tags) {
-      if (!tags || !Array.isArray(tags)) return '';
-
-      return tags.map(tag => {
-        const tagId = typeof tag === 'object' ? tag.id : tag;
-        return tagIcons[tagId] || `<span>${tagId}</span>`;
-      }).join('');
-    }
-
-    // Função para criar elementos de postagem - AJUSTADA PARA PÁGINA DE PERFIL
-    function createPostElement(post) {
-      const postElement = document.createElement('div');
-      postElement.classList.add('post');
-      postElement.dataset.postId = post.id
-
-      // Formata a data
-      const postDate = new Date(post.created_at);
-      const formattedDate = `${postDate.getDate()}/${postDate.getMonth() + 1}/${postDate.getFullYear()}`;
-
-      // Converte as tags em ícones
-      const tags = post.tags || [];
-      const tagsHtml = convertTagsToIcons(tags);
-
-      const imageHtml = post.image ?
-        `<div class="postmid"><img src="${post.image.replace(/\\/g, '/').replace('C:/xampp/htdocs/pucus/app/Models/../../public/', '')}" alt="Imagem do Post"></div>` :
-        '';
-
-      postElement.innerHTML = `
-      <div class="postHeader">
-        <div class="postIcon">
-          <img src="${post.user_image || 'img/placeholder-profile.jpg'}"  alt="Foto de Perfil">
-        </div>
-        <div class="postNnD">
-          <h1>${post.user_name || 'Usuário'}</h1>
-          <p>${formattedDate}</p>
-        </div>
-        <button class="threeDotsBtn"><i class="bi bi-three-dots"></i></button>
-          <div class="postActions" style="display:none;">
-            <button class="editPostBtn">Editar</button>
-            <button class="deletePostBtn">Apagar</button>
-          </div>
-      </div>
-      <div class="postDescription">
-        <p>${post.text || ''}</p>
-      </div>
-      ${imageHtml}
-      <div class="postBot">
-        <div class="upVolt"><i class="bi bi-arrow-up"></i></div>
-        <div class="tags">${tagsHtml}</div>
-        <div class="downVolt"><i class="bi bi-arrow-down"></i></div>
-      </div>
-    `;
-
-      postElement.innerHTML += `
-        <div class="editTagsModal" style="display:none;">
-            <div class="editTagsContent">
-                <h3>Editar Tags</h3>
-                <div class="tagsCheckboxes">
-                    <label><input type="checkbox" value="1"> <i class="bi bi-shield-fill-exclamation"></i> Tag 1</label>
-                    <label><input type="checkbox" value="2"> <i class="bi bi-pc-display-horizontal"></i> Tag 2</label>
-                    <label><input type="checkbox" value="3"> <i class="bi bi-stars"></i> Tag 3</label>
-                    <label><input type="checkbox" value="4"> <i class="bi bi-building-fill"></i> Tag 4</label>
-                    <label><input type="checkbox" value="5"> <i class="bi bi-exclamation-triangle-fill"></i> Tag 5</label>
-                    <label><input type="checkbox" value="6"> <i class="bi bi-x-circle"></i> Tag 6</label>
-                    <label><input type="checkbox" value="7"> <i class="bi bi-clock-history"></i> Tag 7</label>
-                    <label><input type="checkbox" value="8"> <i class="bi bi-check2"></i> Tag 8</label>
-
-                </div>
-                <div class="editTagsActions">
-                    <button class="cancelEditTags">Cancelar</button>
-                    <button class="confirmEditTags">Confirmar</button>
-                </div>
-            </div>
-        </div>
-    `;
-
-      // Adiciona funcionalidade de deletar post
-
-      const threeDotsBtn = postElement.querySelector('.threeDotsBtn');
-      const postActions = postElement.querySelector('.postActions');
-
-      threeDotsBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // Alterna a visibilidade do menu de ações
-        postActions.style.display = postActions.style.display === 'none' ? 'block' : 'none';
-      });
-
-      // Adiciona evento para deletar post
-      const deletePostBtn = postElement.querySelector('.deletePostBtn');
-      deletePostBtn.addEventListener('click', async () => {
-        if (confirm('Tem certeza que deseja deletar este post?')) {
-          try {
-            const response = await fetch(`/api/posts/${post.id}`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-              }
-            });
-
-            if (response.ok) {
-              postElement.remove();
-            } else {
-              alert('Erro ao deletar post');
-            }
-          } catch (error) {
-            console.error('Erro:', error);
-            alert('Erro ao deletar post');
-          }
-        }
-      });
-
-      // Fecha o menu de ações quando clicar fora
-      document.addEventListener('click', (e) => {
-        if (!postElement.contains(e.target)) {
-          postActions.style.display = 'none';
-        }
-      });
-
-      const editPostBtn = postElement.querySelector('.editPostBtn');
-      editPostBtn.addEventListener('click', () => {
-        const editModal = postElement.querySelector('.editTagsModal');
-        const checkboxes = editModal.querySelectorAll('input[type="checkbox"]');
-
-        // Marca as checkboxes baseado nas tags atuais do post
-        checkboxes.forEach(checkbox => {
-          checkbox.checked = post.tags && post.tags.some(tag =>
-            (typeof tag === 'object' ? tag.id : tag) == checkbox.value
-          );
-        });
-
-        editModal.style.display = 'block';
-        postActions.style.display = 'none'; // Fecha o menu de ações
-      });
-
-      // Adiciona eventos para os botões do modal
-      const cancelBtn = postElement.querySelector('.cancelEditTags');
-      cancelBtn.addEventListener('click', () => {
-        postElement.querySelector('.editTagsModal').style.display = 'none';
-      });
-
-      const confirmBtn = postElement.querySelector('.confirmEditTags');
-      confirmBtn.addEventListener('click', async () => {
-        // Pega as tags selecionadas
-        const checkboxes = postElement.querySelectorAll('.tagsCheckboxes input:checked');
-        const selectedTags = Array.from(checkboxes).map(cb => parseInt(cb.value));
-
-        // Transforma o array no formato desejado usando for
-        const tagsFormData = {};
-        for (let i = 0; i < selectedTags.length; i++) {
-          tagsFormData[`tags[${i}]`] = selectedTags[i];
-        }
-
-        // Exemplo do formato resultante:
-        // tagsFormData = {
-        //     "tags[0]": 1,
-        //     "tags[1]": 3
-        // }
-
-        try {
-          const response = await fetch(`/api/updatePostTags/${post.id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded', // Alterado para o formato adequado
-            },
-            body: new URLSearchParams(tagsFormData).toString()
-          });
-
-          if (!response.ok) {
-            throw new Error('Erro ao atualizar tags');
-          }
-
-          // Atualiza a visualização
-          postElement.querySelector('.tags').innerHTML = convertTagsToIcons(selectedTags);
-          postElement.querySelector('.editTagsModal').style.display = 'none';
-
-        } catch (error) {
-          console.error('Erro:', error);
-          alert('Não foi possível atualizar as tags');
-        }
-      });
-
-      // Fecha o modal quando clicar fora
-      const editModal = postElement.querySelector('.editTagsModal');
-      editModal.addEventListener('click', (e) => {
-        if (e.target === editModal) {
-          editModal.style.display = 'none';
-        }
-      });
-
-      return postElement;
-    }
-
-    // Carrega posts do usuário logado
-    async function loadUserPosts() {
-      try {
-        // Recupera o usuário do localStorage
-        const userString = localStorage.getItem('user');
-        if (!userString) {
-          throw new Error('Nenhum usuário encontrado no localStorage');
-        }
-
-        const user = JSON.parse(userString);
-
-        if (!user || !user.id) {
-          throw new Error('ID do usuário não encontrado');
-        }
-
-        const response = await fetch(`/api/get-posts-by-user-id`);
-
-        if (!response.ok) {
-          throw new Error(`Erro HTTP: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        // Verifica e converte os posts para array
-        let posts = [];
-        if (Array.isArray(data)) {
-          posts = data;
-        } else if (data && typeof data === 'object') {
-          // Tenta extrair posts de diferentes estruturas de resposta
-          posts = data.posts || data.data || data.result || [];
-        }
-
-        const postsContainer = document.getElementById('posts-container');
-        postsContainer.innerHTML = '';
-
-        if (posts.length === 0) {
-          postsContainer.innerHTML = '<div class="no-posts">Você ainda não fez nenhum post</div>';
-        } else {
-          // Ordena apenas se for array
-          if (Array.isArray(posts)) {
-            posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-          }
-
-          posts.forEach(post => {
-            postsContainer.appendChild(createPostElement(post));
-          });
-        }
-
-      } catch (error) {
-        console.error('Erro ao carregar posts:', error);
-        document.getElementById('posts-container').innerHTML = `
-      <div class="error-message">
-        Ocorreu um erro ao carregar seus posts.<br>
-        ${error.message}<br>
-        <button onclick="location.reload()">Recarregar</button>
-      </div>
-    `;
-      }
-    }
-    
-    // Carrega os dados quando a página é aberta
-    document.addEventListener("DOMContentLoaded", () => {
-      try {
-        const userString = localStorage.getItem('user');
-        if (!userString) {
-          throw new Error('Por favor, faça login para acessar esta página');
-        }
-
-        const user = JSON.parse(userString);
-
-        // Verifica se o objeto user tem as propriedades mínimas necessárias
-        if (!user.id || !user.name) {
-          throw new Error('Dados do usuário incompletos');
-        }
-
-        // Preenche os dados do perfil
-        document.getElementById("profile-name").textContent = user.name;
-        document.getElementById("profile-email").textContent = user.email || "E-mail não cadastrado";
-        document.getElementById("profile-bio").textContent = user.bio || "Nenhuma bio fornecida";
-        document.getElementById("profile-course").textContent = user.course || user.identifier || "Curso não definido";
-
-        // Imagens
-        document.getElementById("profile-img").src = user.profilePicture || "img/placeholder-profile.jpg";
-        document.getElementById("banner-img").src = user.banner || "img/placeholder-banner.jpg";
-
-        // Preenche o formulário de edição
-        if (document.getElementById("username")) {
-          document.getElementById("username").value = user.name || "";
-          document.getElementById("userhandle").value = user.email || "";
-          document.getElementById("bio").value = user.bio || "";
-          document.getElementById("course").value = user.course || user.identifier || "";
-        }
-
-        // Carrega os posts
-        loadUserPosts();
-
-      } catch (error) {
-        console.error('Erro ao carregar página:', error);
-        document.body.innerHTML = `
-      <div style="text-align: center; padding: 50px;">
-        <h2>Erro ao carregar a página</h2>
-        <p>${error.message}</p>
-        <button onclick="window.location.href='/login.html'" 
-                style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px;">
-          Fazer login
-        </button>
-      </div>
-    `;
-      }
-    });
-
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (!user.id) {
-      console.error('Usuário não tem ID:', user);
-    }
-  </script>
-
-  <script>
-    async function updateUserData() {
-      try {
-        const response = await fetch('/api/user', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Erro ao obter dados do usuário');
-        }
-
-        const data = await response.json();
-        const userData = data.data;
-
-        // Atualiza o localStorage com todos os dados necessários
-        localStorage.setItem('user', JSON.stringify({
-          name: userData.name,
-          id: userData.id,
-          identifier: userData.identifier,
-          profilePicture: userData.profilePicture || 'img/default-profile.png',
-          email: userData.email,
-          access_level: userData.access_level
-        }));
-
-        return true;
-      } catch (error) {
-        console.error('Erro ao atualizar dados do usuário:', error);
-        return false;
-      }
-    }
-
-    updateUserData()
-  </script>
-
-
+	<nav>
+		<ul>
+			<li class="logo">
+				<img alt="Logo" src="img/polvo.png">
+			</li>
+			<li><a href="home"><i class="fa fa-home"></i> home</a></li>
+			<li><a href="#"><i class="fa fa-book"></i> placeholder</a></li>
+			<li><a href="#"><i class="fa fa-users"></i> placeholder</a></li>
+			<li><a href="perfil"><i class="bi bi-person-lines-fill"></i> Perfil</a></li>
+		</ul>
+	</nav>
+
+	<div class="wrapper">
+		<div class="profile">
+			<!-- Banner -->
+			<div class="cover-photo">
+				<img id="banner-img" src="img/placeholder-banner.jpg" alt="">
+			</div>
+
+			<!-- Foto de perfil, nome, email, bio, curso -->
+			<div class="profile-info">
+				<img id="profile-img" src="img/placeholder-profile.jpg" alt="Foto de Perfil" class="profile-pic">
+				<h2 id="profile-name"></h2>
+
+				<p id="profile-email"></p>
+				<p id="profile-bio"></p>
+				<div class="info">
+					<span id="profile-course"></span>
+				</div>
+				<button class="edit-profile-btn" onclick="openModal()">Editar perfil</button>
+			</div>
+
+			<div id="posts-container">
+
+
+			</div>
+			<!-- Os posts tem q estar aqui -->
+
+		</div>
+	</div>
+
+	<div id="editProfileModal" class="edit-profile-modal">
+		<div class="edit-profile-modal-content">
+			<div class="edit-profile-modal-header">
+				<h2>Editar Perfil</h2>
+				<span class="edit-profile-close" onclick="closeModal()">&times;</span>
+			</div>
+
+			<form id="sprofile" class="edit-profile-modal-body">
+				<br>
+
+				<div class="edit-profile-profile-photo">
+					<img id="modal-profile-img" src="" alt="Foto de Perfil">
+					<label class="edit-profile-upload-btn small">
+						<i class="bi bi-camera-fill"></i>
+						<input name="file" type="file" id="profilePhotoInput" accept="image/*">
+					</label>
+				</div>
+
+				<label for="username">Nome</label>
+				<input name="username" type="text" id="username" placeholder="Digite seu nome">
+
+				<label for="userhandle">email</label>
+				<input name="email" type="text" id="userhandle" placeholder="@exemplo">
+
+				<label for="bio">Bio</label>
+				<textarea id="bio" placeholder="Algo sobre você..."></textarea>
+
+				<label for="course">Curso</label>
+				<input name="curso" type="text" id="course" placeholder="Seu curso">
+
+
+				<button type="button" class="edit-profile-save-btn" onclick="saveProfile1()">Salvar</button>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		// Função para carregar a imagem do perfil no modal
+		function loadProfileImageInModal() {
+			const user = JSON.parse(localStorage.getItem('user')) || {};
+			const modalProfileImg = document.getElementById('modal-profile-img');
+
+			if (user.profilePicture) {
+				modalProfileImg.src = user.profilePicture;
+			} else {
+				modalProfileImg.src = 'defaultProfilePicture.jpg';
+			}
+		}
+
+		// Chame esta função quando abrir o modal
+		function openModal() {
+
+			loadProfileImageInModal();
+			const user = JSON.parse(localStorage.getItem("user")) || {};
+			document.getElementById("username").value = user.name || "";
+			document.getElementById("userhandle").value = user.email || "";
+			document.getElementById("bio").value = user.bio || "";
+			document.getElementById("course").value = user.course || "";
+			document.getElementById('editProfileModal').style.display = 'block';
+		}
+
+		function closeModal() {
+			document.getElementById('editProfileModal').style.display = 'none';
+		}
+
+		window.onclick = function (event) {
+			const modal = document.getElementById('editProfileModal');
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+
+		async function saveProfile1() {
+			try {
+				// Obter os valores atuais do formulário
+				const userData = {
+					name: document.getElementById("username").value,
+					email: document.getElementById("userhandle").value,
+					course: document.getElementById("course").value,
+
+					// Inclua todos os outros campos necessários aqui
+				};
+
+				const form = document.getElementById('sprofile');
+				const formData = new FormData(form);
+
+				// Envia para a API
+				const response = await fetch('/api/updateProfile', {
+					method: 'POST',
+					headers: {
+						'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+					},
+					body: formData
+				});
+
+				// Verifica se a resposta é JSON
+				const contentType = response.headers.get('content-type');
+				if (!contentType || !contentType.includes('application/json')) {
+					const errorText = await response.text();
+					throw new Error(`Resposta inválida: ${errorText.substring(0, 100)}`);
+				}
+
+				const data = await response.json();
+
+				if (!response.ok) {
+					throw new Error(data.message || 'Erro ao atualizar perfil');
+				}
+
+				// Atualiza localStorage e interface
+				const user = JSON.parse(localStorage.getItem("user")) || {};
+				const updatedUser = { ...user, ...userData };
+				localStorage.setItem("user", JSON.stringify(updatedUser));
+
+				// Atualiza a exibição sem recarregar
+				document.getElementById("profile-name").textContent = updatedUser.name;
+				document.getElementById("profile-email").textContent = updatedUser.email || "E-mail não cadastrado";
+				document.getElementById("profile-bio").textContent = updatedUser.bio || "Nenhuma bio fornecida";
+				document.getElementById("profile-course").textContent = updatedUser.course || "Curso não definido";
+
+				if (!userData.name || !userData.email) {
+					alert('Nome e e-mail são obrigatórios!');
+					return;
+				}
+
+				// Fecha o modal
+				closeModal();
+
+				// Feedback visual
+				alert("Perfil atualizado com sucesso!");
+
+			} catch (error) {
+				console.error('Erro ao salvar perfil:', error);
+				alert(`Erro ao atualizar perfil: ${error.message}`);
+			}
+		}
+
+	</script>
+
+	<script>
+		// Mapeamento de tags para ícones (mantido igual)
+		const tagIcons = {
+			1: '<i class="bi bi-shield-fill-exclamation"></i>',
+			2: '<i class="bi bi-pc-display-horizontal"></i>',
+			3: '<i class="bi bi-stars"></i>',
+			4: '<i class="bi bi-building-fill"></i>',
+			5: '<i class="bi bi-exclamation-triangle-fill"></i>',
+			6: '<i class="bi bi-x-circle"></i>',
+			7: '<i class="bi bi-clock-history"></i>',
+			8: '<i class="bi bi-check2"></i>'
+		};
+
+		// Função para converter tags em ícones (mantido igual)
+		function convertTagsToIcons(tags) {
+			if (!tags || !Array.isArray(tags)) return '';
+
+			return tags.map(tag => {
+				const tagId = typeof tag === 'object' ? tag.id : tag;
+				return tagIcons[tagId] || `<span>${tagId}</span>`;
+			}).join('');
+		}
+
+		// Função para criar elementos de postagem - AJUSTADA PARA PÁGINA DE PERFIL
+		function createPostElement(post) {
+			const postElement = document.createElement('div');
+			postElement.classList.add('post');
+			postElement.dataset.postId = post.id
+
+			// Formata a data
+			const postDate = new Date(post.created_at);
+			const formattedDate = `${postDate.getDate()}/${postDate.getMonth() + 1}/${postDate.getFullYear()}`;
+
+			// Converte as tags em ícones
+			const tags = post.tags || [];
+			const tagsHtml = convertTagsToIcons(tags);
+
+			const imageHtml = post.image ?
+			`<div class="postmid"><img src="${post.image.replace(/\\/g, '/').replace('C:/xampp/htdocs/pucus/app/Models/../../public/', '')}" alt="Imagem do Post"></div>` :
+			'';
+
+			postElement.innerHTML = `
+			<div class="postHeader">
+				<div class="postIcon">
+				<img src="${post.user_image || 'img/placeholder-profile.jpg'}"  alt="Foto de Perfil">
+				</div>
+				<div class="postNnD">
+				<h1>${post.user_name || 'Usuário'}</h1>
+				<p>${formattedDate}</p>
+				</div>
+				<button class="threeDotsBtn"><i class="bi bi-three-dots"></i></button>
+				<div class="postActions" style="display:none;">
+					<button class="editPostBtn">Editar</button>
+					<button class="deletePostBtn">Apagar</button>
+				</div>
+			</div>
+			<div class="postDescription">
+				<p>${post.text || ''}</p>
+			</div>
+			${imageHtml}
+			<div class="postBot">
+				<div class="upVolt"><i class="bi bi-arrow-up"></i></div>
+				<div class="tags">${tagsHtml}</div>
+				<div class="downVolt"><i class="bi bi-arrow-down"></i></div>
+			</div>
+			`;
+
+			postElement.innerHTML += `
+				<div class="editTagsModal" style="display:none;">
+					<div class="editTagsContent">
+						<h3>Editar Tags</h3>
+						<div class="tagsCheckboxes">
+							<label><input type="checkbox" value="1"> <i class="bi bi-shield-fill-exclamation"></i> Tag 1</label>
+							<label><input type="checkbox" value="2"> <i class="bi bi-pc-display-horizontal"></i> Tag 2</label>
+							<label><input type="checkbox" value="3"> <i class="bi bi-stars"></i> Tag 3</label>
+							<label><input type="checkbox" value="4"> <i class="bi bi-building-fill"></i> Tag 4</label>
+							<label><input type="checkbox" value="5"> <i class="bi bi-exclamation-triangle-fill"></i> Tag 5</label>
+							<label><input type="checkbox" value="6"> <i class="bi bi-x-circle"></i> Tag 6</label>
+							<label><input type="checkbox" value="7"> <i class="bi bi-clock-history"></i> Tag 7</label>
+							<label><input type="checkbox" value="8"> <i class="bi bi-check2"></i> Tag 8</label>
+
+						</div>
+						<div class="editTagsActions">
+							<button class="cancelEditTags">Cancelar</button>
+							<button class="confirmEditTags">Confirmar</button>
+						</div>
+					</div>
+				</div>
+			`;
+
+			// Adiciona funcionalidade de deletar post
+
+			const threeDotsBtn = postElement.querySelector('.threeDotsBtn');
+			const postActions = postElement.querySelector('.postActions');
+
+			threeDotsBtn.addEventListener('click', (e) => {
+				e.stopPropagation();
+				// Alterna a visibilidade do menu de ações
+				postActions.style.display = postActions.style.display === 'none' ? 'block' : 'none';
+			});
+
+			// Adiciona evento para deletar post
+			const deletePostBtn = postElement.querySelector('.deletePostBtn');
+			deletePostBtn.addEventListener('click', async () => {
+				if (confirm('Tem certeza que deseja deletar este post?')) {
+					try {
+						const response = await fetch(`/api/posts/${post.id}`, {
+							method: 'DELETE',
+							headers: {
+								'Content-Type': 'application/json',
+								'Authorization': `Bearer ${localStorage.getItem('token')}`
+							}
+						});
+
+						if (response.ok) {
+							postElement.remove();
+						} else {
+							alert('Erro ao deletar post');
+						}
+					} catch (error) {
+						console.error('Erro:', error);
+						alert('Erro ao deletar post');
+					}
+				}
+			});
+
+			// Fecha o menu de ações quando clicar fora
+			document.addEventListener('click', (e) => {
+				if (!postElement.contains(e.target)) {
+					postActions.style.display = 'none';
+				}
+			});
+
+			const editPostBtn = postElement.querySelector('.editPostBtn');
+			editPostBtn.addEventListener('click', () => {
+				const editModal = postElement.querySelector('.editTagsModal');
+				const checkboxes = editModal.querySelectorAll('input[type="checkbox"]');
+
+				// Marca as checkboxes baseado nas tags atuais do post
+				checkboxes.forEach(checkbox => {
+					checkbox.checked = post.tags && post.tags.some(tag =>
+						(typeof tag === 'object' ? tag.id : tag) == checkbox.value
+					);
+				});
+
+				editModal.style.display = 'block';
+				postActions.style.display = 'none'; // Fecha o menu de ações
+			});
+
+			// Adiciona eventos para os botões do modal
+			const cancelBtn = postElement.querySelector('.cancelEditTags');
+			cancelBtn.addEventListener('click', () => {
+				postElement.querySelector('.editTagsModal').style.display = 'none';
+			});
+
+			const confirmBtn = postElement.querySelector('.confirmEditTags');
+			confirmBtn.addEventListener('click', async () => {
+				// Pega as tags selecionadas
+				const checkboxes = postElement.querySelectorAll('.tagsCheckboxes input:checked');
+				const selectedTags = Array.from(checkboxes).map(cb => parseInt(cb.value));
+
+				// Transforma o array no formato desejado usando for
+				const tagsFormData = {};
+				for (let i = 0; i < selectedTags.length; i++) {
+					tagsFormData[`tags[${i}]`] = selectedTags[i];
+				}
+
+				// Exemplo do formato resultante:
+				// tagsFormData = {
+				//     "tags[0]": 1,
+				//     "tags[1]": 3
+				// }
+
+				try {
+					const response = await fetch(`/api/updatePostTags/${post.id}`, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded', // Alterado para o formato adequado
+						},
+						body: new URLSearchParams(tagsFormData).toString()
+					});
+
+					if (!response.ok) {
+						throw new Error('Erro ao atualizar tags');
+					}
+
+					// Atualiza a visualização
+					postElement.querySelector('.tags').innerHTML = convertTagsToIcons(selectedTags);
+					postElement.querySelector('.editTagsModal').style.display = 'none';
+
+				} catch (error) {
+					console.error('Erro:', error);
+					alert('Não foi possível atualizar as tags');
+				}
+			});
+
+			// Fecha o modal quando clicar fora
+			const editModal = postElement.querySelector('.editTagsModal');
+			editModal.addEventListener('click', (e) => {
+				if (e.target === editModal) {
+					editModal.style.display = 'none';
+				}
+			});
+
+			return postElement;
+		}
+
+		// Carrega posts do usuário logado
+		async function loadUserPosts() {
+			try {
+				// Recupera o usuário do localStorage
+				const userString = localStorage.getItem('user');
+				if (!userString) {
+					throw new Error('Nenhum usuário encontrado no localStorage');
+				}
+
+				const user = JSON.parse(userString);
+
+				if (!user || !user.id) {
+					throw new Error('ID do usuário não encontrado');
+				}
+
+				const response = await fetch(`/api/get-posts-by-user-id`);
+
+				if (!response.ok) {
+					throw new Error(`Erro HTTP: ${response.status}`);
+				}
+
+				const data = await response.json();
+
+				// Verifica e converte os posts para array
+				let posts = [];
+				if (Array.isArray(data)) {
+					posts = data;
+				} else if (data && typeof data === 'object') {
+					// Tenta extrair posts de diferentes estruturas de resposta
+					posts = data.posts || data.data || data.result || [];
+				}
+
+				const postsContainer = document.getElementById('posts-container');
+				postsContainer.innerHTML = '';
+
+				if (posts.length === 0) {
+					postsContainer.innerHTML = '<div class="no-posts">Você ainda não fez nenhum post</div>';
+				} else {
+					// Ordena apenas se for array
+					if (Array.isArray(posts)) {
+						posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+					}
+
+					posts.forEach(post => {
+						postsContainer.appendChild(createPostElement(post));
+					});
+				}
+
+			} catch (error) {
+				console.error('Erro ao carregar posts:', error);
+				document.getElementById('posts-container').innerHTML = `
+				<div class="error-message">
+					Ocorreu um erro ao carregar seus posts.<br>
+					${error.message}<br>
+					<button onclick="location.reload()">Recarregar</button>
+				</div>
+				`;
+			}
+		}
+
+		// Carrega os dados quando a página é aberta
+		document.addEventListener("DOMContentLoaded", () => {
+			try {
+				const userString = localStorage.getItem('user');
+				if (!userString) {
+					throw new Error('Por favor, faça login para acessar esta página');
+				}
+
+				const user = JSON.parse(userString);
+
+				// Verifica se o objeto user tem as propriedades mínimas necessárias
+				if (!user.id || !user.name) {
+					throw new Error('Dados do usuário incompletos');
+				}
+
+				// Preenche os dados do perfil
+				document.getElementById("profile-name").textContent = user.name;
+				document.getElementById("profile-email").textContent = user.email || "E-mail não cadastrado";
+				document.getElementById("profile-bio").textContent = user.bio || "Nenhuma bio fornecida";
+				document.getElementById("profile-course").textContent = user.course || user.identifier || "Curso não definido";
+
+				// Imagens
+				document.getElementById("profile-img").src = user.profilePicture || "img/placeholder-profile.jpg";
+				document.getElementById("banner-img").src = user.banner || "img/placeholder-banner.jpg";
+
+				// Preenche o formulário de edição
+				if (document.getElementById("username")) {
+					document.getElementById("username").value = user.name || "";
+					document.getElementById("userhandle").value = user.email || "";
+					document.getElementById("bio").value = user.bio || "";
+					document.getElementById("course").value = user.course || user.identifier || "";
+				}
+
+				// Carrega os posts
+				loadUserPosts();
+
+			} catch (error) {
+				console.error('Erro ao carregar página:', error);
+				document.body.innerHTML = `
+				<div style="text-align: center; padding: 50px;">
+					<h2>Erro ao carregar a página</h2>
+					<p>${error.message}</p>
+					<button onclick="window.location.href='/login.html'" 
+							style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px;">
+					Fazer login
+					</button>
+				</div>
+				`;
+			}
+		});
+
+		const user = JSON.parse(localStorage.getItem('user') || '{}');
+		if (!user.id) {
+			console.error('Usuário não tem ID:', user);
+		}
+	</script>
+
+	<script>
+		async function updateUserData() {
+			try {
+				const response = await fetch('/api/user', {
+					headers: {
+						'Authorization': `Bearer ${localStorage.getItem('token')}`
+					}
+				});
+
+				if (!response.ok) {
+					throw new Error('Erro ao obter dados do usuário');
+				}
+
+				const data = await response.json();
+				const userData = data.data;
+
+				// Atualiza o localStorage com todos os dados necessários
+				localStorage.setItem('user', JSON.stringify({
+					name: userData.name,
+					id: userData.id,
+					identifier: userData.identifier,
+					profilePicture: userData.profilePicture || 'img/default-profile.png',
+					email: userData.email,
+					access_level: userData.access_level
+				}));
+
+				return true;
+			} catch (error) {
+				console.error('Erro ao atualizar dados do usuário:', error);
+				return false;
+			}
+		}
+
+		updateUserData()
+	</script>
 </body>
 
 </html>

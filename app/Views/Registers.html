@@ -161,60 +161,60 @@
 		});
 
 		document.getElementById('cadastroForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+			e.preventDefault();
 
-    const formElement = document.getElementById('cadastro-' + tipoSelecionado);
-    const formData = new FormData();
+			const formElement = document.getElementById('cadastro-' + tipoSelecionado);
+			const formData = new FormData();
 
-    // Captura todos os inputs (incluindo select)
-    const inputs = formElement.querySelectorAll('input, select');
-    
-    inputs.forEach(input => {
-        if (input.value.trim() !== '') {
-            // Para select, usa o name e value corretamente
-            if (input.tagName === 'SELECT') {
-                formData.append(input.name, input.value);
-            } else {
-                formData.append(input.name, input.value);
-            }
-        }
-    });
+			// Captura todos os inputs (incluindo select)
+			const inputs = formElement.querySelectorAll('input, select');
 
-    // Adiciona access_level conforme o tipo
-    if (tipoSelecionado === "aluno") {
-        formData.append("access_level", "1");
-    } else if (tipoSelecionado === "coordenador") {
-        formData.append("access_level", "3");
-    } else if (tipoSelecionado === "funcionario") {
-        formData.append("access_level", "2");
-    }
-    
-    // Adiciona imagem padrão
-    formData.append("image", "img/defaultProfilePicture.jpg");
+			inputs.forEach(input => {
+				if (input.value.trim() !== '') {
+					// Para select, usa o name e value corretamente
+					if (input.tagName === 'SELECT') {
+						formData.append(input.name, input.value);
+					} else {
+						formData.append(input.name, input.value);
+					}
+				}
+			});
 
-    try {
-        const response = await fetch('/api/register', {
-            method: 'POST',
-            body: formData  // Envia FormData diretamente, não converta para URLSearchParams
-        });
+			// Adiciona access_level conforme o tipo
+			if (tipoSelecionado === "aluno") {
+				formData.append("access_level", "1");
+			} else if (tipoSelecionado === "coordenador") {
+				formData.append("access_level", "3");
+			} else if (tipoSelecionado === "funcionario") {
+				formData.append("access_level", "2");
+			}
 
-        const data = await response.json();
+			// Adiciona imagem padrão
+			formData.append("image", "img/defaultProfilePicture.jpg");
 
-        if (!response.ok) {
-            throw new Error(data.message || 'Erro no cadastro');
-        }
+			try {
+				const response = await fetch('/api/register', {
+					method: 'POST',
+					body: formData  // Envia FormData diretamente, não converta para URLSearchParams
+				});
 
-        if (data.status === "success") {
-            alert('Cadastro realizado com sucesso!');
-            window.location.href = "login";
-        } else {
-            alert(data.message || 'Erro desconhecido');
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-        alert(error.message || 'Erro ao processar cadastro');
-    }
-});
+				const data = await response.json();
+
+				if (!response.ok) {
+					throw new Error(data.message || 'Erro no cadastro');
+				}
+
+				if (data.status === "success") {
+					alert('Cadastro realizado com sucesso!');
+					window.location.href = "login";
+				} else {
+					alert(data.message || 'Erro desconhecido');
+				}
+			} catch (error) {
+				console.error('Erro:', error);
+				alert(error.message || 'Erro ao processar cadastro');
+			}
+		});
 	</script>
 </body>
 
