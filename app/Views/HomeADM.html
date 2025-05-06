@@ -156,13 +156,101 @@
 				</div>
 			`;
 
+			postElement.innerHTML += `
+				<div class="editTagsModal" style="display:none;">
+					<div class="editTagsContent">
+						<h3>Editar Tags</h3>
+						<div class="tagsCheckboxes">
+							<label><input type="checkbox" value="1"> <i class="bi bi-shield-fill-exclamation"></i> Tag 1</label>
+							<label><input type="checkbox" value="2"> <i class="bi bi-pc-display-horizontal"></i> Tag 2</label>
+							<label><input type="checkbox" value="3"> <i class="bi bi-stars"></i> Tag 3</label>
+							<label><input type="checkbox" value="4"> <i class="bi bi-building-fill"></i> Tag 4</label>
+							<label><input type="checkbox" value="5"> <i class="bi bi-exclamation-triangle-fill"></i> Tag 5</label>
+							<label><input type="checkbox" value="6"> <i class="bi bi-x-circle"></i> Tag 6</label>
+							<label><input type="checkbox" value="7"> <i class="bi bi-clock-history"></i> Tag 7</label>
+							<label><input type="checkbox" value="8"> <i class="bi bi-check2"></i> Tag 8</label>
+
+						</div>
+						<div class="editTagsActions">
+							<button class="cancelEditTags">Cancelar</button>
+							<button class="confirmEditTags">Confirmar</button>
+						</div>
+					</div>
+				</div>
+			`;
+
 			// Adiciona interações
 			const threeDotsBtn = postElement.querySelector('.threeDotsBtn');
 			const postActions = postElement.querySelector('.postActions');
+			const editPostBtn = postElement.querySelector('.editPostBtn');
 			const deletePostBtn = postElement.querySelector('.deletePostBtn');
 
 			threeDotsBtn.addEventListener('click', () => {
 				postActions.style.display = postActions.style.display === 'none' ? 'block' : 'none';
+			});
+
+			if (editPostBtn) {
+				editPostBtn.addEventListener('click', async () => {
+					const editModal = postElement.querySelector('.editTagsModal');
+					const checkboxes = editModal.querySelectorAll('input[type="checkbox"]');
+
+					// Marca as checkboxes baseado nas tags atuais do post
+					checkboxes.forEach(checkbox => {
+						checkbox.checked = post.tags && post.tags.some(tag =>
+							(typeof tag === 'object' ? tag.id : tag) == checkbox.value
+						);
+					});
+
+					editModal.style.display = 'block';
+					postActions.style.display = 'none'; // Fecha o menu de ações
+				})
+			}
+
+			// Adiciona eventos para os botões do modal
+			const cancelBtn = postElement.querySelector('.cancelEditTags');
+			cancelBtn.addEventListener('click', () => {
+				postElement.querySelector('.editTagsModal').style.display = 'none';
+			});
+
+			const confirmBtn = postElement.querySelector('.confirmEditTags');
+			confirmBtn.addEventListener('click', async () => {
+				// Pega as tags selecionadas
+				const checkboxes = postElement.querySelectorAll('.tagsCheckboxes input:checked');
+				const selectedTags = Array.from(checkboxes).map(cb => parseInt(cb.value));
+
+				// Transforma o array no formato desejado usando for
+				const tagsFormData = {};
+				for (let i = 0; i < selectedTags.length; i++) {
+					tagsFormData[`tags[${i}]`] = selectedTags[i];
+				}
+
+				// Exemplo do formato resultante:
+				// tagsFormData = {
+				//     "tags[0]": 1,
+				//     "tags[1]": 3
+				// }
+
+				try {
+					const response = await fetch(`/api/updatePostTags/${post.id}`, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded', // Alterado para o formato adequado
+						},
+						body: new URLSearchParams(tagsFormData).toString()
+					});
+
+					if (!response.ok) {
+						throw new Error('Erro ao atualizar tags');
+					}
+
+					// Atualiza a visualização
+					postElement.querySelector('.tags').innerHTML = convertTagsToIcons(selectedTags);
+					postElement.querySelector('.editTagsModal').style.display = 'none';
+
+				} catch (error) {
+					console.error('Erro:', error);
+					alert('Não foi possível atualizar as tags');
+				}
 			});
 
 			if (deletePostBtn) {
@@ -382,6 +470,7 @@
 			});
 
 			deletePostBtn.addEventListener('click', function () {
+				console.log('xd');
 				if (confirm('Tem certeza que deseja apagar esta publicação?')) {
 					novoPost.remove();
 				}
