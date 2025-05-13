@@ -82,8 +82,8 @@
 				<label for="course">Curso</label>
 				<input name="curso" type="text" id="course" placeholder="Seu curso">
 
-
 				<button type="button" class="edit-profile-save-btn" onclick="saveProfile1()">Salvar</button>
+				<button type="button" onclick="deleteProfile()">Deletar Perfil</button>
 			</form>
 		</div>
 	</div>
@@ -548,6 +548,23 @@
 		}
 
 		updateUserData()
+	</script>
+
+	<script>
+		async function deleteProfile() {
+			const user = JSON.parse(localStorage.getItem("user")) || {};
+
+			const response = await fetch(`/api/users/${user.id}`, {
+				method: "DELETE"
+			})
+
+			const data = await response.json();
+
+			await fetch("/api/logout", { method: "POST" });
+        	localStorage.removeItem("user");
+
+			window.location.href = '/login';
+		}
 	</script>
 </body>
 
