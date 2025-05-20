@@ -1,14 +1,12 @@
 <?php
 
 use App\Controllers\AuthController;
-use App\Controllers\CommentController;
-use App\Controllers\EstablishmentController;
-use App\Controllers\PhotoController;
+use App\Controllers\NotificationController;
 use App\Controllers\PostController;
-use App\Controllers\ReactionController;
 use App\Controllers\TagController;
 use App\Controllers\TagPostController;
 use App\Controllers\UserController;
+use App\Controllers\VoteController;
 use App\Models\User;
 
 function route($uri, $controllerMethod, $method) {
@@ -57,8 +55,21 @@ if (isset($_SESSION['user'])) {
     route('/api/tags-posts/{id}', [TagPostController::class, 'update'], 'PUT');
     route('/api/tags-posts/{id}', [TagPostController::class, 'destroy'], 'DELETE');
 
+    // Rotas de votes
+    route('/api/votes', [VoteController::class, 'create'], 'POST');
+    route('/api/votes', [VoteController::class, 'index'], 'GET');
+    route('/api/votes/{id}', [VoteController::class, 'show'], 'GET');
+    route('/api/votes/{id}', [VoteController::class, 'update'], 'PUT');
+    route('/api/votes/{id}', [VoteController::class, 'destroy'], 'DELETE');
+
+    // Rotas de notifications
+    route('/api/notifications', [NotificationController::class, 'create'], 'POST');
+    route('/api/notifications', [NotificationController::class, 'index'], 'GET');
+    route('/api/notifications/{id}', [NotificationController::class, 'show'], 'GET');
+    route('/api/notifications/{id}', [NotificationController::class, 'update'], 'PUT');
+    route('/api/notifications/{id}', [NotificationController::class, 'destroy'], 'DELETE');
+
     // Rotas diversas
-    route('/api/photos', [PhotoController::class, 'create'], 'POST');
     route('/api/user', [UserController::class, 'getUser'], 'GET');
     route('/api/get-posts-by-user-id', [PostController::class, 'getPostsByUserID'], 'GET');
     route('/api/updateProfile', [UserController::class, 'updateProfile'], 'POST');
