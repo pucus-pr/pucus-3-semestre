@@ -603,7 +603,7 @@
         const response = await fetch("/api/user");
         const data = await response.json();
 
-        if(data.data.access_level != 4) {
+        if(data.data.access_level < 3) {
 			window.location.href = '/home'
 		}
       }
