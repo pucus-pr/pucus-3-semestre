@@ -14,7 +14,7 @@ class Notification extends Model {
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO notifications (name) VALUES (?)';
+        $sql = 'INSERT INTO notifications (user_id, title, message, type) VALUES (?, ?, ?, ?)';
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
@@ -26,7 +26,7 @@ class Notification extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE notifications SET name = ? WHERE id = ?';
+        $sql = 'UPDATE notifications SET read_at WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
         return [

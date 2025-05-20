@@ -14,7 +14,9 @@ class Vote extends Model {
     }
 
     public static function create($request) {
-        $sql = 'INSERT INTO votes (name) VALUES (?)';
+        array_unshift($request, $_SESSION['user']);
+
+        $sql = 'INSERT INTO votes (user_id, post_id, value) VALUES (?, ?, ?)';
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
@@ -26,7 +28,7 @@ class Vote extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE votes SET name = ? WHERE id = ?';
+        $sql = 'UPDATE votes SET value = ? WHERE id = ?';
         $request['id'] = $id;
         $id = self::query($sql, $request);
         return [
