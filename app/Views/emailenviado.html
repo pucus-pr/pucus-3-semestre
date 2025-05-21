@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Enviado</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="css/loginCad.css">
+</head>
+<body>
+  <div class="container">
+    
+    <div class="left-box">
+      <div class="leftidk">
+        <p class="textoredef">Verifique sua caixa de entrada<br>para o token de recuperação de senha.</p>
+      </div>
+    </div>
+
+    <div class="form-box-email">
+      <div class="email-enviado show">
+        <h1>Email enviado com sucesso!</h1>
+        
+        <div class="botoes-confirmacao">
+          <button class="btn" onclick="mostrarPopup()">Reenviar Email</button>
+          <button class="btn" onclick="window.location.href='Login.html'">Voltar para Login</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function mostrarPopup() {
+      alert("Um novo e-mail de recuperação foi enviado!");
+    }
+  </script>
+</body>
+</html>
