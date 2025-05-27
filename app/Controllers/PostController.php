@@ -37,4 +37,5 @@ class PostController {
             'data' => $posts
         ];
     }
+    // Controlador de postagens
 }
