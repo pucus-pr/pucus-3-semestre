@@ -30,6 +30,10 @@ route('/registers', null, 'PUBLICACCESS');
 route('/api/login', [AuthController::class, 'login'], 'POST');
 route('/api/register', [UserController::class, 'create'], 'POST');
 
+route('/api/requestpasswordreset', [AuthController::class, 'requestPResetEmail'], 'POST');
+route('/api/passwordreset', [AuthController::class, 'resetPassword'], 'POST');
+
+
 if (isset($_SESSION['user'])) {
     // Rotas de usuários
     route('/api/logout', [AuthController::class, 'logout'], 'POST');
