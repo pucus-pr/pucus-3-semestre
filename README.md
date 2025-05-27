@@ -17,8 +17,9 @@ Se ainda não tiver o repositório, clone-o para sua máquina local dentro da pa
    cd pucus
 ```
 2.**Adicione a biblioteca PHPMAiler**
-https://getcomposer.org/download/
-Depois de instalado acesse o diretório do projeto e coloque esse comando no terminal:
+
+Baixe o composer: https://getcomposer.org/download/
+Depois de instalar o composer acesse o diretório do projeto e coloque esse comando no terminal:
 ```bash
    composer require phpmailer/phpmailer
 ```
