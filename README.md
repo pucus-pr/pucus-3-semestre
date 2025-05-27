@@ -16,16 +16,21 @@ Se ainda não tiver o repositório, clone-o para sua máquina local dentro da pa
    git clone https://github.com/pucus-pr/pucus.git
    cd pucus
 ```
-
-2. **Crie a database**
+2.**Adicione a biblioteca PHPMAiler**
+https://getcomposer.org/download/
+Depois de instalado acesse o diretório do projeto e coloque esse comando no terminal:
+```bash
+   composer require phpmailer/phpmailer
+```
+3. **Crie a database**
 
 Antes de rodar a aplicação, é necessário criar o banco de dados. Crie uma database chamada pucus no banco de dados do XAMPP (ou outro da sua preferência)
 
-3. **Configure a conexão com o banco de dados**
+4. **Configure a conexão com o banco de dados**
 
 Verifique se o arquivo de configuração de banco de dados está configurado corretamente (config/config.php)
 
-4. **Execute as migrações**
+5. **Execute as migrações**
 
 ```bash
    php ./database/migrate.php
