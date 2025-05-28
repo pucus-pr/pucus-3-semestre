@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Tag;
 
 class TagController {
+    // Retorna todos as tags
     public function index() {
         return Tag::all();
     }
