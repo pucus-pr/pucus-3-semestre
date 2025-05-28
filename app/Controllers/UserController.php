@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\User;
 
 class UserController {
+    // Retorna todos os usuários
     public function index() {
         return User::all();
     }
