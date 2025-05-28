@@ -17,9 +17,17 @@ class Post extends Model {
         // Base da query
         $sql = '
             SELECT posts.*, 
-                   users.name AS user_name, 
-                   users.image AS user_image,
-                   GROUP_CONCAT(tags_posts.tag_id) AS tags
+                users.name AS user_name, 
+                users.image AS user_image,
+                GROUP_CONCAT(tags_posts.tag_id) AS tags,
+                (
+                    SELECT COUNT(*) FROM votes 
+                    WHERE votes.post_id = posts.id AND votes.value = 1
+                ) AS upvotes,
+                (
+                    SELECT COUNT(*) FROM votes 
+                    WHERE votes.post_id = posts.id AND votes.value = -1
+                ) AS downvotes
             FROM posts
             JOIN users ON posts.user_id = users.id
             LEFT JOIN tags_posts ON posts.id = tags_posts.post_id
@@ -61,8 +69,6 @@ class Post extends Model {
     
         return $posts;
     }
-    
-    
     
     public static function find($id) {
         $sql = 'SELECT * FROM posts WHERE id = ?';
