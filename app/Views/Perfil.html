@@ -80,7 +80,14 @@
 				<textarea id="bio" placeholder="Algo sobre você..."></textarea>
 
 				<label for="course">Curso</label>
-				<input name="curso" type="text" id="course" placeholder="Seu curso">
+				<select name="curso" id="course">
+					<option value="">Selecione seu curso</option>
+					<option value="adm">Administração</option>
+					<option value="direito">Direito</option>
+					<option value="engenharia">Engenharia</option>
+					<option value="medicina">Medicina</option>
+					<option value="ti">Tecnologia da Informação</option>
+				</select>
 
 				<button type="button" class="edit-profile-save-btn" onclick="saveProfile1()">Salvar</button>
 				<button type="button" onclick="deleteProfile()">Deletar Perfil</button>
@@ -228,8 +235,8 @@
 			const tagsHtml = convertTagsToIcons(tags);
 
 			const imageHtml = post.image ?
-			`<div class="postmid"><img src="${post.image.replace(/\\/g, '/').replace('C:/xampp/htdocs/pucus/app/Models/../../public/', '')}" alt="Imagem do Post"></div>` :
-			'';
+				`<div class="postmid"><img src="${post.image.replace(/\\/g, '/').replace('C:/xampp/htdocs/pucus/app/Models/../../public/', '')}" alt="Imagem do Post"></div>` :
+				'';
 
 			postElement.innerHTML = `
 			<div class="postHeader">
@@ -262,14 +269,14 @@
 					<div class="editTagsContent">
 						<h3>Editar Tags</h3>
 						<div class="tagsCheckboxes">
-							<label><input type="checkbox" value="1"> <i class="bi bi-shield-fill-exclamation"></i> Tag 1</label>
-							<label><input type="checkbox" value="2"> <i class="bi bi-pc-display-horizontal"></i> Tag 2</label>
-							<label><input type="checkbox" value="3"> <i class="bi bi-stars"></i> Tag 3</label>
-							<label><input type="checkbox" value="4"> <i class="bi bi-building-fill"></i> Tag 4</label>
-							<label><input type="checkbox" value="5"> <i class="bi bi-exclamation-triangle-fill"></i> Tag 5</label>
-							<label><input type="checkbox" value="6"> <i class="bi bi-x-circle"></i> Tag 6</label>
-							<label><input type="checkbox" value="7"> <i class="bi bi-clock-history"></i> Tag 7</label>
-							<label><input type="checkbox" value="8"> <i class="bi bi-check2"></i> Tag 8</label>
+							<label><input type="checkbox" value="1"> <i class="bi bi-shield-fill-exclamation"></i> Segurança</label>
+							<label><input type="checkbox" value="2"> <i class="bi bi-pc-display-horizontal"></i> TI</label>
+							<label><input type="checkbox" value="3"> <i class="bi bi-stars"></i> Limpeza</label>
+							<label><input type="checkbox" value="4"> <i class="bi bi-building-fill"></i> Estrutura</label>
+							<label><input type="checkbox" value="5"> <i class="bi bi-exclamation-triangle-fill"></i> Alerta geral</label>
+							<label><input type="checkbox" value="6"> <i class="bi bi-x-circle"></i> Não iniciado</label>
+							<label><input type="checkbox" value="7"> <i class="bi bi-clock-history"></i> Em andamento</label>
+							<label><input type="checkbox" value="8"> <i class="bi bi-check2"></i> Concluido</label>
 
 						</div>
 						<div class="editTagsActions">
@@ -561,7 +568,7 @@
 			const data = await response.json();
 
 			await fetch("/api/logout", { method: "POST" });
-        	localStorage.removeItem("user");
+			localStorage.removeItem("user");
 
 			window.location.href = '/login';
 		}

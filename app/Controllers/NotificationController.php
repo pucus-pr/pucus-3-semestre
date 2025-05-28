@@ -27,4 +27,6 @@ class NotificationController {
     public function destroy($id) {
         return Notification::delete($id);
     }
+
+    // Controlador das notificações
 }
