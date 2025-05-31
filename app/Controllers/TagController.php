@@ -5,10 +5,12 @@ namespace App\Controllers;
 use App\Models\Tag;
 
 class TagController {
+    // Retorna todos as tags
     public function index() {
         return Tag::all();
     }
-    
+
+    // Retorna uma tag específica
     public function show($id) {
         return Tag::find($id);
     }
