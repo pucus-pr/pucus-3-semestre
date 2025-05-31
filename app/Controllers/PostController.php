@@ -37,4 +37,12 @@ class PostController {
             'data' => $posts
         ];
     }
+
+    public function allStatements() {
+        return Post::allStatements();
+    }
+
+    public function createStatement() {
+        return Post::createStatement($_POST);
+    }
 }

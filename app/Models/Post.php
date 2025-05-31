@@ -17,33 +17,46 @@ class Post extends Model {
         // Base da query
         $sql = '
             SELECT posts.*, 
-                   users.name AS user_name, 
-                   users.image AS user_image,
-                   GROUP_CONCAT(tags_posts.tag_id) AS tags
+                users.name AS user_name, 
+                users.image AS user_image,
+                GROUP_CONCAT(tags_posts.tag_id) AS tags,
+                (
+                    SELECT COUNT(*) FROM votes 
+                    WHERE votes.post_id = posts.id AND votes.value = 1
+                ) AS upvotes,
+                (
+                    SELECT COUNT(*) FROM votes 
+                    WHERE votes.post_id = posts.id AND votes.value = -1
+                ) AS downvotes
             FROM posts
             JOIN users ON posts.user_id = users.id
             LEFT JOIN tags_posts ON posts.id = tags_posts.post_id
         ';
     
         $params = [];
+        $where = ['posts.type = 0']; // Inicia com filtro por type
     
         // Adiciona filtro se o usuário for de nível 2
         if ($user['access_level'] == 2) {
-            $whereTags = [];
+            $tagConditions = [];
     
-            // Se o identificador tiver tag específica
             if (isset($identifierTagMap[$user['identifier']])) {
-                $whereTags[] = 'tag_id = ?';
+                $tagConditions[] = 'tag_id = ?';
                 $params[] = $identifierTagMap[$user['identifier']];
             }
     
             // Sempre incluir Alerta Geral (tag 5)
-            $whereTags[] = 'tag_id = ?';
+            $tagConditions[] = 'tag_id = ?';
             $params[] = 5;
     
-            $sql .= ' WHERE posts.id IN (
-                SELECT post_id FROM tags_posts WHERE ' . implode(' OR ', $whereTags) . '
+            $where[] = 'posts.id IN (
+                SELECT post_id FROM tags_posts WHERE ' . implode(' OR ', $tagConditions) . '
             )';
+        }
+    
+        // Se houver condições, adiciona WHERE
+        if (!empty($where)) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
         }
     
         // Finaliza a query
@@ -61,8 +74,78 @@ class Post extends Model {
     
         return $posts;
     }
+
+    public static function allStatements() {
+        $user = User::find($_SESSION['user'])[0];
     
+        // Mapeamento de identifier para tag_id
+        $identifierTagMap = [
+            'Segurança' => 1,
+            'TI' => 2,
+            'Limpeza' => 3,
+            'Estrutura' => 4
+        ];
     
+        // Base da query
+        $sql = '
+            SELECT posts.*, 
+                users.name AS user_name, 
+                users.image AS user_image,
+                GROUP_CONCAT(tags_posts.tag_id) AS tags,
+                (
+                    SELECT COUNT(*) FROM votes 
+                    WHERE votes.post_id = posts.id AND votes.value = 1
+                ) AS upvotes,
+                (
+                    SELECT COUNT(*) FROM votes 
+                    WHERE votes.post_id = posts.id AND votes.value = -1
+                ) AS downvotes
+            FROM posts
+            JOIN users ON posts.user_id = users.id
+            LEFT JOIN tags_posts ON posts.id = tags_posts.post_id
+        ';
+    
+        $params = [];
+        $where = ['posts.type = 1']; // Inicia com filtro por type
+    
+        // Adiciona filtro se o usuário for de nível 2
+        if ($user['access_level'] == 2) {
+            $tagConditions = [];
+    
+            if (isset($identifierTagMap[$user['identifier']])) {
+                $tagConditions[] = 'tag_id = ?';
+                $params[] = $identifierTagMap[$user['identifier']];
+            }
+    
+            // Sempre incluir Alerta Geral (tag 5)
+            $tagConditions[] = 'tag_id = ?';
+            $params[] = 5;
+    
+            $where[] = 'posts.id IN (
+                SELECT post_id FROM tags_posts WHERE ' . implode(' OR ', $tagConditions) . '
+            )';
+        }
+    
+        // Se houver condições, adiciona WHERE
+        if (!empty($where)) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+    
+        // Finaliza a query
+        $sql .= '
+            GROUP BY posts.id
+            ORDER BY posts.id DESC
+        ';
+    
+        $posts = self::query($sql, $params);
+    
+        // Converter a string de tags em array
+        foreach ($posts as &$post) {
+            $post['tags'] = $post['tags'] ? array_map('intval', explode(',', $post['tags'])) : [];
+        }
+    
+        return $posts;
+    }
     
     public static function find($id) {
         $sql = 'SELECT * FROM posts WHERE id = ?';
@@ -146,5 +229,22 @@ class Post extends Model {
         }
     
         return $posts;
+    }
+
+    public static function createStatement($request) {
+        array_unshift($request, $_SESSION['user']);
+
+        array_push($request, 1);
+
+        $sql = 'INSERT INTO posts (user_id, text, type) VALUES (?, ?, ?, ?)';
+        $id = self::query($sql, $request);
+
+        return [
+            'status' => 'success',
+            'message' => 'Postagem criada com sucesso!',
+            'data' => [
+                'id' => $id
+            ]
+        ];
     }
 }
