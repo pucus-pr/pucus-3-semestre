@@ -10,5 +10,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS users (
     image VARCHAR(255) NOT NULL DEFAULT "img/defaultPerfilPicture.jpg",
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP NULL
+    deleted_at TIMESTAMP NULL,
+    reset_token VARCHAR(255) DEFAULT NULL,
+    reset_expires DATETIME DEFAULT NULL
 )';

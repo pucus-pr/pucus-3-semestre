@@ -38,4 +38,26 @@ class PostController {
         ];
     }
     // Controlador de postagens
+}<?php
+
+namespace App\Controllers;
+
+use App\Models\Post;
+
+class PostController {
+    public function index() {
+        return Post::all();
+    }
+    
+    public function show($id) {
+        return Post::find($id);
+    }
+
+    public function create() {
+        return Post::create($_POST, $_FILES);
+    }
+
+    public function createStatement() {
+        return Post::createStatement($_POST);
+    }
 }
