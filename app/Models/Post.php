@@ -217,12 +217,12 @@ class Post extends Model {
 
         array_push($request, 1);
 
-        $sql = 'INSERT INTO posts (user_id, text, type) VALUES (?, ?, ?, ?)';
+        $sql = 'INSERT INTO posts (user_id, text, type) VALUES (?, ?, ?)';
         $id = self::query($sql, $request);
 
         return [
             'status' => 'success',
-            'message' => 'Postagem criada com sucesso!',
+            'message' => 'Comunicado criado com sucesso!',
             'data' => [
                 'id' => $id
             ]
