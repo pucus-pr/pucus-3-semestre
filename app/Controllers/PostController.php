@@ -37,5 +37,12 @@ class PostController {
             'data' => $posts
         ];
     }
-    // Controlador de postagens
+
+    public function allStatements() {
+        return Post::allStatements();
+    }
+
+    public function createStatement() {
+        return Post::createStatement($_POST);
+    }
 }
