@@ -1,0 +1,659 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(90deg, #e2e2e2, #ffeaed);
+}
+
+/* Sidebar esquerda */
+nav {
+    margin-top: 0.1px;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 260px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #F25555;
+    border-radius: 0px 50px 50px 0px; 
+}
+
+nav ul li {
+    list-style: none;
+}
+
+nav ul li a {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 20px;
+    color: #fff;
+    position: relative;
+    padding: 25px 0 25px 38px;
+    transition: .5s;
+}
+
+nav ul li a:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 0%;
+    height: 100%;
+    background: #a04343;
+    border-radius: 40px 0px 0px 40px;
+    z-index: -1;
+    transition: all 300ms ease-in-out;
+}
+
+nav ul li a:hover {
+    color: #ffffff;
+    letter-spacing: 1.5px;
+    transition: .2s;
+    font-weight: bold;
+}
+
+nav ul li a:hover:before {
+    width: 95%;
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 25px auto;
+}
+
+.logo img {
+    width: 100%;
+}
+
+/* Conteúdo principal */
+.container {
+    display: flex;
+}
+
+/* Ajuste do feed para não ficar em cima da sidebar */
+.feed {
+    margin-left: 270px;
+    padding: 20px;
+    flex: 1;
+}
+
+/* Área de postagens */
+.midias {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+
+
+}
+
+.midia {
+    display: flex;
+    justify-content: center;
+    max-width: 600px;
+	width: 100%;
+	flex-wrap: wrap;
+
+
+}
+
+.post {
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+	width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+    position: relative; /* Adicionado para posicionamento interno */
+}
+
+.postHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.postIcon {
+    width: 70px; /* Definido pelo tamanho da imagem */
+    margin-right: 15px;
+}
+
+.postIcon img {
+    border-radius: 50%;
+    width: 100%;
+    height: auto;
+}
+
+.postNnD {
+    flex: 1; /* Ocupa o espaço restante */
+}
+
+
+.postNnD h1 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.postNnD p {
+    font-size: 14px;
+    color: #777;
+}
+
+
+.post2 {
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    width: 600px;
+    margin-bottom: 20px;
+    position: relative; /* Adicionado para posicionamento interno */
+}
+
+.postHeader2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.postIcon2 {
+    width: 70px; /* Definido pelo tamanho da imagem */
+    margin-right: 15px;
+}
+
+.postIcon2 img {
+    border-radius: 50%;
+    width: 100%;
+    height: auto;
+}
+
+.postNnD2 {
+    flex: 1; /* Ocupa o espaço restante */
+}
+
+
+.postNnD2 h1 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.postNnD2 p {
+    font-size: 14px;
+    color: #777;
+}
+
+.postDescription {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 0 10px;
+}
+
+.postmid {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.postmid img {
+    width: 100%;
+    border-radius: 10px;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.postBot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.tags {
+    display: flex;
+    gap: 15px;
+}
+
+.tags button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.tags button:hover {
+    color: #F25555;
+}
+
+.upVolt, .downVolt {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Overlay */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Efeito de opacidade */
+    z-index: 1;
+}
+
+
+
+/* Estilo para o novo post */
+#newPost {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 12px 25px;    
+    width: 50%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    max-width: 700px;
+    display: none; /* Inicia escondido */
+}
+
+.textt{
+    width: 100%;
+}
+
+/* Campo de descrição (comentário) */
+#newPost textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    resize: vertical;
+    font-size: 16px;
+    box-sizing: border-box;
+    min-height: 150px;
+    font-family: 'Poppins', sans-serif;
+    margin-right: 0px;
+}
+
+/* Botão para enviar o post */
+#newPost > button{
+    background-color: #F25555;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+/* Estilos para os botões do formulário de postagem */
+#addimgPostBtn, #moreOptionsBtn, #postar {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#addimgPostBtn {
+    background-color: #F25555;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+#addimgPostBtn::before {
+    content: '\f03e'; /* Ícone de imagem do FontAwesome */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+}
+
+#addimgPostBtn:hover {
+    background-color: #d04a4a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(242, 85, 85, 0.3);
+}
+
+#moreOptionsBtn {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #ddd;
+}
+
+#moreOptionsBtn::after {
+    content: '\f078'; /* Ícone de seta para baixo */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+#moreOptionsBtn:hover {
+    background-color: #e0e0e0;
+    border-color: #ccc;
+}
+
+#moreOptionsBtn.active::after {
+    transform: rotate(180deg);
+}
+
+#postar {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 30px;
+    font-weight: 600;
+}
+
+#postar:hover {
+    background-color: #3e8e41;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* Container dos botões */
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+/* Estilo para as opções adicionais */
+#moreOptions {
+    width: 100%;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#postTheme {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 8px;
+    background-color: white;
+    transition: border 0.3s;
+}
+
+#postTheme:focus {
+    border-color: #F25555;
+    outline: none;
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+    .button-group {
+        flex-direction: column;
+    }
+    
+    #addimgPostBtn, #moreOptionsBtn, #postar {
+        width: 100%;
+    }
+}
+
+/* Ajustando o botão de adicionar post */
+.addPostBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 3;
+}
+
+.closeBtn {
+    all: unset; /* Remove qualquer borda, fundo, padding herdado */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333; /* Cor normal do X */
+    cursor: pointer;
+    transition: color 0.3s ease; /* Anima só a cor na transição */
+}
+
+.closeBtn:hover {
+    color: red; /* Fica vermelho no hover */
+}
+
+.postFooter {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px; /* Espaço entre os botões */
+}
+
+.postFooter button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.postFooter button:hover {
+    background-color: #2980b9;
+}
+
+
+.themes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.themeOption {
+    background: #eee;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+    user-select: none;
+}
+
+.themeOption:hover {
+    background: #ddd;
+}
+
+.themeOption input[type="checkbox"] {
+    accent-color: #007bff; /* cor do quadradinho */
+    width: 18px;
+    height: 18px;
+}
+
+
+
+.perfil-topo {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.perfil-topo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.perfil-topo span {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+
+.perfil-topo:hover .perfil-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.perfil-menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 0;
+    width: 140px;
+}
+
+.perfil-menu button {
+    all: unset;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-align: left;
+    z-index: 0;
+}
+
+.perfil-menu button:hover {
+    background-color: #f2f2f2;
+}
+
+.contador-votos {
+    margin-left: 5px;
+    font-weight: bold;
+  }
+  .upVolt, .downVolt {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .comunicado-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  background-color: #fafafa;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.comunicado-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.comunicado-user-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.comunicado-texto {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+
+.comunicado-imagem {
+  max-width: 100%;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+
+#formComunicado {
+  margin-bottom: 20px;
+}
+
+#formComunicado textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+#formComunicado button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+#formComunicado button:hover {
+  background-color: #45a049;
+}
