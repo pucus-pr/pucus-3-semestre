@@ -144,7 +144,7 @@
       }
 
       const formData = new FormData();
-      formData.append("postId", postId);
+      formData.append("post_id", postId);
       formData.append("value", value);
 
       try {
@@ -158,13 +158,10 @@
           console.log("Voto enviado:", result);
 
           // Atualizar contadores no DOM (opcional)
-          if (vote === "upvote") {
-            const likeCountSpan = target.querySelector(".likeCount");
-            if (likeCountSpan) likeCountSpan.textContent = Number(likeCountSpan.textContent) + 1;
-          } else {
-            const dislikeCountSpan = target.querySelector(".dislikeCount");
-            if (dislikeCountSpan) dislikeCountSpan.textContent = Number(dislikeCountSpan.textContent) + 1;
-          }
+          const likeCountSpan = target.parentElement.querySelector(".likeCount");
+          if (likeCountSpan) likeCountSpan.textContent = result['data']['upvotes'];
+          const dislikeCountSpan = target.parentElement.querySelector(".dislikeCount");
+          if (dislikeCountSpan) dislikeCountSpan.textContent = result['data']['downvotes'];
         } else {
           console.error("Erro ao votar:", await response.text());
         }

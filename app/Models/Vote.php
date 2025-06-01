@@ -25,25 +25,29 @@ class Vote extends Model {
             if ($request['value'] == $vote['value']) {
                 Vote::delete($vote['id']);
                 $sql = 'SELECT COUNT(*) AS total FROM votes WHERE post_id = ? AND value = ?';
-                $quantity = self::query($sql, [$request['post_id'], $request['value']]);
+                $upvotes = self::query($sql, [$request['post_id'], 1])[0]['total'];
+                $downvotes = self::query($sql, [$request['post_id'], -1])[0]['total'];
                 return [
                     'status' => 'success',
                     'message' => 'Voto modificado com sucesso!',
                     'data' => [
                         'id' => $vote['id'],
-                        'quantity' => $quantity
+                        'upvotes' => $upvotes,
+                        'downvotes' => $downvotes
                     ]
                 ];
             } else {
                 Vote::update([$request['value']], $vote['id']);
                 $sql = 'SELECT COUNT(*) AS total FROM votes WHERE post_id = ? AND value = ?';
-                $quantity = self::query($sql, [$request['post_id'], $request['value']]);
+                $upvotes = self::query($sql, [$request['post_id'], 1])[0]['total'];
+                $downvotes = self::query($sql, [$request['post_id'], -1])[0]['total'];
                 return [
                     'status' => 'success',
                     'message' => 'Voto modificado com sucesso!',
                     'data' => [
                         'id' => $vote['id'],
-                        'quantity' => $quantity
+                        'upvotes' => $upvotes,
+                        'downvotes' => $downvotes
                     ]
                 ];
             }
@@ -52,13 +56,15 @@ class Vote extends Model {
             $id = self::query($sql, $request);
 
             $sql = 'SELECT COUNT(*) AS total FROM votes WHERE post_id = ? AND value = ?';
-            $quantity = self::query($sql, [$request['post_id'], $request['value']]);
+            $upvotes = self::query($sql, [$request['post_id'], 1])[0]['total'];
+            $downvotes = self::query($sql, [$request['post_id'], -1])[0]['total'];
             return [
                 'status' => 'success',
                 'message' => 'Voto criado com sucesso!',
                 'data' => [
                     'id' => $id,
-                    'quantity' => $quantity
+                    'upvotes' => $upvotes,
+                    'downvotes' => $downvotes
                 ]
             ];
         }
