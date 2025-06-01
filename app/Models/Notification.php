@@ -4,8 +4,8 @@ namespace App\Models;
 
 class Notification extends Model {
     public static function all() {
-        $sql = 'SELECT * FROM notifications';
-        return self::query($sql, []);
+        $sql = 'SELECT * FROM notifications WHERE user_id = ?';
+        return self::query($sql, [$_SESSION['user']]);
     }
     
     public static function find($id) {
