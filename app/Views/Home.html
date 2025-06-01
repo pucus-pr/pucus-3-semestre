@@ -163,12 +163,12 @@
   <div class="postBot">
     <div class="upVolt voteBtn" data-post-id="${post.id}" data-vote="upvote">
       <i class="bi bi-arrow-up"></i>
-      <span class="likeCount">${post.likes || 0}</span>
+      <span class="likeCount">${post.upvotes || 0}</span>
     </div>
     <div class="tags">${tagsHtml}</div>
     <div class="downVolt voteBtn" data-post-id="${post.id}" data-vote="downvote">
       <i class="bi bi-arrow-down"></i>
-      <span class="dislikeCount">${post.dislikes || 0}</span>
+      <span class="dislikeCount">${post.downvotes || 0}</span>
     </div>
   </div>
 `;
@@ -179,10 +179,17 @@ document.addEventListener("click", async (e) => {
 
   const postId = target.getAttribute("data-post-id");
   const vote = target.getAttribute("data-vote");
+  let value;
+
+  if (vote == 'upvote') {
+    value = 1
+  } else {
+    value = -1
+  }
 
   const formData = new FormData();
   formData.append("postId", postId);
-  formData.append("vote", vote);
+  formData.append("value", value);
 
   try {
     const response = await fetch("/api/votes", {
