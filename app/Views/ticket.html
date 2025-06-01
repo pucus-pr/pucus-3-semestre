@@ -126,19 +126,23 @@ function createPostElement(post) {
   }
 
   // Botão Confirmado
-  const confirmButton = document.createElement("button");
-  confirmButton.textContent = "Confirmado";
-  confirmButton.classList.add("confirm-button");
- confirmButton.onclick = async () => {
+  const emAndButton = document.createElement("button");
+  const finalButton = document.createElement("button");
+  emAndButton.textContent = "Em andamento";
+  finalButton.textContent = "Finalizado";
+  emAndButton.classList.add("confirm-button");
+  finalButton.classList.add("confirm-button");
+
+emAndButton.onclick = async () => {
   // Garante que post.tags seja um array válido
   const currentTags = Array.isArray(post.tags) ? post.tags : [];
 
   // Filtra para manter apenas as tags de 1 a 5
   const tags1to5 = currentTags.filter(tag => [1, 2, 3, 4, 5].includes(tag));
 
-  // Adiciona a tag 8 se ainda não estiver presente
-  if (!tags1to5.includes(8)) {
-    tags1to5.push(8);
+  // Adiciona a tag 7 se ainda não estiver presente
+  if (!tags1to5.includes(7)) {
+    tags1to5.push(7);
   }
 
   // Monta o objeto tagsFormData
@@ -167,7 +171,52 @@ function createPostElement(post) {
   }
 };
 
-  finalDiv.appendChild(confirmButton);
+
+finalButton.onclick = async () => {
+  // Garante que post.tags seja um array válido
+  const currentTags = Array.isArray(post.tags) ? post.tags : [];
+
+  // Filtra para manter apenas as tags de 1 a 5
+  const tags1to5 = currentTags.filter(tag => [1, 2, 3, 4, 5].includes(tag));
+
+  // Adiciona a tag 8 se ainda não estiver presente
+  if (!tags1to5.includes(9)) {
+    tags1to5.push(9);
+  }
+  if (!tags1to5.includes(7)) {
+    tags1to5.push(7);
+  }
+
+  // Monta o objeto tagsFormData
+  const tagsFormData = {};
+  for (let i = 0; i < tags1to5.length; i++) {
+    tagsFormData[`tags[${i}]`] = tags1to5[i];
+  }
+
+  try {
+    const response = await fetch(`/api/updatePostTags/${post.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams(tagsFormData).toString(),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro ao atualizar o post: ${response.status}`);
+    }
+
+    alert(`Post de ${post.user_name || "Usuário"} confirmado e atualizado com tag!`);
+  } catch (error) {
+    console.error(error);
+    alert(`Erro ao confirmar e atualizar o post: ${error.message}`);
+  }
+};
+
+
+
+  finalDiv.appendChild(emAndButton);
+  finalDiv.appendChild(finalButton);
 
   // Monta o ticket horizontal
   ticket.appendChild(userDiv);
@@ -275,7 +324,7 @@ loadPosts();
         const response = await fetch("/api/user");
         const data = await response.json();
 
-        if(data.data.access_level < 3) {
+        if(data.data.access_level != 2) {
 			window.location.href = '/home'
 		}
       }
