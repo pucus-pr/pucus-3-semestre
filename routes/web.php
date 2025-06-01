@@ -24,6 +24,7 @@ function route($uri, $controllerMethod, $method) {
 
 route('/login', null, 'PUBLICACCESS');
 route('/registers', null, 'PUBLICACCESS');
+route('/emailredef', null, 'PUBLICACCESS');
 
 route('/api/login', [AuthController::class, 'login'], 'POST');
 route('/api/register', [UserController::class, 'create'], 'POST');
