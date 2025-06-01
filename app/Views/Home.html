@@ -132,6 +132,50 @@
         .join("");
     }
 
+    document.addEventListener("click", async (e) => {
+      const target = e.target.closest(".voteBtn");
+      if (!target) return;
+
+      const postId = target.getAttribute("data-post-id");
+      const vote = target.getAttribute("data-vote");
+      let value;
+
+      if (vote == 'upvote') {
+        value = 1
+      } else {
+        value = -1
+      }
+
+      const formData = new FormData();
+      formData.append("postId", postId);
+      formData.append("value", value);
+
+      try {
+        const response = await fetch("/api/votes", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log("Voto enviado:", result);
+
+          // Atualizar contadores no DOM (opcional)
+          if (vote === "upvote") {
+            const likeCountSpan = target.querySelector(".likeCount");
+            if (likeCountSpan) likeCountSpan.textContent = Number(likeCountSpan.textContent) + 1;
+          } else {
+            const dislikeCountSpan = target.querySelector(".dislikeCount");
+            if (dislikeCountSpan) dislikeCountSpan.textContent = Number(dislikeCountSpan.textContent) + 1;
+          }
+        } else {
+          console.error("Erro ao votar:", await response.text());
+        }
+      } catch (err) {
+        console.error("Erro de rede:", err);
+      }
+    });
+
     // Função para criar elementos de postagem - ATUALIZADA
     function createPostElement(post) {
       const postElement = document.createElement("div");
@@ -146,78 +190,32 @@
         : "";
 
       postElement.innerHTML = ` 
-  <div class="postHeader">
-    <div class="postIcon">
-      <img src="${post.user_image}" alt="Foto de Perfil">
-    </div>
-    <div class="postNnD">
-      <h1>${post.user_name}</h1>
-      <p>${post.created_at || new Date().toLocaleDateString("pt-BR")}</p>
-    </div>
-    <div class="threeDotsBtn cuzma"></div>
-  </div>
-  <div class="postDescription">
-    <p>${post.text || post.content || ""}</p>
-  </div>
-  ${imageHtml}
-  <div class="postBot">
-    <div class="upVolt voteBtn" data-post-id="${post.id}" data-vote="upvote">
-      <i class="bi bi-arrow-up"></i>
-      <span class="likeCount">${post.upvotes || 0}</span>
-    </div>
-    <div class="tags">${tagsHtml}</div>
-    <div class="downVolt voteBtn" data-post-id="${post.id}" data-vote="downvote">
-      <i class="bi bi-arrow-down"></i>
-      <span class="dislikeCount">${post.downvotes || 0}</span>
-    </div>
-  </div>
-`;
-
-document.addEventListener("click", async (e) => {
-  const target = e.target.closest(".voteBtn");
-  if (!target) return;
-
-  const postId = target.getAttribute("data-post-id");
-  const vote = target.getAttribute("data-vote");
-  let value;
-
-  if (vote == 'upvote') {
-    value = 1
-  } else {
-    value = -1
-  }
-
-  const formData = new FormData();
-  formData.append("postId", postId);
-  formData.append("value", value);
-
-  try {
-    const response = await fetch("/api/votes", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      console.log("Voto enviado:", result);
-
-      // Atualizar contadores no DOM (opcional)
-      if (vote === "upvote") {
-        const likeCountSpan = target.querySelector(".likeCount");
-        if (likeCountSpan) likeCountSpan.textContent = Number(likeCountSpan.textContent) + 1;
-      } else {
-        const dislikeCountSpan = target.querySelector(".dislikeCount");
-        if (dislikeCountSpan) dislikeCountSpan.textContent = Number(dislikeCountSpan.textContent) + 1;
-      }
-    } else {
-      console.error("Erro ao votar:", await response.text());
-    }
-  } catch (err) {
-    console.error("Erro de rede:", err);
-  }
-});
-
-
+        <div class="postHeader">
+          <div class="postIcon">
+            <img src="${post.user_image}" alt="Foto de Perfil">
+          </div>
+          <div class="postNnD">
+            <h1>${post.user_name}</h1>
+            <p>${post.created_at || new Date().toLocaleDateString("pt-BR")}</p>
+          </div>
+          <div class="threeDotsBtn cuzma"></div>
+        </div>
+        <div class="postDescription">
+          <p>${post.text || post.content || ""}</p>
+        </div>
+        ${imageHtml}
+        <div class="postBot">
+          <div class="upVolt voteBtn" data-post-id="${post.id}" data-vote="upvote">
+            <i class="bi bi-arrow-up"></i>
+            <span class="likeCount">${post.upvotes || 0}</span>
+          </div>
+          <div class="tags">${tagsHtml}</div>
+          <div class="downVolt voteBtn" data-post-id="${post.id}" data-vote="downvote">
+            <i class="bi bi-arrow-down"></i>
+            <span class="dislikeCount">${post.downvotes || 0}</span>
+          </div>
+        </div>
+      `;
       return postElement;
     }
 
