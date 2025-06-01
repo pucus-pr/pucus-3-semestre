@@ -93,7 +93,7 @@ main form {
 main form .inputs {
   margin: 15px 0;
   width: 100%;
-  background-color: rgb(245, 248, 250);
+  background: linear-gradient(90deg, #e2e2e2, #ffeaed);
   font-size: 20px;
 }
 
