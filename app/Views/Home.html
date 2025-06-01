@@ -163,12 +163,12 @@
   <div class="postBot">
     <div class="upVolt voteBtn" data-post-id="${post.id}" data-vote="upvote">
       <i class="bi bi-arrow-up"></i>
-      <span class="likeCount">${post.likes || 0}</span>
+      <span class="likeCount">${post.upvotes || 0}</span>
     </div>
     <div class="tags">${tagsHtml}</div>
     <div class="downVolt voteBtn" data-post-id="${post.id}" data-vote="downvote">
       <i class="bi bi-arrow-down"></i>
-      <span class="dislikeCount">${post.dislikes || 0}</span>
+      <span class="dislikeCount">${post.downvotes || 0}</span>
     </div>
   </div>
 `;
