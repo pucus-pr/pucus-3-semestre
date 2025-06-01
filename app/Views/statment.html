@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- Fonte -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -94,7 +96,11 @@ document.getElementById('formComunicado').addEventListener('submit', async (e) =
 
   const texto = document.getElementById('comunicadoTexto').value.trim();
   if (!texto) {
-    alert('Digite um comunicado!');
+    Swal.fire({
+      icon: 'warning',
+      title: 'Atenção',
+      text: 'Digite um comunicado!'
+    });
     return;
   }
 
@@ -112,12 +118,20 @@ document.getElementById('formComunicado').addEventListener('submit', async (e) =
       throw new Error(resultado.message || 'Erro ao enviar comunicado');
     }
 
-    alert('Comunicado enviado com sucesso!');
+    await Swal.fire({
+      icon: 'success',
+      title: 'Enviado!',
+      text: 'Comunicado enviado com sucesso.'
+    });
     document.getElementById('comunicadoTexto').value = ''; // Limpa o campo
     carregarComunicados(); // Recarrega comunicados
   } catch (error) {
     console.error(error);
-    alert('Erro: ' + error.message);
+     Swal.fire({
+      icon: 'error',
+      title: 'Erro',
+      text: error.message || 'Erro ao enviar comunicado'
+    });
   }
 });
 
