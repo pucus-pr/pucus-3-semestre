@@ -5,6 +5,8 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    background: linear-gradient(90deg, #e2e2e2, #ffeaed);
+
 }
 
 body {
@@ -260,6 +262,7 @@ form {
 
 #btn-voltar:hover {
     color: #F25555;
+
 }
 
 #btn-voltar:focus {

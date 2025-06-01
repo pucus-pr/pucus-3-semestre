@@ -99,8 +99,7 @@ nav ul li a:hover:before {
     display: flex;
     justify-content: center;
     max-width: 100%;
-
-
+    margin-top: 20px;
 }
 
 .midia {
@@ -657,3 +656,8 @@ nav ul li a:hover:before {
 #formComunicado button:hover {
   background-color: #45a049;
 }
+
+/* #comunicado-lista{
+    margin-top: 95px;
+
+} */
