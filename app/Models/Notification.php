@@ -26,8 +26,8 @@ class Notification extends Model {
     }
 
     public static function update($request, $id) {
-        $sql = 'UPDATE notifications SET read_at WHERE id = ?';
-        $request['id'] = $id;
+        $sql = 'UPDATE notifications SET read_at = NOW() WHERE id = ?';
+        array_push($request, $id);
         $id = self::query($sql, $request);
         return [
             'status' => 'success',
