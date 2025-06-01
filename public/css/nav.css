@@ -120,6 +120,7 @@ nav ul li a:hover:before {
 	width: 100%;
     max-width: 600px;
     margin-bottom: 20px;
+    margin-top: 15px;
     position: relative; /* Adicionado para posicionamento interno */
 }
 
