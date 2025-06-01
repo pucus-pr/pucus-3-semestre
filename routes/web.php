@@ -52,7 +52,6 @@ if (isset($_SESSION['user'])) {
     route('/api/posts/{id}', [PostController::class, 'destroy'], 'DELETE');
     route('/api/posts/{tag}', [PostController::class, 'destroy'], 'GET');
     route('/api/statements', [PostController::class, 'allStatements'], 'GET');
-    route('/api/statements', [PostController::class, 'createStatement'], 'POST');
 
     // Rotas de tags-posts
     route('/api/tags-posts', [TagPostController::class, 'create'], 'POST');
@@ -88,5 +87,11 @@ if (isset($_SESSION['user'])) {
         route('/api/tags', [TagController::class, 'create'], 'POST');
         route('/api/tags/{id}', [TagController::class, 'update'], 'PUT');
         route('/api/tags/{id}', [TagController::class, 'destroy'], 'DELETE');
+
+        // Rotas de posts apenas para admins
+        route('/api/statements', [PostController::class, 'createStatement'], 'POST');
+        route('/api/allConcluded', [PostController::class, 'allConcludedPosts'], 'GET');
+        route('/api/confirmPost/{id}', [PostController::class, 'confirmPost'], 'PUT');
+        route('/api/denyPost/{id}', [PostController::class, 'denyPost'], 'PUT');
     }
 }

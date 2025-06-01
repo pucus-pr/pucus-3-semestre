@@ -228,4 +228,89 @@ class Post extends Model {
             ]
         ];
     }
+
+    public static function allConcluded() {
+        $user = User::find($_SESSION['user'])[0];
+
+        $identifierTagMap = [
+            'Segurança' => 1,
+            'TI' => 2,
+            'Limpeza' => 3,
+            'Estrutura' => 4
+        ];
+
+        $sql = '
+            SELECT posts.*, 
+                users.name AS user_name, 
+                users.image AS user_image,
+                GROUP_CONCAT(tags_posts.tag_id) AS tags,
+                (
+                    SELECT COUNT(*) FROM votes 
+                    WHERE votes.post_id = posts.id AND votes.value = 1
+                ) AS upvotes,
+                (
+                    SELECT COUNT(*) FROM votes 
+                    WHERE votes.post_id = posts.id AND votes.value = -1
+                ) AS downvotes
+            FROM posts
+            JOIN users ON posts.user_id = users.id
+            LEFT JOIN tags_posts ON posts.id = tags_posts.post_id
+        ';
+
+        $params = [];
+        $where = ['posts.type = 0'];
+
+        // Adiciona filtro se o usuário for de nível 2
+        if ($user['access_level'] == 2) {
+            $tagConditions = [];
+
+            if (isset($identifierTagMap[$user['identifier']])) {
+                $tagConditions[] = 'tag_id = ?';
+                $params[] = $identifierTagMap[$user['identifier']];
+            }
+
+            // Sempre incluir Alerta Geral (tag 5)
+            $tagConditions[] = 'tag_id = ?';
+            $params[] = 5;
+
+            $where[] = 'posts.id IN (
+                SELECT post_id FROM tags_posts WHERE ' . implode(' OR ', $tagConditions) . '
+            )';
+        }
+
+        // Filtra para incluir apenas posts com tag 8
+        $where[] = 'posts.id IN (
+            SELECT post_id FROM tags_posts WHERE tag_id = ?
+        )';
+        $params[] = 8;
+
+        if (!empty($where)) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+
+        $sql .= '
+            GROUP BY posts.id
+            ORDER BY posts.id DESC
+        ';
+
+        $posts = self::query($sql, $params);
+
+        foreach ($posts as &$post) {
+            $post['tags'] = $post['tags'] ? array_map('intval', explode(',', $post['tags'])) : [];
+        }
+
+        return $posts;
+    }
+
+    public static function confirm($id) {
+        return TagPost::create([$id, 9]);
+    }
+
+    public static function deny($id) {
+        $sql = 'SELECT * FROM tags_posts WHERE post_id = ? AND tag_id = 8';
+        $idDelete = self::query($sql, [$id])[0]['id'];
+        TagPost::delete($idDelete);
+
+        return TagPost::create([$id, 7]);
+    }
 }

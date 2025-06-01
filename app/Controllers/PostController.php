@@ -45,4 +45,16 @@ class PostController {
     public function createStatement() {
         return Post::createStatement($_POST);
     }
+
+    public function allConcludedPosts() {
+        return Post::allConcluded($_POST);
+    }
+
+    public function confirmPost($id) {
+        return Post::confirm($id);
+    }
+
+    public function denyPost($id) {
+        return Post::deny($id);
+    }
 }
