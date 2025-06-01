@@ -25,7 +25,7 @@
 
   <!-- Sidebar -->
   <nav>
-    <ul>
+      <ul>
       <li class="logo"><img alt="Logo" src="img/polvo.png" /></li>
       <li><a href="HomeADM"><i class="fa fa-home"></i> home</a></li>
       <li><a href="comunicados"><i class="bi bi-bookmark-star-fill"></i> comunicados</a></li>
@@ -139,6 +139,26 @@ document.getElementById('formComunicado').addEventListener('submit', async (e) =
         alert("Erro ao sair. Tente novamente.");
       }
     }
+
+
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        // Carrega informações do usuário
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+          // Topo
+          document.getElementById("perfil-nome").textContent =
+            user.name || "Usuário";
+          document.getElementById("perfil-img").src =
+            user.profilePicture || "img/placeholder.png";
+
+          // Novo Post
+          document.getElementById("newPost-name").textContent =
+            user.name || "Usuário";
+          document.getElementById("newPost-img").src =
+            user.profilePicture || "img/placeholder.png";
+        }
+    })
 </script>
 
 </body>

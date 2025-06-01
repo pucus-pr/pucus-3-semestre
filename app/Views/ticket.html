@@ -335,6 +335,24 @@ loadPosts();
           loadPosts();
         };
 
+        document.addEventListener("DOMContentLoaded", async function () {
+        // Carrega informações do usuário
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+          // Topo
+          document.getElementById("perfil-nome").textContent =
+            user.name || "Usuário";
+          document.getElementById("perfil-img").src =
+            user.profilePicture || "img/placeholder.png";
+
+          // Novo Post
+          document.getElementById("newPost-name").textContent =
+            user.name || "Usuário";
+          document.getElementById("newPost-img").src =
+            user.profilePicture || "img/placeholder.png";
+        }
+    })
+
     </script>
   </body>
 </html>
