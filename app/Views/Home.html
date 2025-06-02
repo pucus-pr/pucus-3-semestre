@@ -22,14 +22,12 @@
 
   <!-- Ícone de notificações -->
     <div class="notificacao-wrapper">
-    <i class="bi bi-bell-fill notificacao-icone"></i>
-  <div class="notificacao-dropdown">
-    <p class="notificacao-item" data-id="1" data-lida="false">Nova mensagem recebida</p>
-    <p class="notificacao-item" data-id="2" data-lida="false">Atualização disponível</p>
-    <p class="notificacao-item" data-id="3" data-lida="false">Evento amanhã</p>
-    <p class="notificacao-item" data-id="4" data-lida="false">Backup concluído</p>
+  <i class="bi bi-bell-fill notificacao-icone"></i>
+  <div class="notificacao-dropdown" id="notificacaoDropdown">
+    <p>Carregando notificações...</p>
   </div>
 </div>
+
 
   </div>
 
@@ -112,6 +110,59 @@
 
   <!-- JavaScript -->
   <script>
+
+
+    async function carregarNotificacoes() {
+  try {
+    const response = await fetch('/api/notifications');
+    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+    const notifications = await response.json();
+
+    const dropdown = document.getElementById('notificacaoDropdown');
+    dropdown.innerHTML = ''; // Limpa o conteúdo anterior
+
+    if (notifications.length === 0) {
+      dropdown.innerHTML = '<p>Sem notificações</p>';
+    } else {
+      notifications.forEach(notif => {
+        const p = document.createElement('p');
+        p.classList.add('notificacao-item');
+        p.textContent = `${notif.title}: ${notif.message}`;
+        p.setAttribute('data-id', notif.id);
+        p.setAttribute('data-lida', notif.read_at ? 'true' : 'false');
+        
+        // Ao clicar, marcar como lida usando a rota PUT /api/read/Notification
+        p.addEventListener('click', async () => {
+          if (!notif.read_at) {
+            try {
+              await fetch('/api/read/Notification', {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: notif.id })
+              });
+              p.setAttribute('data-lida', 'true');
+              notif.read_at = new Date().toISOString(); // Atualiza localmente
+            } catch (error) {
+              console.error('Erro ao marcar como lida:', error);
+            }
+          }
+        });
+
+        dropdown.appendChild(p);
+      });
+    }
+  } catch (error) {
+    console.error('Erro ao carregar notificações:', error);
+    const dropdown = document.getElementById('notificacaoDropdown');
+    dropdown.innerHTML = '<p>Erro ao carregar notificações</p>';
+  }
+}
+
+// Chama o carregamento ao carregar a página
+carregarNotificacoes();
+
 
     document.querySelectorAll('.notificacao-item').forEach(item => {
       item.addEventListener('click', () => {
