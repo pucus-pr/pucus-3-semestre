@@ -16,14 +16,30 @@
 </head>
 
 <body>
-  <div class="perfil-topo">
-    <img id="perfil-img" src="img/placeholder.png" alt="Foto de Perfil" />
-    <span id="perfil-nome">Usuário</span>
-    <div class="perfil-menu">
-      <button onclick="window.location.href='/perfil'">Perfil</button>
-      <button onclick="logout()">Logout</button>
-    </div>
+<div class="perfil-topo">
+  <img id="perfil-img" src="img/placeholder.png" alt="Foto de Perfil" />
+  <span id="perfil-nome">Usuário</span>
+
+  <!-- Ícone de notificações -->
+    <div class="notificacao-wrapper">
+    <i class="bi bi-bell-fill notificacao-icone"></i>
+  <div class="notificacao-dropdown">
+    <p class="notificacao-item" data-id="1" data-lida="false">Nova mensagem recebida</p>
+    <p class="notificacao-item" data-id="2" data-lida="false">Atualização disponível</p>
+    <p class="notificacao-item" data-id="3" data-lida="false">Evento amanhã</p>
+    <p class="notificacao-item" data-id="4" data-lida="false">Backup concluído</p>
   </div>
+</div>
+
+  </div>
+
+  <div class="perfil-menu">
+    <button onclick="window.location.href='/perfil'">Perfil</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+</div>
+
+
 
   <!-- Sidebar -->
   <nav>
@@ -43,14 +59,6 @@
     </ul>
   </nav>
 
-  <!-- Comunicados -->
-  <section class="comunicados">
-    <div class="comunicado">Novo comunicado: Atualize seu perfil!</div>
-    <div class="comunicado">
-      Lembre-se de verificar as últimas atualizações!
-    </div>
-    <div class="comunicado">Comunicado importante sobre a plataforma!</div>
-  </section>
 
   <div id="overlay" class="overlay"></div>
 
@@ -104,6 +112,18 @@
 
   <!-- JavaScript -->
   <script>
+
+    document.querySelectorAll('.notificacao-item').forEach(item => {
+      item.addEventListener('click', () => {
+        if (item.getAttribute('data-lida') === 'false') {
+          item.setAttribute('data-lida', 'true');
+        } else {
+          item.setAttribute('data-lida', 'false');
+        }
+      });
+    });
+
+
     // Mapeamento de tags para ícones
     const tagIcons = {
       1: '<i class="bi bi-shield-fill-exclamation"></i>',
