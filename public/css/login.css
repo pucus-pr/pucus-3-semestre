@@ -59,8 +59,6 @@ a {
     margin-top: 15px;
   }
 
-
-
 body {
   display: grid;
   place-items: center;
@@ -160,4 +158,56 @@ main form .button:hover {
   content: ".";
   position: relative;
   top: -4px;
+}
+
+
+/*css recuperar senha*/
+.leftidk .textoredef {
+    font-size: 20px;
+    margin: 15px 0;
+}
+
+
+.form-box-email {
+    position: absolute;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    text-align: center;
+    padding: 40px;
+    z-index: 1;
+}
+
+/*css emailredef, enviar email para receber o token*/
+#digiteem {
+    font-size: 35px;
+}
+
+.form-box-email {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background: #fff;
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    color: #333;
+}
+
+.form-box-email .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.form-box-email h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
 }

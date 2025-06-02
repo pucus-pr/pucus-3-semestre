@@ -2,31 +2,31 @@
 
 namespace App\Controllers;
 
-use App\Models\Tag;
+use App\Models\Notification;
 
-class TagController {
-    // Retorna todos as tags
+class NotificationController {
     public function index() {
-        return Tag::all();
+        return Notification::all();
     }
-
-    // Retorna uma tag específica
+    
     public function show($id) {
-        return Tag::find($id);
+        return Notification::find($id);
     }
 
     public function create() {
-        return Tag::create($_POST);
+        return Notification::create($_POST);
     }
 
     public function update($id) {
         $data = file_get_contents("php://input");
         parse_str($data, $parsedData);
 
-        return Tag::update($parsedData, $id);
+        return Notification::update($parsedData, $id);
     }
 
     public function destroy($id) {
-        return Tag::delete($id);
+        return Notification::delete($id);
     }
+
+    // Controlador das notificações
 }
