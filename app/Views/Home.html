@@ -17,14 +17,19 @@
 </head>
 
 <body>
+
   <div class="perfil-topo">
-    <img id="perfil-img" src="img/placeholder.png" alt="Foto de Perfil" />
-    <span id="perfil-nome">Usuário</span>
-    <div class="perfil-menu">
-      <button onclick="window.location.href='/perfil'">Perfil</button>
-      <button onclick="logout()">Logout</button>
-    </div>
+  <img id="perfil-img" src="img/placeholder.png" alt="Foto de Perfil" />
+  <span id="perfil-nome">Usuário</span>
+
+
+  <!-- Menu de perfil -->
+  <div class="perfil-menu">
+    <button onclick="window.location.href='/perfil'">Perfil</button>
+    <button onclick="logout()">Logout</button>
   </div>
+</div>
+
 
   <!-- Sidebar -->
   <nav>
@@ -47,14 +52,7 @@
     </ul>
   </nav>
 
-  <!-- Comunicados -->
-  <section class="comunicados">
-    <div class="comunicado">Novo comunicado: Atualize seu perfil!</div>
-    <div class="comunicado">
-      Lembre-se de verificar as últimas atualizações!
-    </div>
-    <div class="comunicado">Comunicado importante sobre a plataforma!</div>
-  </section>
+
 
   <div id="overlay" class="overlay"></div>
 
