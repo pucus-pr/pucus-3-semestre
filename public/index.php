@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/../vendor/autoload.php';
 function myAutoloader($class) {
     $file = __DIR__ . '/../' . str_replace('\\', '/', $class) . '.php';
     if (file_exists($file)) {

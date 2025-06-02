@@ -15,7 +15,7 @@ class User extends Model {
 
     public static function create($request) {
         try {
-            $sql = 'INSERT INTO users (name, identifier, email, password, access_level, image) VALUES (?, ?, ?, ?, ?, ?)';
+            $sql = 'INSERT INTO users (name, identifier, email, password, favorite_color, access_level, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
             $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
             $id = self::query($sql, $request);
             return [
@@ -83,5 +83,14 @@ class User extends Model {
             'message' => 'Usuário atualizado com sucesso!',
             'data' => $id
         ];
+    }
+    public static function getUserbyResetT(string $token): mixed {
+        $sql = "SELECT * FROM users WHERE reset_token = ? AND reset_expires > NOW()";
+        $result = self::query($sql, [$token]);
+        return $result ? $result[0] ?? null : null;
+    }
+    public static function updatePasswordClearT(int $userId, string $hashedPassword){
+        $sql = "UPDATE users SET password = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?";
+        self::query($sql, [$hashedPassword, $userId]);
     }
 }
