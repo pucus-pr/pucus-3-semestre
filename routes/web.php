@@ -24,6 +24,7 @@ function route($uri, $controllerMethod, $method) {
 
 route('/login', null, 'PUBLICACCESS');
 route('/registers', null, 'PUBLICACCESS');
+route('/emailredef', null, 'PUBLICACCESS');
 
 route('/api/login', [AuthController::class, 'login'], 'POST');
 route('/api/register', [UserController::class, 'create'], 'POST');
@@ -31,12 +32,11 @@ route('/api/register', [UserController::class, 'create'], 'POST');
 route('/api/requestpasswordreset', [AuthController::class, 'requestPResetEmail'], 'POST');
 route('/api/passwordreset', [AuthController::class, 'resetPassword'], 'POST');
 
-route('/api/users/{id}', [UserController::class, 'show'], 'GET');
-route('/api/users', [UserController::class, 'index'], 'GET');
 if (isset($_SESSION['user'])) {
     // Rotas de usuários
     route('/api/logout', [AuthController::class, 'logout'], 'POST');
-    
+    route('/api/users', [UserController::class, 'index'], 'GET');
+    route('/api/users/{id}', [UserController::class, 'show'], 'GET');
     route('/api/users/{id}', [UserController::class, 'update'], 'PUT');
     route('/api/users/{id}', [UserController::class, 'destroy'], 'DELETE');
 
@@ -51,6 +51,7 @@ if (isset($_SESSION['user'])) {
     route('/api/posts/{id}', [PostController::class, 'update'], 'PUT');
     route('/api/posts/{id}', [PostController::class, 'destroy'], 'DELETE');
     route('/api/posts/{tag}', [PostController::class, 'destroy'], 'GET');
+    route('/api/statements', [PostController::class, 'allStatements'], 'GET');
 
     // Rotas de tags-posts
     route('/api/tags-posts', [TagPostController::class, 'create'], 'POST');
@@ -86,5 +87,11 @@ if (isset($_SESSION['user'])) {
         route('/api/tags', [TagController::class, 'create'], 'POST');
         route('/api/tags/{id}', [TagController::class, 'update'], 'PUT');
         route('/api/tags/{id}', [TagController::class, 'destroy'], 'DELETE');
+
+        // Rotas de posts apenas para admins
+        route('/api/statements', [PostController::class, 'createStatement'], 'POST');
+        route('/api/allConcluded', [PostController::class, 'allConcludedPosts'], 'GET');
+        route('/api/confirmPost/{id}', [PostController::class, 'confirmPost'], 'PUT');
+        route('/api/denyPost/{id}', [PostController::class, 'denyPost'], 'PUT');
     }
 }

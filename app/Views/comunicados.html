@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUCUS</title>
+  <link rel="stylesheet" href="css/comunicados.css" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Ícones -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="perfil-topo">
+    <img id="perfil-img" src="img/placeholder.png" alt="Foto de Perfil" />
+    <span id="perfil-nome">Usuário</span>
+    <div class="perfil-menu">
+      <button onclick="window.location.href='/perfil'">Perfil</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <nav>
+      <ul>
+      <li class="logo"><img alt="Logo" src="img/polvo.png" /></li>
+      <li><a href="HomeADM"><i class="fa fa-home"></i> home</a></li>
+      <li><a href="comunicados"><i class="bi bi-bookmark-star-fill"></i> comunicados</a></li>
+      <li><a href="tickets"><i class="bi bi-ticket-detailed"></i> ticket</a></li>
+      <li><a href="dashboard"><i class="bi bi-bar-chart-steps"></i> dashboard</a></li>
+      <li><a href="perfil"><i class="bi bi-person-lines-fill"></i> Perfil</a></li>
+    </ul>
+  </nav>
+
+<section class="midias">
+    <section class="midia">
+          <section class="comunicados">
+  <h2>Comunicados</h2>
+
+  <form id="formComunicado">
+    <textarea name="text" id="comunicadoTexto" placeholder="Digite seu comunicado..." required></textarea>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <section id="comunicado-lista" class="comunicado">
+    <!-- Comunicados aparecerão aqui -->
+  </section>
+</section>
+    </section>
+
+</section>
+
+
+<script>
+async function carregarComunicados() {
+  try {
+    const response = await fetch('/api/statements');
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error('Erro na requisição: ' + errorText);
+    }
+
+    const comunicados = await response.json();
+    if (!Array.isArray(comunicados)) {
+      throw new Error('Formato inesperado dos dados');
+    }
+
+    const container = document.getElementById('comunicado-lista');
+    container.innerHTML = '';
+
+    comunicados.forEach(item => {
+      const comunicadoElement = document.createElement('div');
+      comunicadoElement.className = 'comunicado-item';
+
+      comunicadoElement.innerHTML = `
+        <div class="comunicado-header">
+          <img src="${item.user_image || 'img/placeholder.png'}" alt="Imagem do usuário" class="comunicado-user-img">
+          <h3>${item.user_name || 'Usuário desconhecido'}</h3>
+        </div>
+        <p class="comunicado-texto">${item.text || 'Sem texto'}</p>
+        ${item.image ? `<img src="${item.image}" alt="Imagem do comunicado" class="comunicado-imagem">` : ''}
+        <small>Data: ${new Date(item.created_at).toLocaleString('pt-BR')}</small>
+      `;
+      container.appendChild(comunicadoElement);
+    });
+  } catch (error) {
+    console.error(error);
+    document.getElementById('comunicado-lista').innerHTML = `<p style="color:red;">Erro: ${error.message}</p>`;
+  }
+}
+
+// Chamada inicial
+carregarComunicados();
+
+// Enviar comunicado
+document.getElementById('formComunicado').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const texto = document.getElementById('comunicadoTexto').value.trim();
+  if (!texto) {
+    alert('Digite um comunicado!');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('text', texto);
+
+  try {
+    const response = await fetch('/api/statements', {
+      method: 'POST',
+      body: formData
+    });
+
+    const resultado = await response.json();
+    if (!response.ok) {
+      throw new Error(resultado.message || 'Erro ao enviar comunicado');
+    }
+
+    alert('Comunicado enviado com sucesso!');
+    document.getElementById('comunicadoTexto').value = ''; // Limpa o campo
+    carregarComunicados(); // Recarrega comunicados
+  } catch (error) {
+    console.error(error);
+    alert('Erro: ' + error.message);
+  }
+});
+
+
+  async function logout() {
+      try {
+        await fetch("/api/logout", { method: "POST" });
+        localStorage.removeItem("user");
+        window.location.href = "/login.html";
+      } catch (error) {
+        console.error("Erro ao fazer logout:", error);
+        alert("Erro ao sair. Tente novamente.");
+      }
+    }
+
+
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        // Carrega informações do usuário
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+          // Topo
+          document.getElementById("perfil-nome").textContent =
+            user.name || "Usuário";
+          document.getElementById("perfil-img").src =
+            user.profilePicture || "img/placeholder.png";
+
+          // Novo Post
+          document.getElementById("newPost-name").textContent =
+            user.name || "Usuário";
+          document.getElementById("newPost-img").src =
+            user.profilePicture || "img/placeholder.png";
+        }
+    })
+</script>
+
+</body>
+</html>
