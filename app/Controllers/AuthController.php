@@ -78,37 +78,35 @@ class AuthController
     }
     public function requestPResetEmail(): array
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            extract($_POST);
-            $users = Model::query("SELECT * FROM users WHERE email = ?", [$email]);
-            try {
-                if (!empty($users)) {
-                    $users = $users[0];
-                    $resetData = $this->generatePRToken();
-                    $token = $resetData['token'];
-                    $expires = $resetData['expires'];
-                    Model::query("UPDATE users SET reset_token = ?, reset_expires = ? WHERE email = ?", [$token, $expires, $email]);
+        extract($_POST);
+        $users = Model::query("SELECT * FROM users WHERE email = ?", [$email]);
+        try {
+            if (!empty($users)) {
+                $users = $users[0];
+                $resetData = $this->generatePRToken();
+                $token = $resetData['token'];
+                $expires = $resetData['expires'];
+                Model::query("UPDATE users SET reset_token = ?, reset_expires = ? WHERE email = ?", [$token, $expires, $email]);
 
-                    $reset_link = "http://pucus.com/resetpassword?token={$token}";
-                    $emailController = new EmailController();
-                    $emailController->sendPResetEmail($email, $reset_link);
-                    return [
-                        'status' => 'success',
-                        'message' => 'Email de redefinição de senha enviado!'
-                    ];
-                } else {
-                    return [
-                        'status' => 'error',
-                        'message' => 'E-mail não encontrado!'
-                    ];
-                }
-            } catch (Exception $e) {
+                $reset_link = "http://pucus.com/resetpassword?token={$token}";
+                $emailController = new EmailController();
+                $emailController->sendPResetEmail($email, $reset_link);
+                return [
+                    'status' => 'success',
+                    'message' => 'Email de redefinição de senha enviado!'
+                ];
+            } else {
                 return [
                     'status' => 'error',
-                    'message' => 'Erro: ' . $e->getMessage()
+                    'message' => 'E-mail não encontrado!'
                 ];
-
             }
+        } catch (Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => 'Erro: ' . $e->getMessage()
+            ];
+
         }
     }
     public function generatePRToken(): array
@@ -123,42 +121,36 @@ class AuthController
     }
     public function resetPassword(): array
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!isset($_POST['token'], $_POST['new_password'])) {
-                return [
-                    'status' => 'error',
-                    'message' => 'Token ou senha não fornecidos.'
-                ];
-            }
-            $token = $_POST['token'];
-            $new_password = $_POST['new_password'];
-            try {
-                $userModel = new User();
-                $user = $userModel->getUserbyResetT($token);
-                if ($user && strtotime($user['reset_expires']) > time()) {
-                    $hashedPasword = password_hash($new_password, PASSWORD_BCRYPT);
-                    $userModel->updatePasswordClearT($user['id'], $hashedPasword);
-                    return [
-                        'status' => 'success',
-                        'message' => 'Senha redefinida com sucesso!'
-                    ];
-                } else {
-                    return [
-                        'status' => 'error',
-                        'message' => 'Token inválido ou expirado!'
-                    ];
-                }
-            } catch (Exception $e) {
-                return [
-                    'status' => 'error',
-                    'message' => 'Erro: ' . $e->getMessage()
-
-                ];
-            }
+        if (!isset($_POST['token'], $_POST['new_password'])) {
+            return [
+                'status' => 'error',
+                'message' => 'Token ou senha não fornecidos.'
+            ];
         }
-        return [
-            'status' => 'error',
-            'message' => 'Método Inválido.'
-        ];
+        $token = $_POST['token'];
+        $new_password = $_POST['new_password'];
+        try {
+            $userModel = new User();
+            $user = $userModel->getUserbyResetT($token);
+            if ($user && strtotime($user['reset_expires']) > time()) {
+                $hashedPasword = password_hash($new_password, PASSWORD_BCRYPT);
+                $userModel->updatePasswordClearT($user['id'], $hashedPasword);
+                return [
+                    'status' => 'success',
+                    'message' => 'Senha redefinida com sucesso!'
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Token inválido ou expirado!'
+                ];
+            }
+        } catch (Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => 'Erro: ' . $e->getMessage()
+
+            ];
+        }
     }
 }
