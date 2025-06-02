@@ -268,3 +268,13 @@ form {
     outline: none;
 }
 
+.linkvoltar{
+    font-size: 14.5px;
+    color: #333;
+    text-decoration: none;
+}
+
+.linkvoltar:hover {
+    text-decoration: underline;
+    color: #6b1e1f;
+}
