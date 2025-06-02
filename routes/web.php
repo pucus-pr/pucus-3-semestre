@@ -33,12 +33,12 @@ route('/api/register', [UserController::class, 'create'], 'POST');
 route('/api/requestpasswordreset', [AuthController::class, 'requestPResetEmail'], 'POST');
 route('/api/passwordreset', [AuthController::class, 'resetPassword'], 'POST');
 
-
+route('/api/users/{id}', [UserController::class, 'show'], 'GET');
+route('/api/users', [UserController::class, 'index'], 'GET');
 if (isset($_SESSION['user'])) {
     // Rotas de usuários
     route('/api/logout', [AuthController::class, 'logout'], 'POST');
-    route('/api/users', [UserController::class, 'index'], 'GET');
-    route('/api/users/{id}', [UserController::class, 'show'], 'GET');
+    
     route('/api/users/{id}', [UserController::class, 'update'], 'PUT');
     route('/api/users/{id}', [UserController::class, 'destroy'], 'DELETE');
 

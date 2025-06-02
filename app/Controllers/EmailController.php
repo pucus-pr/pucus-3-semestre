@@ -14,15 +14,15 @@ class EmailController{
             $mail->Password = 'sqwh keva haps btqe';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
+            $mail->CharSet = 'UTF-8';
             
             $mail->setFrom('pucusadm@gmail.com', 'Sistema Pucus');
             $mail->addAddress($email);
-
             $mail->isHTML(true);
             $mail->Subject = 'Seu pedido de redifinição de senha';
             $mail->Body  = " <p> Olá!</p> 
                             <p>Você solicitou a redefinição de sua senha do PUCUS, para concluir a solicitação clique no link abaixo para ser redirecionado para a página correta!</p>
-                            <p><a href= '{resetLink}'>Redefinir senha</a></p> 
+                            <p><a href= '$reset_link'>Redefinir senha</a></p> 
                             <p>O link tem duração de 1 hora, caso não tenha solicitado a alteração pedimos que desconsidere esse email.</p> 
                             <p>Atenciosamente, PUCUS.<p>";
             $mail->AltBody = "Olá! \n\nVocê solicitou a redefinição de sua senha do PUCUS, para concluir a solicitação clique no link abaixo para ser redirecionado para a página correta!\n{$reset_link}\n\nO link tem duração de 1 hora, caso não tenha solicitado a alteração pedimos que desconsidere esse email.\n\nAtenciosamente, PUCUS."; 

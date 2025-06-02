@@ -17,11 +17,13 @@ class Model {
             $results = $results->fetch_all(MYSQLI_ASSOC);
         } elseif (is_bool($results)) {
             $results = $conn->insert_id;
+        } elseif($params){
+            $stmt = $conn->prepare($sql);
+            $types = str_repeat('s', count($params)); 
+            $stmt->bind_param($types, ...$params);
         }
-
         $sql->close();
         $conn->close();
-
         return $results;
     }
 }
