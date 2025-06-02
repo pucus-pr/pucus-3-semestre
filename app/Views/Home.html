@@ -130,34 +130,19 @@
         p.textContent = `${notif.title}: ${notif.message}`;
         p.setAttribute('data-id', notif.id);
         p.setAttribute('data-lida', notif.read_at ? 'true' : 'false');
-
+        
+        // Ao clicar, marcar como lida usando a rota PUT /api/read/Notification
         p.addEventListener('click', async () => {
-          try {
-            if (!notif.read_at) {
-              // Marcar como lida
-              await fetch('/api/read/Notification', {
+          if (!notif.read_at) {
+            try {
+              await fetch(`/api/notifications/${notif.id}`, {
                 method: 'PUT',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: notif.id })
               });
               p.setAttribute('data-lida', 'true');
-              notif.read_at = new Date().toISOString();
-            } else {
-              // Marcar como não lida (se essa rota existir)
-              await fetch('/api/unread/Notification', {
-                method: 'PUT',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: notif.id })
-              });
-              p.setAttribute('data-lida', 'false');
-              notif.read_at = null;
+              notif.read_at = new Date().toISOString(); // Atualiza localmente
+            } catch (error) {
+              console.error('Erro ao marcar como lida:', error);
             }
-          } catch (error) {
-            console.error('Erro ao atualizar status da notificação:', error);
           }
         });
 
@@ -170,7 +155,6 @@
     dropdown.innerHTML = '<p>Erro ao carregar notificações</p>';
   }
 }
-
 
 // Chama o carregamento ao carregar a página
 carregarNotificacoes();
