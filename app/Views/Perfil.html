@@ -39,6 +39,7 @@
 					<span id="profile-course"></span>
 				</div>
 				<button class="edit-profile-btn" onclick="openModal()">Editar perfil</button>
+				<button class="edit-profile-btn" onclick="logout()">Logout</button>
 			</div>
 
 			<div id="posts-container">
@@ -129,6 +130,18 @@
 			}
 		}
 
+
+
+			async function logout() {
+      try {
+        await fetch("/api/logout", { method: "POST" });
+        localStorage.removeItem("user");
+        window.location.href = "/login.html";
+      } catch (error) {
+        console.error("Erro ao fazer logout:", error);
+        alert("Erro ao sair. Tente novamente.");
+      }
+    }
 		async function saveProfile1() {
 			try {
 				// Obter os valores atuais do formulário
