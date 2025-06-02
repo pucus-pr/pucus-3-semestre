@@ -15,7 +15,7 @@ class User extends Model {
 
     public static function create($request) {
         try {
-            $sql = 'INSERT INTO users (name, identifier, email, password, favorite_color, access_level, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
+            $sql = 'INSERT INTO users (name, identifier, email, password, access_level, image) VALUES (?, ?, ?, ?, ?, ?)';
             $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
             $id = self::query($sql, $request);
             return [
