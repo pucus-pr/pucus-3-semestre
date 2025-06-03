@@ -10,10 +10,12 @@ function myAutoloader($class) {
 spl_autoload_register('myAutoloader');
 
 $uri = $_SERVER['REQUEST_URI'];
+$uri = explode('?', $uri)[0];
 $method = $_SERVER['REQUEST_METHOD'];
 
 $routes = [];
 require_once __DIR__ . '/../routes/web.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 if (strpos($uri, '/api') === 0) {
     if (isset($routes[$method])){

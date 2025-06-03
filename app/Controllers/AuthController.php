@@ -6,13 +6,16 @@ use App\Models\Post;
 use App\Models\User;
 use ErrorException;
 use Exception;
+use App\Models\Model;
 
-class AuthController {
-    public function login() {
+class AuthController
+{
+    public function login()
+    {
         try {
             $request = $_POST;
 
-            if(!isset($request['email']) or !isset($request['password'])) {
+            if (!isset($request['email']) or !isset($request['password'])) {
                 return [
                     'status' => 'error',
                     'message' => 'Usuário inválido',
@@ -22,7 +25,7 @@ class AuthController {
 
             $user = User::where('email', '=', $request['email']);
 
-            if(isset($user[0])) {
+            if (isset($user[0])) {
                 $user = $user[0];
             } else {
                 return [
@@ -31,7 +34,7 @@ class AuthController {
                     'data' => null
                 ];
             }
-            
+
             if (password_verify($request['password'], $user['password'])) {
                 $_SESSION['user'] = $user['id'];
                 return [
@@ -55,7 +58,8 @@ class AuthController {
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         if (isset($_SESSION['user'])) {
             session_unset();
             session_destroy();
@@ -72,96 +76,81 @@ class AuthController {
             ];
         }
     }
-    public function requestPResetEmail(): array {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            extract($_POST);
-            $smtp = $conn->prepare("SELECT * FROM users where email = ?");
-            $smtp->bind_param('s', $email);
-            $smtp->execute();
-            $result = $smtp->get_result();
-            
-            try{
-                if ($result->num_rows > 0){
-                $user = $result->fetch_assoc();
+    public function requestPResetEmail(): array
+    {
+        extract($_POST);
+        $users = Model::query("SELECT * FROM users WHERE email = ?", [$email]);
+        try {
+            if (!empty($users)) {
+                $users = $users[0];
                 $resetData = $this->generatePRToken();
                 $token = $resetData['token'];
                 $expires = $resetData['expires'];
-                $update = $conn->prepare("UPDATE users SET reset_token = ?, reset_expires = ? where email = ?");
-                $update->bind_param('sss', $token, $expires, $email);
-                $update->execute();
-                $reset_link = "https://pucus.com/resetpassword?token={$token}";
+                Model::query("UPDATE users SET reset_token = ?, reset_expires = ? WHERE email = ?", [$token, $expires, $email]);
+
+                $reset_link = "http://pucus.com/resetpassword?token={$token}";
                 $emailController = new EmailController();
                 $emailController->sendPResetEmail($email, $reset_link);
                 return [
-                    'status' => 'sucess',
+                    'status' => 'success',
                     'message' => 'Email de redefinição de senha enviado!'
                 ];
-            }
-            
-            else{
-                return[
+            } else {
+                return [
                     'status' => 'error',
                     'message' => 'E-mail não encontrado!'
                 ];
             }
-            } 
-            
-            catch (Exception $e){
-                return[
-                    'status' => 'error',
-                    'message' => 'Erro: ' . $e->getMessage()
-                ];
-
-            }
-            }
-        }
-        public function generatePRToken(): array{
-            $token = bin2hex((random_bytes(16)));
-            $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
-            return[
-                'token' => $token,
-                'expires' => $expires
+        } catch (Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => 'Erro: ' . $e->getMessage()
             ];
 
         }
-        public function resetPassword(): array{
-            if($_SERVER['REQUEST_METHOD'] === 'POST'){
-                extract($_POST);
-                $token = $_GET['token'];
-                $conn = new\mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-                $stmt = $conn->prepare("SELECT * FROM users WHERE reset_token = ? AND reset_expires > NOW()");
-                $stmt->execute();
-                $result = $stmt->get_result();
+    }
+    public function generatePRToken(): array
+    {
+        $token = bin2hex((random_bytes(16)));
+        $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
+        return [
+            'token' => $token,
+            'expires' => $expires
+        ];
 
-                try{
-                    if ($result->num_rows > 0){
-                    $user = $result->fetch_assoc();
-                    $hashPassword = password_hash($new_password, PASSWORD_BCRYPT);
-                    $update = $conn->prepare("UPDATE users SET password = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?");
-                    $update->bind_param('s', $hashPassword, $user['id']);
-                    $update->execute();
-                    return [
-                        'status' => 'success',
-                        'message' => 'Senha redefinida com sucesso!'
-                    ];
-                }
-                else {
-                    return[
-                        'status' => 'error',
-                        'message' => 'Token inválido ou expirado!'
-                    ];
-                }
-                }  catch (Exception $e){
-                    return[
-                        'status' => 'error',
-                        'message' => 'Erro: ' . $e->getMessage()
-                    ];
-
-                }
-                
-        
-            }
-            
-            }
-        
+    }
+    public function resetPassword(): array
+    {
+        if (!isset($_POST['token'], $_POST['new_password'])) {
+            return [
+                'status' => 'error',
+                'message' => 'Token ou senha não fornecidos.'
+            ];
         }
+        $token = $_POST['token'];
+        $new_password = $_POST['new_password'];
+        try {
+            $userModel = new User();
+            $user = $userModel->getUserbyResetT($token);
+            if ($user && strtotime($user['reset_expires']) > time()) {
+                $hashedPasword = password_hash($new_password, PASSWORD_BCRYPT);
+                $userModel->updatePasswordClearT($user['id'], $hashedPasword);
+                return [
+                    'status' => 'success',
+                    'message' => 'Senha redefinida com sucesso!'
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Token inválido ou expirado!'
+                ];
+            }
+        } catch (Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => 'Erro: ' . $e->getMessage()
+
+            ];
+        }
+    }
+}

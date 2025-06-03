@@ -84,4 +84,13 @@ class User extends Model {
             'data' => $id
         ];
     }
+    public static function getUserbyResetT(string $token): mixed {
+        $sql = "SELECT * FROM users WHERE reset_token = ? AND reset_expires > NOW()";
+        $result = self::query($sql, [$token]);
+        return $result ? $result[0] ?? null : null;
+    }
+    public static function updatePasswordClearT(int $userId, string $hashedPassword){
+        $sql = "UPDATE users SET password = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?";
+        self::query($sql, [$hashedPassword, $userId]);
+    }
 }

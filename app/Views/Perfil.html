@@ -17,8 +17,6 @@
 				<img alt="Logo" src="img/polvo.png">
 			</li>
 			<li><a href="home"><i class="fa fa-home"></i> home</a></li>
-			<li><a href="#"><i class="fa fa-book"></i> placeholder</a></li>
-			<li><a href="#"><i class="fa fa-users"></i> placeholder</a></li>
 			<li><a href="perfil"><i class="bi bi-person-lines-fill"></i> Perfil</a></li>
 		</ul>
 	</nav>
@@ -41,6 +39,7 @@
 					<span id="profile-course"></span>
 				</div>
 				<button class="edit-profile-btn" onclick="openModal()">Editar perfil</button>
+				<button class="edit-profile-btn" onclick="logout()">Logout</button>
 			</div>
 
 			<div id="posts-container">
@@ -131,6 +130,18 @@
 			}
 		}
 
+
+
+			async function logout() {
+      try {
+        await fetch("/api/logout", { method: "POST" });
+        localStorage.removeItem("user");
+        window.location.href = "/login.html";
+      } catch (error) {
+        console.error("Erro ao fazer logout:", error);
+        alert("Erro ao sair. Tente novamente.");
+      }
+    }
 		async function saveProfile1() {
 			try {
 				// Obter os valores atuais do formulário

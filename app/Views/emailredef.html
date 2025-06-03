@@ -22,7 +22,7 @@
           <input type="email" name="email" placeholder="Email cadastrado" required />
           <i class="bx bxs-user"></i>
         </div>
-        <button type="submit" class="btn">Enviar link de recuperação</button>
+        <button style="margin-bottom: 15px;" type="submit" class="btn">Enviar link de recuperação</button>
         <a href="indexlogin.html" class="linkvoltar">Voltar para o login</a>
       </form>
     </div>
@@ -46,13 +46,10 @@
 
   
 
-      //enviar via fetch para o endpoint 
-      fetch("/api/enviar-link-recuperacao", {
+      //enviar via fetch para o endpoint (MUDAR A URL)
+      fetch("/api/requestpasswordreset", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email: email })
+        body: formData
       })
         .then(response => {
           if (!response.ok) throw new Error("Erro no envio");

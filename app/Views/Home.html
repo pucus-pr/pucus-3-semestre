@@ -17,18 +17,27 @@
 </head>
 
 <body>
-
-  <div class="perfil-topo">
+<div class="perfil-topo">
   <img id="perfil-img" src="img/placeholder.png" alt="Foto de Perfil" />
   <span id="perfil-nome">Usuário</span>
 
+  <!-- Ícone de notificações -->
+    <div class="notificacao-wrapper">
+  <i class="bi bi-bell-fill notificacao-icone"></i>
+  <div class="notificacao-dropdown" id="notificacaoDropdown">
+    <p>Carregando notificações...</p>
+  </div>
+</div>
 
-  <!-- Menu de perfil -->
+
+  </div>
+
   <div class="perfil-menu">
     <button onclick="window.location.href='/perfil'">Perfil</button>
     <button onclick="logout()">Logout</button>
   </div>
 </div>
+
 
 
   <!-- Sidebar -->
@@ -44,14 +53,10 @@
       <li><a href="statment"><i class="bi bi-bookmark-star-fill"></i> comunicados</a></li>
       </li>
       <li>
-        <a href="#"><i class="fa fa-users"></i> placeholder</a>
-      </li>
-      <li>
         <a href="perfil"><i class="bi bi-person-lines-fill"></i> Perfil</a>
       </li>
     </ul>
   </nav>
-
 
 
   <div id="overlay" class="overlay"></div>
@@ -106,6 +111,67 @@
 
   <!-- JavaScript -->
   <script>
+
+
+    async function carregarNotificacoes() {
+  try {
+    const response = await fetch('/api/notifications');
+    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+    const notifications = await response.json();
+
+    const dropdown = document.getElementById('notificacaoDropdown');
+    dropdown.innerHTML = ''; // Limpa o conteúdo anterior
+
+    if (notifications.length === 0) {
+      dropdown.innerHTML = '<p>Sem notificações</p>';
+    } else {
+      notifications.forEach(notif => {
+        const p = document.createElement('p');
+        p.classList.add('notificacao-item');
+        p.textContent = `${notif.title}: ${notif.message}`;
+        p.setAttribute('data-id', notif.id);
+        p.setAttribute('data-lida', notif.read_at ? 'true' : 'false');
+        
+        // Ao clicar, marcar como lida usando a rota PUT /api/read/Notification
+        p.addEventListener('click', async () => {
+          if (!notif.read_at) {
+            try {
+              await fetch(`/api/notifications/${notif.id}`, {
+                method: 'PUT',
+              });
+              p.setAttribute('data-lida', 'true');
+              notif.read_at = new Date().toISOString(); // Atualiza localmente
+            } catch (error) {
+              console.error('Erro ao marcar como lida:', error);
+            }
+          }
+        });
+
+        dropdown.appendChild(p);
+      });
+    }
+  } catch (error) {
+    console.error('Erro ao carregar notificações:', error);
+    const dropdown = document.getElementById('notificacaoDropdown');
+    dropdown.innerHTML = '<p>Erro ao carregar notificações</p>';
+  }
+}
+
+// Chama o carregamento ao carregar a página
+carregarNotificacoes();
+
+
+    document.querySelectorAll('.notificacao-item').forEach(item => {
+      item.addEventListener('click', () => {
+        if (item.getAttribute('data-lida') === 'false') {
+          item.setAttribute('data-lida', 'true');
+        } else {
+          item.setAttribute('data-lida', 'false');
+        }
+      });
+    });
+
+
     // Mapeamento de tags para ícones
     const tagIcons = {
       1: '<i class="bi bi-shield-fill-exclamation"></i>',
@@ -131,6 +197,47 @@
         .join("");
     }
 
+    document.addEventListener("click", async (e) => {
+      const target = e.target.closest(".voteBtn");
+      if (!target) return;
+
+      const postId = target.getAttribute("data-post-id");
+      const vote = target.getAttribute("data-vote");
+      let value;
+
+      if (vote == 'upvote') {
+        value = 1
+      } else {
+        value = -1
+      }
+
+      const formData = new FormData();
+      formData.append("post_id", postId);
+      formData.append("value", value);
+
+      try {
+        const response = await fetch("/api/votes", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log("Voto enviado:", result);
+
+          // Atualizar contadores no DOM (opcional)
+          const likeCountSpan = target.parentElement.querySelector(".likeCount");
+          if (likeCountSpan) likeCountSpan.textContent = result['data']['upvotes'];
+          const dislikeCountSpan = target.parentElement.querySelector(".dislikeCount");
+          if (dislikeCountSpan) dislikeCountSpan.textContent = result['data']['downvotes'];
+        } else {
+          console.error("Erro ao votar:", await response.text());
+        }
+      } catch (err) {
+        console.error("Erro de rede:", err);
+      }
+    });
+
     // Função para criar elementos de postagem - ATUALIZADA
     function createPostElement(post) {
       const postElement = document.createElement("div");
@@ -145,78 +252,32 @@
         : "";
 
       postElement.innerHTML = ` 
-  <div class="postHeader">
-    <div class="postIcon">
-      <img src="${post.user_image}" alt="Foto de Perfil">
-    </div>
-    <div class="postNnD">
-      <h1>${post.user_name}</h1>
-      <p>${post.created_at || new Date().toLocaleDateString("pt-BR")}</p>
-    </div>
-    <div class="threeDotsBtn cuzma"></div>
-  </div>
-  <div class="postDescription">
-    <p>${post.text || post.content || ""}</p>
-  </div>
-  ${imageHtml}
-  <div class="postBot">
-    <div class="upVolt voteBtn" data-post-id="${post.id}" data-vote="upvote">
-      <i class="bi bi-arrow-up"></i>
-      <span class="likeCount">${post.likes || 0}</span>
-    </div>
-    <div class="tags">${tagsHtml}</div>
-    <div class="downVolt voteBtn" data-post-id="${post.id}" data-vote="downvote">
-      <i class="bi bi-arrow-down"></i>
-      <span class="dislikeCount">${post.dislikes || 0}</span>
-    </div>
-  </div>
-`;
-
-      document.addEventListener("click", async (e) => {
-        const target = e.target.closest(".voteBtn");
-        if (!target) return;
-
-        const postId = target.getAttribute("data-post-id");
-        const vote = target.getAttribute("data-vote");
-        let value;
-
-        if (vote == 'upvote') {
-          value = 1
-        } else {
-          value = -1
-        }
-
-        const formData = new FormData();
-        formData.append("postId", postId);
-        formData.append("value", value);
-
-        try {
-          const response = await fetch("/api/votes", {
-            method: "POST",
-            body: formData,
-          });
-
-          if (response.ok) {
-            const result = await response.json();
-            console.log("Voto enviado:", result);
-
-            // Atualizar contadores no DOM (opcional)
-            if (vote === "upvote") {
-              const likeCountSpan = target.querySelector(".likeCount");
-              if (likeCountSpan) likeCountSpan.textContent = Number(likeCountSpan.textContent) + 1;
-            } else {
-              const dislikeCountSpan = target.querySelector(".dislikeCount");
-              if (dislikeCountSpan) dislikeCountSpan.textContent = Number(dislikeCountSpan.textContent) + 1;
-            }
-          } else {
-            console.error("Erro ao votar:", await response.text());
-          }
-        } catch (err) {
-          console.error("Erro de rede:", err);
-        }
-      });
-
-
+        <div class="postHeader">
+          <div class="postIcon">
+            <img src="${post.user_image}" alt="Foto de Perfil">
+          </div>
+          <div class="postNnD">
+            <h1>${post.user_name}</h1>
+            <p>${post.created_at || new Date().toLocaleDateString("pt-BR")}</p>
+          </div>
+          <div class="threeDotsBtn cuzma"></div>
+        </div>
+        <div class="postDescription">
+          <p>${post.text || post.content || ""}</p>
+        </div>
+        ${imageHtml}
+        <div class="postBot">
+          <div class="upVolt voteBtn" data-post-id="${post.id}" data-vote="upvote">
+            <i class="bi bi-arrow-up"></i>
+            <span class="likeCount">${post.upvotes || 0}</span>
+          </div>
+          <div class="tags">${tagsHtml}</div>
+          <div class="downVolt voteBtn" data-post-id="${post.id}" data-vote="downvote">
+            <i class="bi bi-arrow-down"></i>
+            <span class="dislikeCount">${post.downvotes || 0}</span>
+          </div>
+        </div>
+      `;
       return postElement;
     }
 
@@ -562,8 +623,11 @@
       const response = await fetch("/api/user");
       const data = await response.json();
 
-      if (data.data.access_level == 4) {
+      if (data.data.access_level > 2) {
         window.location.href = "/homeADM";
+      }
+      if (data.data.access_level == 2) {
+        window.location.href = "/homeFunc";
       }
     }
 

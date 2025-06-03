@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Post;
+use App\Models\Notification;
 
 class PostController {
     public function index() {
@@ -44,5 +45,21 @@ class PostController {
 
     public function createStatement() {
         return Post::createStatement($_POST);
+    }
+
+    public function allConcludedPosts() {
+        return Post::allConcluded($_POST);
+    }
+
+    public function confirmPost($id) {
+        $post = self::show($id)[0];
+
+        Notification::create([$post['user_id'], 'Postagem Confirmada', 'Sua postagem foi analisada pelos coordenadores e foi confirmada sua resolução! Agradeçemos sua denúncia.', 0], $id);
+
+        return Post::confirm($id);
+    }
+
+    public function denyPost($id) {
+        return Post::deny($id);
     }
 }
